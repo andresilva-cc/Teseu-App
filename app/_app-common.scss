@@ -1,7 +1,30 @@
 // Place any CSS rules you want to apply on both iOS and Android here.
 // This is where the vast majority of your CSS code goes.
 
-//Font icon
+// Font icon
 .fa {
-   font-family: "FontAwesome";
+  font-family: "FontAwesome";
+}
+
+// Elements
+Button {
+  background-color: $background-blue;
+  border: none;
+  border-radius: 20px;
+  margin: 10 0;
+}
+
+// Page-specific style
+.auth-page {
+  background-color: $background-blue;
+  color: #ffffff;
+
+  StackLayout {
+    margin: 0 30;
+  }
+
+  Button {
+    background-color: #ffffff;
+    color: $primary;
+  }
 }
