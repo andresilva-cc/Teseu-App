@@ -9,7 +9,8 @@
 
       <Button class="login-button" text="Entrar" />
       <Button text="Registrar" />
-      <Label class="view-only">Somente visualizar</Label>
+      
+      <Label class="view-only" @tap="$navigateTo(MapPage)">Somente visualizar</Label>
 
     </StackLayout>
   </Page>
@@ -44,3 +45,15 @@
   text-align: center;
 }
 </style>
+
+<script>
+import MapPage from './Map'
+
+export default {
+  data () {
+    return {
+      MapPage
+    }
+  }
+}
+</script>
