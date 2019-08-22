@@ -23,8 +23,19 @@ Button {
     margin: 0 30;
   }
 
+  ActionBar {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
   Button {
     background-color: #ffffff;
     color: $primary;
+  }
+
+  TextField {
+    color: #ffffff;
+    placeholder-color: #ffffff;
+    border-color: #ffffff;
   }
 }

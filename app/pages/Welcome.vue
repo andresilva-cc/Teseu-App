@@ -7,10 +7,10 @@
       <Label class="title">TESEU</Label>
       <Label class="message" textWrap="true">Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização.</Label>
 
-      <Button class="login-button" text="Entrar" />
-      <Button text="Registrar" />
+      <Button class="login-button" text="Entrar" @tap="$navigateTo(LoginPage)" />
+      <Button text="Registrar" @tap="$navigateTo(RegisterPage)" />
       
-      <Label class="view-only" @tap="$navigateTo(MapPage)">Somente visualizar</Label>
+      <Label class="view-only" @tap="confirmViewOnly">Somente visualizar</Label>
 
     </StackLayout>
   </Page>
@@ -47,12 +47,32 @@
 </style>
 
 <script>
+import LoginPage from './Auth/Login'
+import RegisterPage from './Auth/Register'
 import MapPage from './Map'
 
 export default {
   data () {
     return {
+      LoginPage,
+      RegisterPage,
       MapPage
+    }
+  },
+
+  methods: {
+    confirmViewOnly () {
+      confirm({
+        title: 'Alerta',
+        message: 'Se você não se autenticar, você não receberá notificações em tempo real',
+        cancelButtonText: 'Cancelar',
+        okButtonText: 'Continuar'
+      }).then(result => {
+        if (result) {
+          console.log(result)
+          this.$navigateTo(this.MapPage, { clearHistory: true })
+        }
+      })
     }
   }
 }
