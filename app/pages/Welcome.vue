@@ -5,12 +5,12 @@
       <Image class="logo" src="~/resources/images/logo.png"></Image>
 
       <Label class="title">TESEU</Label>
-      <Label class="message" textWrap="true">Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização.</Label>
+      <Label class="message" textWrap="true">{{ $t('common.welcomeMessage') }}</Label>
 
-      <Button class="login-button" text="Entrar" @tap="$navigateTo(LoginPage)" />
-      <Button text="Registrar" @tap="$navigateTo(RegisterPage)" />
+      <Button class="login-button" :text="$t('auth.login')" @tap="$navigateTo(LoginPage)" />
+      <Button :text="$t('auth.register')" @tap="$navigateTo(RegisterPage)" />
       
-      <Label class="view-only" @tap="confirmViewOnly">Somente visualizar</Label>
+      <Label class="view-only" @tap="confirmViewOnly">{{ $t('auth.viewOnly') }}</Label> 
 
     </StackLayout>
   </Page>
@@ -63,13 +63,12 @@ export default {
   methods: {
     confirmViewOnly () {
       confirm({
-        title: 'Alerta',
-        message: 'Se você não se autenticar, você não receberá notificações em tempo real',
-        cancelButtonText: 'Cancelar',
-        okButtonText: 'Continuar'
+        title: this.$t('common.alert'),
+        message: this.$t('auth.viewOnlyMessage'),
+        cancelButtonText: this.$t('common.cancel'),
+        okButtonText: this.$t('common.continue')
       }).then(result => {
         if (result) {
-          console.log(result)
           this.$navigateTo(this.MapPage, { clearHistory: true })
         }
       })

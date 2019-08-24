@@ -1,13 +1,13 @@
 <template>
   <Page class="auth-page" androidStatusBarBackground="#2196f3">
 
-    <ActionBar title="Entrar" flat="true">
-      <NavigationButton text="Voltar" android.systemIcon="ic_menu_back" @tap="$navigateBack"></NavigationButton>
+    <ActionBar :title="$t('auth.login')" flat="true">
+      <NavigationButton :text="$t('common.back')" android.systemIcon="ic_menu_back" @tap="$navigateBack"></NavigationButton>
     </ActionBar>
 
     <StackLayout class="layout">
-      <TextField hint="Celular"></TextField>
-      <Button text="Enviar código por SMS" @tap="$navigateTo(ConfirmPage)" />
+      <MaskedTextField :hint="$t('fields.phone')" keyboardType="phone" mask="(00) 00000-0000" />
+      <Button :text="$t('auth.sendSMSCode')" @tap="$navigateTo(ConfirmPage)" />
     </StackLayout>
   </Page>
 </template>

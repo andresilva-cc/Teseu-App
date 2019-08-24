@@ -1,7 +1,7 @@
 <template>
   <Page actionBarHidden="true" androidStatusBarBackground="#2196f3">
     <StackLayout>
-      <Label>Autenticado.</Label>
+      <Label>OK</Label>
     </StackLayout>
   </Page>
 </template>
