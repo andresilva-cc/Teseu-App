@@ -33,9 +33,10 @@ Button {
     color: $primary;
   }
 
-  TextField {
+  TextField, MaskedTextField {
     color: #ffffff;
     placeholder-color: #ffffff;
+    border-bottom-width: 1;
     border-color: #ffffff;
   }
 }
