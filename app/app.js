@@ -1,8 +1,12 @@
 import Vue from 'nativescript-vue'
+import * as ApplicationSettings from 'application-settings'
+import VueDevTools from 'nativescript-vue-devtools'
 import store from './stores'
 import i18n from './resources/lang'
 
+// Pages
 import Welcome from './pages/Welcome'
+import Map from './pages/Map'
 
 // Plugins
 Vue.registerElement(
@@ -16,17 +20,29 @@ Vue.registerElement(
   }
 )
 
+// Vue Dev Tools
+Vue.use(VueDevTools, { host: '192.168.0.108' })
 
+// Load auth store from application settings
+store.commit('auth/load')
+
+// Subscribe auth store to application settings
+store.subscribe((mutation, state) => {
+  ApplicationSettings.setString('store/auth', JSON.stringify(state.auth))
+})
+
+// Create Vue instance and start it
 new Vue({
-    template: `
-        <Frame>
-            <Welcome />
-        </Frame>`,
+  template: `
+    <Frame>
+      ${store.getters['auth/isAuthenticated']? '<Map />' : '<Welcome />'}
+    </Frame>`,
 
-    components: {
-      Welcome
-    },
+  components: {
+    Map,
+    Welcome
+  },
 
-    store,
-    i18n
+  store,
+  i18n
 }).$start()

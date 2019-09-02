@@ -7,8 +7,8 @@
 
     <StackLayout class="layout">
       <Label textWrap="true">{{ $t('auth.SMSCodeMessage') }}</Label>
-      <TextField :hint="$t('fields.code')"></TextField>
-      <Button :text="$t('common.confirm')" @tap="$navigateTo(MapPage, { clearHistory: true })" />
+      <TextField :hint="$t('fields.code')" v-model="code"></TextField>
+      <Button :text="$t('common.confirm')" @tap="confirm" />
     </StackLayout>
   </Page>
 </template>
@@ -30,12 +30,40 @@ Button {
 </style>
 
 <script>
+import ErrorFormatter from '../../utils/error_formatter'
 import MapPage from '../Map'
 
 export default {
+  async created () {
+    try {
+      await this.$store.dispatch('auth/sendSMS')
+
+    } catch (ex) {
+      if (ex.name) {
+        alert(ErrorFormatter(ex))
+      }
+    }
+  },
+
   data () {
     return {
-      MapPage
+      MapPage,
+
+      code: ''
+    }
+  },
+
+  methods: {
+    async confirm () {
+      try {
+        await this.$store.dispatch('auth/checkSMS', this.code)
+        this.$navigateTo(this.MapPage, { clearHistory: true })
+        
+      } catch (ex) {
+        if (ex.name) {
+          alert(ErrorFormatter(ex))
+        }
+      }
     }
   }
 }

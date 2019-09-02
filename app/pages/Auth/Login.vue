@@ -6,8 +6,8 @@
     </ActionBar>
 
     <StackLayout class="layout">
-      <MaskedTextField :hint="$t('fields.phone')" keyboardType="phone" mask="(00) 00000-0000" />
-      <Button :text="$t('auth.sendSMSCode')" @tap="$navigateTo(ConfirmPage)" />
+      <TextField :hint="$t('fields.phone')" keyboardType="phone" v-model="phone" />
+      <Button :text="$t('auth.sendSMSCode')" @tap="login" />
     </StackLayout>
   </Page>
 </template>
@@ -24,12 +24,35 @@ Button {
 </style>
 
 <script>
+import ErrorFormatter from '../../utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
 
 export default {
   data () {
     return {
-      ConfirmPage
+      ConfirmPage,
+
+      phone: ''
+    }
+  },
+
+  computed: {
+    plainPhone () {
+      return this.phone? `55${this.phone}` : ''
+    }
+  },
+
+  methods: {
+    login () {
+      try {
+        this.$store.commit('auth/setUser', { phone: this.plainPhone })
+        this.$navigateTo(this.ConfirmPage)
+
+      } catch (ex) {
+        if (ex.name) {
+          alert(ErrorFormatter(ex))
+        }
+      }
     }
   }
 }
