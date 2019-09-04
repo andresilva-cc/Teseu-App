@@ -3,6 +3,7 @@ import * as ApplicationSettings from 'application-settings'
 import VueDevTools from 'nativescript-vue-devtools'
 import store from './stores'
 import i18n from './resources/lang'
+import RadDataForm from 'nativescript-ui-dataform/vue'
 
 // Pages
 import Welcome from './pages/Welcome'
@@ -19,6 +20,7 @@ Vue.registerElement(
     }
   }
 )
+Vue.use(RadDataForm)
 
 // Vue Dev Tools
 Vue.use(VueDevTools, { host: '192.168.0.108' })

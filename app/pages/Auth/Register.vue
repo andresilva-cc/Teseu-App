@@ -34,10 +34,21 @@ Button {
 </style>
 
 <script>
+import LoadingIndicator from '../../utils/loading_indicator'
 import ErrorFormatter from '../../utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
+import api from '../../api'
 
 export default {
+  async mounted () {
+    LoadingIndicator.show()
+
+    const res = await api.get('/auth/username/generate')
+    this.username = res.data
+    
+    LoadingIndicator.hide()
+  },
+
   data () {
     return {
       ConfirmPage,
@@ -56,14 +67,18 @@ export default {
   methods: {
     async register () {
       try {
+        LoadingIndicator.show()
         await this.$store.dispatch('auth/register', {
           username: this.username,
           phone: this.plainPhone
         })
 
+        LoadingIndicator.hide()
+
         this.$navigateTo(this.ConfirmPage)
 
       } catch (ex) {
+        LoadingIndicator.hide()
         if (ex.name) {
           alert(ErrorFormatter(ex))
         }

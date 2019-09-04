@@ -24,6 +24,7 @@ Button {
 </style>
 
 <script>
+import LoadingIndicator from '../../utils/loading_indicator'
 import ErrorFormatter from '../../utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
 
@@ -45,10 +46,13 @@ export default {
   methods: {
     login () {
       try {
+        LoadingIndicator.show()
         this.$store.commit('auth/setUser', { phone: this.plainPhone })
+        LoadingIndicator.hide()
         this.$navigateTo(this.ConfirmPage)
 
       } catch (ex) {
+        LoadingIndicator.hide()
         if (ex.name) {
           alert(ErrorFormatter(ex))
         }
