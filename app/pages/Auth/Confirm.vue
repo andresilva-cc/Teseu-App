@@ -30,19 +30,13 @@ Button {
 </style>
 
 <script>
+import LoadingIndicator from '../../utils/loading_indicator'
 import ErrorFormatter from '../../utils/error_formatter'
 import MapPage from '../Map'
 
 export default {
   async created () {
-    try {
-      await this.$store.dispatch('auth/sendSMS')
-
-    } catch (ex) {
-      if (ex.name) {
-        alert(ErrorFormatter(ex))
-      }
-    }
+    await this.sendSMS()
   },
 
   data () {
@@ -54,14 +48,31 @@ export default {
   },
 
   methods: {
-    async confirm () {
+    async sendSMS () {
       try {
-        await this.$store.dispatch('auth/checkSMS', this.code)
-        this.$navigateTo(this.MapPage, { clearHistory: true })
-        
+        await this.$store.dispatch('auth/sendSMS')
+
       } catch (ex) {
         if (ex.name) {
           alert(ErrorFormatter(ex))
+        }
+      }
+    },
+
+    async confirm () {
+      try {
+        LoadingIndicator.show()
+        await this.$store.dispatch('auth/checkSMS', this.code)
+        LoadingIndicator.hide()
+        this.$navigateTo(this.MapPage, { clearHistory: true })
+        
+      } catch (ex) {
+        LoadingIndicator.hide()
+        if (ex.name) {
+          alert(ErrorFormatter(ex))
+
+          if (ex.name === 'TooManyAttemptsError')
+            this.sendSMS()
         }
       }
     }
