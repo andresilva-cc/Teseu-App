@@ -1,0 +1,7 @@
+{
+  "ENVIRONMENT": "production",
+  "API_URL": "https://api.teseu.app",
+  "DEV_BYPASS_AUTH": false,
+  "DEV_ACCESSKEY": "",
+  "DEVTOOLS_HOST": "192.168.0.108"
+}

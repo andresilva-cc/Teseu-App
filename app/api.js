@@ -1,8 +1,9 @@
 import axios from 'axios'
 import store from './stores'
+import config from './config.json'
 
 const instance = axios.create({
-  baseURL: 'http://192.168.0.108:3000'
+  baseURL: config.API_URL
 })
 
 instance.interceptors.request.use(
