@@ -7,5 +7,10 @@ export default {
   continue: 'Continuar',
   ok: 'OK',
   
-  welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização'
+  // Welcome page
+  welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização',
+
+  // Map page
+  searchPlacesPlaceholder: 'Pesquisar locais',
+  lastSuccessfulUpdate: 'Última atualização com sucesso há {time}'
 }

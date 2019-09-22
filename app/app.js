@@ -10,9 +10,7 @@ import Welcome from './pages/Welcome'
 import Map from './pages/Map'
 
 // Plugins
-Vue.registerElement(
-  'MaskedTextField',
-  () => require('nativescript-masked-text-field').MaskedTextField,
+Vue.registerElement('MaskedTextField', () => require('nativescript-masked-text-field').MaskedTextField,
   {
     model: {
       prop: 'text',
@@ -20,6 +18,8 @@ Vue.registerElement(
     }
   }
 )
+Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
+Vue.registerElement('Fab', () => require('@nstudio/nativescript-floatingactionbutton').Fab)
 Vue.use(RadDataForm)
 
 // Vue Dev Tools
@@ -27,6 +27,8 @@ Vue.use(VueDevTools, { host: '192.168.0.108' })
 
 // Load auth store from application settings
 store.commit('auth/load')
+
+store.commit('auth/setToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJEZWVoIiwicGhvbmUiOiI1NTQ3OTk5MDAxNDE1IiwiaWF0IjoxNTY5MDE1Mzc2LCJhdWQiOiJhcHAifQ.7YD0LvgpknoIAqK5FwWxtQJ_5o4C5ed5IbiphaanCk8')
 
 // Subscribe auth store to application settings
 store.subscribe((mutation, state) => {
