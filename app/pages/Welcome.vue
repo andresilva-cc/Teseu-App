@@ -24,7 +24,7 @@
 }
 
 .title {
-  font-size: 32;
+  font-size: 28;
   margin-top: 15;
   margin-bottom: 30;
   font-weight: 500;
@@ -32,7 +32,7 @@
 }
 
 .message {
-  font-size: 18;
+  font-size: 16;
   text-align: center;
 }
 
