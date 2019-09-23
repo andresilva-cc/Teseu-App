@@ -11,6 +11,9 @@ import Map from './pages/Map'
 // Load plugins
 require('./plugins')
 
+// Load filters
+require('./utils/filters')
+
 // Load auth store from application settings
 store.commit('auth/load')
 

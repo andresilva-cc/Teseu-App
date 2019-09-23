@@ -12,6 +12,19 @@ export default {
   },
 
   getters: {
+    getUser: state => {
+      if (state.user)
+        return state.user
+      else
+        return {
+          id: 1,
+          username: 'Desconhecido',
+          phone: '5500000000000',
+          level: 1,
+          points: 10
+        }
+    },
+
     isAuthenticated: state => {
       return state.authenticated
     }
