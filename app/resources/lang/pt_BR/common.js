@@ -13,10 +13,4 @@ export default {
   // Map page
   searchPlacesPlaceholder: 'Pesquisar locais',
   lastSuccessfulUpdate: 'Última atualização com sucesso há {time}',
-
-  // Menu
-  menuContacts: 'Meus Contatos',
-  menuPlaces: 'Meus Locais',
-  menuAlerts: 'Alertas',
-  menuLogout: 'Sair'
 }

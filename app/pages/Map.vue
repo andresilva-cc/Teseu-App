@@ -15,17 +15,17 @@
         <!-- Menu Items -->
         <GridLayout rows="auto, auto, auto" columns="25, *" row="1" column="0" class="menu-list">
           <Label class="fa" row="0" column="0" verticalAlignment="center">&#xf0c0;</Label>
-          <Label class="item" row="0" column="1">{{ $t('common.menuContacts') }}</Label>
+          <Label class="item" row="0" column="1">{{ $t('sections.myContacts') }}</Label>
 
           <Label class="fa" row="1" column="0" verticalAlignment="center">&#xf041;</Label>
-          <Label class="item" row="1" column="1">{{ $t('common.menuPlaces') }}</Label>
+          <Label class="item" row="1" column="1">{{ $t('sections.myPlaces') }}</Label>
 
           <Label class="fa" row="2" column="0" verticalAlignment="center">&#xf0f3;</Label>
-          <Label class="item" row="2" column="1">{{ $t('common.menuAlerts') }}</Label>
+          <Label class="item" row="2" column="1">{{ $t('sections.alerts') }}</Label>
         </GridLayout>
 
         <!-- Logout -->
-        <Label row="3" column="0" class="logout" @tap="logout">{{ $t('common.menuLogout') }}</Label>
+        <Label row="3" column="0" class="logout" @tap="logout">{{ $t('auth.logout') }}</Label>
 
       </GridLayout>
 
@@ -141,8 +141,17 @@
 
       async logout () {
         try {
-          await this.$store.commit('auth/logout')
-          this.$navigateTo(WelcomePage, { clearHistory: true })
+          confirm({
+            title: this.$t('auth.logout'),
+            message: this.$t('auth.logoutConfirm'),
+            cancelButtonText: this.$t('common.cancel'),
+            okButtonText: this.$t('auth.logout')
+          }).then(async result => {
+            if (result) {
+              await this.$store.commit('auth/logout')
+              this.$navigateTo(WelcomePage, { clearHistory: true })
+            }
+          })
         } catch (ex) {
           if (ex.name) {
             alert(ErrorFormatter(ex))
