@@ -12,7 +12,7 @@
 
         <GridLayout rows="auto" columns="*, auto" class="field border-bottom">
           <Label row="0" column="0" verticalAlignment="center">{{ $t('fields.enableNotifications') }}</Label>
-          <Switch row="0" column="1" class="positive" v-model="data.enableNotifications" />
+          <Switch row="0" column="1" class="primary" v-model="data.enableNotifications" />
         </GridLayout>
 
         <StackLayout rows="auto, auto" columns="*" class="field border-bottom">

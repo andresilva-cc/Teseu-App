@@ -23,9 +23,9 @@ StackLayout.layout {
   padding: 0 30;
 }
 
-Switch.positive {
-  color: #4caf50;
-  background-color: #a5d7a7;
+Switch.primary {
+  color: #2196f3;
+  background-color: #a6d5fa;
   off-background-color: #666666;
 
   &[checked=false] {
