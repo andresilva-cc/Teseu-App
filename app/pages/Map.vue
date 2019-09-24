@@ -74,15 +74,15 @@
   }
 
   .menu-list {
-    margin: 10 15;
+    margin: 20 15;
 
     .item {
-      margin-bottom: 15;
+      margin-bottom: 25;
       margin-left: 10;
     }
 
     .fa {
-      margin-bottom: 15;
+      margin-bottom: 25;
       text-align: center;
       font-size: 20;
     }
