@@ -57,5 +57,13 @@ export default ex => {
         message: i18n.t('errors.unknownErrorDescription'),
         okButtonText: i18n.t('common.ok')
       }
+      
+      default:
+        return {
+          title: i18n.t('errors.unknownError'),
+          message: i18n.t('errors.unknownErrorDescription'),
+          okButtonText: i18n.t('common.ok')
+        }
+      
   }
 }
