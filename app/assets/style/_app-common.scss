@@ -27,7 +27,7 @@ Switch.primary {
   color: #2196f3;
   background-color: #a6d5fa;
   off-background-color: #666666;
-
+  
   &[checked=false] {
     color: #eeeeee;
   }
@@ -37,15 +37,18 @@ Switch.primary {
 .auth-page {
   background-color: $background-blue;
   color: #ffffff;
-
+  
   ActionBar {
     background-color: transparent;
     color: #ffffff;
   }
-
+  
   Button {
     background-color: $background-light;
     color: $primary;
+    border: none;
+    border-radius: 20px;
+    margin: 10 0;
   }
 
   TextField, MaskedTextField {
