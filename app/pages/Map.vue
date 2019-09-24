@@ -148,6 +148,10 @@ export default {
       // If not enabled, ask for permission
       if (!isEnabled) {
         await geolocation.enableLocationRequest(true, true)
+
+      // If enabled, start location watch
+      } else {
+        this.watchLocation()
       }
 
     } catch (ex) {
@@ -194,9 +198,6 @@ export default {
       this.mapView.settings.scrollGesturesEnabled = false
       this.mapView.settings.tiltGesturesEnabled = false
       this.mapView.settings.zoomGesturesEnabled = false
-      
-      // Start location watch
-      this.watchLocation()
     },
 
     watchLocation () {
