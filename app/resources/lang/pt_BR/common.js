@@ -6,6 +6,7 @@ export default {
   confirm: 'Confirmar',
   continue: 'Continuar',
   ok: 'OK',
+  save: 'Salvar',
   
   // Welcome page
   welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização',

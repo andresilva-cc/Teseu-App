@@ -21,7 +21,7 @@
           <Label class="item" row="1" column="1">{{ $t('sections.myPlaces') }}</Label>
 
           <Label class="fa" row="2" column="0" verticalAlignment="center">&#xf0f3;</Label>
-          <Label class="item" row="2" column="1">{{ $t('sections.alerts') }}</Label>
+          <Label class="item" row="2" column="1" @tap="$navigateTo(AlertsPage)">{{ $t('sections.alerts') }}</Label>
         </GridLayout>
 
         <!-- Logout -->
@@ -126,8 +126,15 @@
 <script>
   import ErrorFormatter from '../utils/error_formatter'
   import WelcomePage from './Welcome'
+  import AlertsPage from './Settings/Alerts'
 
   export default {
+    data () {
+      return {
+        AlertsPage
+      }
+    },
+
     computed: {
       user () {
         return this.$store.getters['auth/getUser']

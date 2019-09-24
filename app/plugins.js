@@ -17,8 +17,17 @@ Vue.registerElement('MaskedTextField', () => require('nativescript-masked-text-f
     }
   }
 )
+Vue.registerElement('CheckBox', () => require('@nstudio/nativescript-checkbox').CheckBox,
+  {
+    model: {
+      prop: 'checked',
+      event: 'checkedChange'
+    }
+  }
+)
 Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
 Vue.registerElement('Fab', () => require('@nstudio/nativescript-floatingactionbutton').Fab)
+Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown)
 Vue.use(RadDataForm)
 Vue.use(RadSideDrawer)
 

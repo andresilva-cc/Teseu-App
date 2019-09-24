@@ -9,9 +9,24 @@
 // Elements
 Button {
   background-color: $background-blue;
+  color: #ffffff;
   border: none;
   border-radius: 20px;
   margin: 10 0;
+}
+
+ActionBar {
+  background-color: #ffffff;
+}
+
+StackLayout.layout {
+  padding: 0 30;
+}
+
+Switch.positive {
+  color: #4caf50;
+  background-color: #bbbbbb;
+  off-background-color: #bbbbbb;
 }
 
 // Page-specific style
@@ -19,17 +34,13 @@ Button {
   background-color: $background-blue;
   color: #ffffff;
 
-  StackLayout {
-    margin: 0 30;
-  }
-
   ActionBar {
     background-color: transparent;
     color: #ffffff;
   }
 
   Button {
-    background-color: #ffffff;
+    background-color: $background-light;
     color: $primary;
   }
 
@@ -39,4 +50,9 @@ Button {
     border-bottom-width: 1;
     border-color: #ffffff;
   }
+}
+
+// Helpers
+.text-center {
+  text-align: center;
 }
