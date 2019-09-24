@@ -83,6 +83,20 @@ import LoadingIndicator from '../../utils/loading_indicator'
 import ErrorFormatter from '../../utils/error_formatter'
 
 export default {
+  async created () {
+    try {
+      LoadingIndicator.show()
+
+      // Fetch categories
+      await this.$store.dispatch('category/fetch')
+
+      LoadingIndicator.hide()
+
+    } catch (ex) {
+      ErrorFormatter(ex)
+    }
+  },
+
   data () {
     return {
       data: {
@@ -97,13 +111,13 @@ export default {
         '15 minutos',
         '30 minutos',
         '1 hora'
-      ],
-
-      categories: [
-        { id: 1, name: 'Categoria A' },
-        { id: 2, name: 'Categoria B' },
-        { id: 3, name: 'Categoria C' }
       ]
+    }
+  },
+
+  computed: {
+    categories () {
+      return this.$store.getters['category/get']
     }
   },
 
