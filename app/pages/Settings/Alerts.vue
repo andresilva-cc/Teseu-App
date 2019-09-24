@@ -31,7 +31,7 @@
           <CheckBox v-for="category in categories" :key="category.id" :text="category.name" fillColor="#2196f3" />
         </StackLayout>
 
-        <Button :text="$t('common.save')" @tap="save" />
+        <Button :text="$t('common.save')" class="primary" @tap="save" />
       </StackLayout>
     </ScrollView>
   </Page>
