@@ -31,7 +31,14 @@
 
       <GridLayout rows="auto, *, auto, auto" columns="*, auto" ~mainContent>
         <!-- Map -->
-        <MapView row="0" col="0" rowSpan="4" colSpan="2"></MapView>
+        <MapView row="0" col="0" rowSpan="4" colSpan="2"
+          :latitude="map.latitude"
+          :longitude="map.longitude"
+          :zoom="map.zoom"
+          :minZoom="map.minZoom"
+          :maxZoom="map.maxZoom"
+          @mapReady="mapReady"
+        />
 
         <!-- Search bar -->
         <Label row="0" col="0" colSpan="2" class="search-bar" @tap="showDrawer">
@@ -124,47 +131,120 @@
 </style>
 
 <script>
-  import ErrorFormatter from '../utils/error_formatter'
-  import WelcomePage from './Welcome'
-  import AlertsPage from './Settings/Alerts'
+import LoadingIndicator from '../utils/loading_indicator'
+import ErrorFormatter from '../utils/error_formatter'
+import { Position, Marker } from "nativescript-google-maps-sdk";
+import * as geolocation from "nativescript-geolocation"
+import { Accuracy } from "tns-core-modules/ui/enums"
+import WelcomePage from './Welcome'
+import AlertsPage from './Settings/Alerts'
 
-  export default {
-    data () {
-      return {
-        AlertsPage
+export default {
+  async mounted () {
+    try {
+      // Check if location is enabled
+      const isEnabled = await geolocation.isEnabled()
+
+      // If not enabled, ask for permission
+      if (!isEnabled) {
+        await geolocation.enableLocationRequest(true, true)
       }
-    },
 
-    computed: {
-      user () {
-        return this.$store.getters['auth/getUser']
-      }
-    },
+    } catch (ex) {
+      console.log(ex)
+      alert(ErrorFormatter(ex))
+    }
+  },
 
-    methods: {
-      showDrawer () {
-        this.$refs.drawer.showDrawer()
+  data () {
+    return {
+      AlertsPage,
+
+      watchId: 0,
+
+      mapView: null,
+
+      map: {
+        latitude: 0,
+        longitude: 0,
+        zoom: 15,
+        minZoom: 0,
+        maxZoom: 22
       },
+    }
+  },
 
-      async logout () {
-        try {
-          confirm({
-            title: this.$t('auth.logout'),
-            message: this.$t('auth.logoutConfirm'),
-            cancelButtonText: this.$t('common.cancel'),
-            okButtonText: this.$t('auth.logout')
-          }).then(async result => {
-            if (result) {
-              await this.$store.commit('auth/logout')
-              this.$navigateTo(WelcomePage, { clearHistory: true })
+  computed: {
+    user () {
+      return this.$store.getters['auth/getUser']
+    }
+  },
+
+  methods: {
+    showDrawer () {
+      this.$refs.drawer.showDrawer()
+    },
+
+    mapReady (args) {
+      // Get map view
+      this.mapView = args.object
+
+      // Settings
+      this.mapView.settings.rotateGesturesEnabled = false
+      this.mapView.settings.scrollGesturesEnabled = false
+      this.mapView.settings.tiltGesturesEnabled = false
+      this.mapView.settings.zoomGesturesEnabled = false
+      
+      // Start location watch
+      this.watchLocation()
+    },
+
+    watchLocation () {
+      try {
+        this.watchId = geolocation.watchLocation(
+          loc => {
+            if (loc) {
+              this.map.latitude = loc.latitude
+              this.map.longitude = loc.longitude
             }
-          })
-        } catch (ex) {
-          if (ex.name) {
-            alert(ErrorFormatter(ex))
+          },
+          e => {
+            console.log(e)
+            alert(ErrorFormatter(e))
+          },
+          {
+            desiredAccuracy: Accuracy.HIGH,
+            updateDistance: 1,
+            updateTime: 3000,
+            minimumUpdateTime: 100
           }
+        )
+
+      } catch (ex) {
+        console.log(ex)
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    async logout () {
+      try {
+        confirm({
+          title: this.$t('auth.logout'),
+          message: this.$t('auth.logoutConfirm'),
+          cancelButtonText: this.$t('common.cancel'),
+          okButtonText: this.$t('auth.logout')
+        }).then(async result => {
+          if (result) {
+            await this.$store.commit('auth/logout')
+            this.$navigateTo(WelcomePage, { clearHistory: true })
+          }
+        })
+      } catch (ex) {
+        if (ex.name) {
+          alert(ErrorFormatter(ex))
         }
       }
     }
   }
+}
 </script>
