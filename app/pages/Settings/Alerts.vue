@@ -176,10 +176,48 @@ export default {
     save () {
       try {
         LoadingIndicator.show()
-        // this.$store.commit('auth/setUser', { phone: this.plainPhone })
+
+        const settings = {
+          enableNotifications: this.data.enableNotifications,
+          radius: this.data.radius,
+          categories: []
+        }
+
+        switch (this.data.frequency) {
+          case 0:
+            settings.frequency = 1
+            break
+          case 1:
+            settings.frequency = 5
+            break
+          case 2:
+            settings.frequency = 15
+            break
+          case 3:
+            settings.frequency = 30
+            break
+          case 4:
+            settings.frequency = 60
+            break
+        }
+
+        this.data.categories.forEach(category => {
+          if (category.enabled)
+            settings.categories.push({ id: category.id })
+        })
+
+        this.$store.dispatch('userSettings/set', settings)
+
         LoadingIndicator.hide()
 
+        alert({
+          title: this.$t('sections.alertsSaveDialogTitle'),
+          message: this.$t('sections.alertsSaveDialogMessage'),
+          okButtonText: this.$t('common.ok')
+        })
+
       } catch (ex) {
+        console.log(ex)
         LoadingIndicator.hide()
         if (ex.name) {
           alert(ErrorFormatter(ex))

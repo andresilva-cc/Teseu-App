@@ -30,6 +30,18 @@ export default {
       } catch (ex) {
         throw ex.response.data
       }
+    },
+
+    set: async ({ commit }, settings) => {
+      try {
+        const res = await api.patch('/user/settings', settings)
+        commit('set', res.data)
+
+        return true
+
+      } catch (ex) {
+        throw ex.response.data
+      }
     }
   }
 }
