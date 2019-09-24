@@ -6,8 +6,11 @@
     </ActionBar>
 
     <StackLayout class="layout">
-      <TextField :hint="$t('fields.username')" v-model="username" />
-      <Label>{{ $t('auth.usernameMessage') }}</Label>
+      <GridLayout rows="auto, auto" columns="*, auto">
+        <TextField row="0" column="0" columnSpan="2" :hint="$t('fields.username')" v-model="username" />
+        <Label row="0" column="1" class="fa" verticalAlignment="bottom" @tap="generateUsername">&#xf01e;</Label>
+        <Label row="1" column="0" columnSpan="2">{{ $t('auth.usernameMessage') }}</Label>
+      </GridLayout>
 
       <TextField :hint="$t('fields.phone')" keyboardType="phone" v-model="phone" />
 
@@ -21,6 +24,11 @@
 <style lang="scss" scoped>
 TextField, MaskedTextField {
   margin-top: 25;
+}
+
+.fa {
+  padding: 0 0 14 10;
+  font-size: 18;
 }
 
 Button {
@@ -41,12 +49,7 @@ import api from '../../api'
 
 export default {
   async mounted () {
-    LoadingIndicator.show()
-
-    const res = await api.get('/auth/username/generate')
-    this.username = res.data
-    
-    LoadingIndicator.hide()
+    await this.generateUsername()
   },
 
   data () {
@@ -65,6 +68,22 @@ export default {
   },
 
   methods: {
+    async generateUsername () {
+      try {
+        LoadingIndicator.show()
+        
+        const res = await api.get('/auth/username/generate')
+        this.username = res.data
+        
+        LoadingIndicator.hide()
+
+        } catch (ex) {
+        LoadingIndicator.hide()
+        alert(ErrorFormatter(ex))
+      }
+      
+    },
+
     async register () {
       try {
         LoadingIndicator.show()
