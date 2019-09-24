@@ -28,7 +28,7 @@
 
         <StackLayout class="field">
           <Label class="categories hint">{{ $t('fields.alertCategories') }}</Label>
-          <CheckBox v-for="category in categories" :key="category.id" :text="category.name" fillColor="#2196f3" />
+          <CheckBox v-for="category in data.categories" :key="category.id" :checked="category.enabled" @checkedChange="category.enabled = $event.value" :text="category.name" fillColor="#2196f3" />
         </StackLayout>
 
         <Button :text="$t('common.save')" class="primary" @tap="save" />
@@ -89,10 +89,21 @@ export default {
 
       // Fetch categories
       await this.$store.dispatch('category/fetch')
+      this.data.categories = this.$store.getters['category/get']
+      this.data.categories.forEach(category => {
+        category.enabled = false
+      })
+
+      // Fetch user settings
+      await this.$store.dispatch('userSettings/get')
+
+      // Update UI
+      this.setSettings(this.userSettings)
 
       LoadingIndicator.hide()
 
     } catch (ex) {
+      LoadingIndicator.hide()
       ErrorFormatter(ex)
     }
   },
@@ -102,7 +113,8 @@ export default {
       data: {
         enableNotifications: true,
         frequency: 1,
-        radius: 500
+        radius: 500,
+        categories: []
       },
 
       frequencyList: [
@@ -116,14 +128,49 @@ export default {
   },
 
   computed: {
-    categories () {
-      return this.$store.getters['category/get']
+    userSettings () {
+      return this.$store.getters['userSettings/get']
     }
   },
 
   methods: {
     frequencyDropdownIndexChanged () {
       this.data.frequency = this.$refs.frequencyDropdown.nativeView.selectedIndex
+    },
+
+    setCategoryChecked (categoryId, checked) {
+      this.data.categories.forEach(category => {
+        if (category.id === categoryId)
+          category.enabled = checked
+      })
+    },
+
+    setSettings (settings) {
+      this.data.enableNotifications = settings.enableNotifications
+      this.data.radius = settings.radius
+
+      switch (settings.frequency) {
+        case 1:
+          this.data.frequency = 0
+          break
+        case 5:
+          this.data.frequency = 1
+          break
+        case 15:
+          this.data.frequency = 2
+          break
+        case 30:
+          this.data.frequency = 3
+          break
+        case 60:
+          this.data.frequency = 4
+          break
+      }
+      this.$refs.frequencyDropdown.nativeView.selectedIndex = this.data.frequency
+
+      settings.categories.forEach(category => {
+        this.setCategoryChecked(category.categoryId, true)
+      })
     },
 
     save () {
