@@ -124,7 +124,7 @@
   width: 100%;
   padding: 3;
   background-color: #2196f3;
-  opacity: 0.75;
+  opacity: 0.9;
   color: #ffffff;
   text-align: center;
 }
