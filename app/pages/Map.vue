@@ -167,8 +167,8 @@ export default {
       ],
 
       menuItems: [
-        { icon: '0xf041', title: this.$t('sections.myContacts'), to: 0 },
-        { icon: '0xf0c0', title: this.$t('sections.myPlaces'), to: 1 },
+        { icon: '0xf0c0', title: this.$t('sections.myContacts'), to: 0 },
+        { icon: '0xf041', title: this.$t('sections.myPlaces'), to: 1 },
         { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 2 }
       ],
 
