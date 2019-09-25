@@ -25,7 +25,7 @@
         </ScrollView>
 
         <!-- Logout -->
-        <Label row="2" column="0" class="logout" @tap="logout">{{ $t('auth.logout') }}</Label>
+        <Label row="2" column="0" class="logout" @tap="logout">{{ $t('auth.logout') | uppercase }}</Label>
 
       </GridLayout>
 
@@ -104,6 +104,7 @@
     background-color: #f44336;
     color: #ffffff;
     text-align: center;
+    font-size: 14;
   }
 }
 
