@@ -9,18 +9,18 @@
       
       <!-- Contacts list -->
       <ScrollView row="0" columns="0" rowSpan="2">
-          <ListView for="contact in userContacts" v-if="userContacts.length > 0">
-            <v-template>
-              <StackLayout class="item">
-                <Label class="name">{{ contact.name }}</Label>
-                <Label class="radius">{{ contact.phone | phone }}</Label>
-              </StackLayout>
-            </v-template>
-          </ListView>
+        <ListView for="contact in userContacts" v-if="userContacts.length > 0">
+          <v-template>
+            <StackLayout class="item">
+              <Label class="name">{{ contact.name }}</Label>
+              <Label class="radius">{{ contact.phone | phone }}</Label>
+            </StackLayout>
+          </v-template>
+        </ListView>
 
-          <StackLayout v-else class="no-results">
-            <Label horizontalAlignment="center">{{ $t('sections.myContactsNoResults') }}</Label>
-          </StackLayout>
+        <StackLayout v-else class="no-results">
+          <Label horizontalAlignment="center">{{ $t('sections.myContactsNoResults') }}</Label>
+        </StackLayout>
       </ScrollView>
 
       <!-- FAB -->

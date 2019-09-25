@@ -9,18 +9,18 @@
       
       <!-- Places list -->
       <ScrollView row="0" columns="0" rowSpan="2">
-          <ListView for="place in userPlaces" v-if="userPlaces.length > 0">
-            <v-template>
-              <StackLayout class="item">
-                <Label class="name">{{ place.name }}</Label>
-                <Label class="radius">{{ place.radius }} {{ $t('fields.meters') }}</Label>
-              </StackLayout>
-            </v-template>
-          </ListView>
+        <ListView for="place in userPlaces" v-if="userPlaces.length > 0">
+          <v-template>
+            <StackLayout class="item">
+              <Label class="name">{{ place.name }}</Label>
+              <Label class="radius">{{ place.radius }} {{ $t('fields.meters') }}</Label>
+            </StackLayout>
+          </v-template>
+        </ListView>
 
-          <StackLayout v-else class="no-results">
-            <Label horizontalAlignment="center">{{ $t('sections.myPlacesNoResults') }}</Label>
-          </StackLayout>
+        <StackLayout v-else class="no-results">
+          <Label horizontalAlignment="center">{{ $t('sections.myPlacesNoResults') }}</Label>
+        </StackLayout>
       </ScrollView>
 
       <!-- FAB -->
