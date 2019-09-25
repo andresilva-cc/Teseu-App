@@ -3,7 +3,7 @@
     <RadSideDrawer ref="drawer">
 
       <!-- Drawer Content -->
-      <GridLayout rows="auto, auto, *, auto" columns="*" class="drawer" ~drawerContent>
+      <GridLayout rows="auto, *, auto" columns="*" class="drawer" ~drawerContent>
 
         <!-- User Info -->
         <GridLayout rows="auto, auto" columns="auto, *" row="0" column="0" backgroundColor="#bbdefb" class="user-info">
@@ -13,23 +13,25 @@
         </GridLayout>
 
         <!-- Menu Items -->
-        <GridLayout rows="auto, auto, auto" columns="25, *" row="1" column="0" class="menu-list">
-          <Label class="fa" row="0" column="0" verticalAlignment="center" @tap="$navigateTo(MyContactsPage)">&#xf0c0;</Label>
-          <Label class="item" row="0" column="1" @tap="$navigateTo(MyContactsPage)">{{ $t('sections.myContacts') }}</Label>
-
-          <Label class="fa" row="1" column="0" verticalAlignment="center" @tap="$navigateTo(MyPlacesPage)">&#xf041;</Label>
-          <Label class="item" row="1" column="1" @tap="$navigateTo(MyPlacesPage)">{{ $t('sections.myPlaces') }}</Label>
-
-          <Label class="fa" row="2" column="0" verticalAlignment="center" @tap="$navigateTo(AlertsPage)">&#xf0f3;</Label>
-          <Label class="item" row="2" column="1" @tap="$navigateTo(AlertsPage)">{{ $t('sections.alerts') }}</Label>
-        </GridLayout>
+        <ScrollView row="1" columns="0">
+          <ListView for="item in menuItems" @itemTap="menuTap" separatorColor="#ffffff" class="menu-list">
+            <v-template>
+              <GridLayout rows="auto" columns="40, *" class="item">
+                <Label row="0" column="0" verticalAlignment="center" class="fa">{{ iconFromCode(item.icon) }}</Label>
+                <Label row="0" column="1" verticalAlignment="center">{{ item.title }}</Label>
+              </GridLayout>
+            </v-template>
+          </ListView>
+        </ScrollView>
 
         <!-- Logout -->
-        <Label row="3" column="0" class="logout" @tap="logout">{{ $t('auth.logout') }}</Label>
+        <Label row="2" column="0" class="logout" @tap="logout">{{ $t('auth.logout') }}</Label>
 
       </GridLayout>
 
+      <!-- Main Content -->
       <GridLayout rows="auto, *, auto, auto" columns="*, auto" ~mainContent>
+
         <!-- Map -->
         <MapView row="0" col="0" rowSpan="4" colSpan="2"
           :latitude="map.latitude"
@@ -54,6 +56,7 @@
 
         <!-- Last update -->
         <Label row="3" col="0" colSpan="2" class="last-update">{{ $t('common.lastSuccessfulUpdate', { time: '1 min' }) }}</Label>
+      
       </GridLayout>
     </RadSideDrawer>
   </Page>
@@ -62,7 +65,7 @@
 <style lang="scss" scoped>
 .drawer {
   background-color: #ffffff;
-  color: #111111;
+  color: #333333;
   font-size: 18;
 
   .user-info {
@@ -81,17 +84,17 @@
   }
 
   .menu-list {
-    margin: 20 15;
+    margin: 10 0;
 
     .item {
-      margin-bottom: 25;
-      margin-left: 10;
+      padding: 10 15;
     }
 
     .fa {
-      margin-bottom: 25;
+      padding-right: 15;
       text-align: center;
       font-size: 20;
+      color: #444444;
     }
   }
 
@@ -157,9 +160,17 @@ export default {
 
   data () {
     return {
-      AlertsPage,
-      MyContactsPage,
-      MyPlacesPage,
+      pages: [
+        MyContactsPage,
+        MyPlacesPage,
+        AlertsPage
+      ],
+
+      menuItems: [
+        { icon: '0xf041', title: this.$t('sections.myContacts'), to: 0 },
+        { icon: '0xf0c0', title: this.$t('sections.myPlaces'), to: 1 },
+        { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 2 }
+      ],
 
       watchId: 0,
 
@@ -184,6 +195,14 @@ export default {
   methods: {
     showDrawer () {
       this.$refs.drawer.showDrawer()
+    },
+
+    menuTap (event) {
+      this.$navigateTo(this.pages[event.item.to])
+    },
+
+    iconFromCode (code) {
+      return String.fromCharCode(code)
     },
 
     mapReady (args) {
