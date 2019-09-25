@@ -23,6 +23,15 @@ StackLayout.layout {
   padding: 0 30;
 }
 
+.fab {
+  height: 60;
+  width: 60;
+  horizontal-align: right;
+  vertical-align: bottom;
+  margin: 15;
+  background-color: #1565c0;
+}
+
 Switch.primary {
   color: #2196f3;
   background-color: #a6d5fa;
