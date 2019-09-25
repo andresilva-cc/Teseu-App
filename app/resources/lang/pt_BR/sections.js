@@ -6,6 +6,7 @@ export default {
 
   // Sections messages
   alertsMessage: 'Aqui você pode configurar os alertas que você recebe do aplicativo',
+  myContactsNoResults: 'Nenhum contato cadastrado ainda',
   myPlacesNoResults: 'Nenhum local cadastrado ainda',
 
   // Dialogs

@@ -14,8 +14,8 @@
 
         <!-- Menu Items -->
         <GridLayout rows="auto, auto, auto" columns="25, *" row="1" column="0" class="menu-list">
-          <Label class="fa" row="0" column="0" verticalAlignment="center">&#xf0c0;</Label>
-          <Label class="item" row="0" column="1">{{ $t('sections.myContacts') }}</Label>
+          <Label class="fa" row="0" column="0" verticalAlignment="center" @tap="$navigateTo(MyContactsPage)">&#xf0c0;</Label>
+          <Label class="item" row="0" column="1" @tap="$navigateTo(MyContactsPage)">{{ $t('sections.myContacts') }}</Label>
 
           <Label class="fa" row="1" column="0" verticalAlignment="center" @tap="$navigateTo(MyPlacesPage)">&#xf041;</Label>
           <Label class="item" row="1" column="1" @tap="$navigateTo(MyPlacesPage)">{{ $t('sections.myPlaces') }}</Label>
@@ -131,6 +131,7 @@ import * as geolocation from "nativescript-geolocation"
 import { Accuracy } from "tns-core-modules/ui/enums"
 import WelcomePage from './Welcome'
 import AlertsPage from './Settings/Alerts'
+import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
 
 export default {
@@ -157,6 +158,7 @@ export default {
   data () {
     return {
       AlertsPage,
+      MyContactsPage,
       MyPlacesPage,
 
       watchId: 0,
