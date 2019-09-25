@@ -17,10 +17,10 @@
           <Label class="fa" row="0" column="0" verticalAlignment="center">&#xf0c0;</Label>
           <Label class="item" row="0" column="1">{{ $t('sections.myContacts') }}</Label>
 
-          <Label class="fa" row="1" column="0" verticalAlignment="center">&#xf041;</Label>
-          <Label class="item" row="1" column="1">{{ $t('sections.myPlaces') }}</Label>
+          <Label class="fa" row="1" column="0" verticalAlignment="center" @tap="$navigateTo(MyPlacesPage)">&#xf041;</Label>
+          <Label class="item" row="1" column="1" @tap="$navigateTo(MyPlacesPage)">{{ $t('sections.myPlaces') }}</Label>
 
-          <Label class="fa" row="2" column="0" verticalAlignment="center">&#xf0f3;</Label>
+          <Label class="fa" row="2" column="0" verticalAlignment="center" @tap="$navigateTo(AlertsPage)">&#xf0f3;</Label>
           <Label class="item" row="2" column="1" @tap="$navigateTo(AlertsPage)">{{ $t('sections.alerts') }}</Label>
         </GridLayout>
 
@@ -113,13 +113,6 @@
   font-size: 18;
 }
 
-.fab {
-  height: 60;
-  width: 60;
-  margin: 15;
-  background-color: #1565c0;
-}
-
 .last-update {
   width: 100%;
   padding: 3;
@@ -138,6 +131,7 @@ import * as geolocation from "nativescript-geolocation"
 import { Accuracy } from "tns-core-modules/ui/enums"
 import WelcomePage from './Welcome'
 import AlertsPage from './Settings/Alerts'
+import MyPlacesPage from './Settings/Places/List'
 
 export default {
   async mounted () {
@@ -163,6 +157,7 @@ export default {
   data () {
     return {
       AlertsPage,
+      MyPlacesPage,
 
       watchId: 0,
 

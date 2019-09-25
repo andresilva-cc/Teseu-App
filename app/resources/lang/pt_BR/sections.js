@@ -6,6 +6,7 @@ export default {
 
   // Sections messages
   alertsMessage: 'Aqui você pode configurar os alertas que você recebe do aplicativo',
+  myPlacesNoResults: 'Nenhum local cadastrado ainda',
 
   // Dialogs
   alertsSaveDialogTitle: 'Configurações Salvas',
