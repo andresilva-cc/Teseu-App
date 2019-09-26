@@ -52,7 +52,7 @@
         </Label>
 
         <!-- FAB -->
-        <fab row="2" col="1" icon="~/resources/images/icons/add_white.png" class="fab" />
+        <fab row="2" col="1" icon="~/resources/images/icons/add_white.png" class="fab" @tap="$navigateTo(pages[0])" />
 
         <!-- Last update -->
         <Label row="3" col="0" colSpan="2" class="last-update">{{ $t('common.lastSuccessfulUpdate', { time: '1 min' }) }}</Label>
@@ -134,6 +134,7 @@ import { Position, Marker } from "nativescript-google-maps-sdk";
 import * as geolocation from "nativescript-geolocation"
 import { Accuracy } from "tns-core-modules/ui/enums"
 import WelcomePage from './Welcome'
+import RegisterOccurrencePage from './RegisterOccurrence'
 import AlertsPage from './Settings/Alerts'
 import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
@@ -162,15 +163,16 @@ export default {
   data () {
     return {
       pages: [
+        RegisterOccurrencePage,
         MyContactsPage,
         MyPlacesPage,
         AlertsPage
       ],
 
       menuItems: [
-        { icon: '0xf0c0', title: this.$t('sections.myContacts'), to: 0 },
-        { icon: '0xf041', title: this.$t('sections.myPlaces'), to: 1 },
-        { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 2 }
+        { icon: '0xf0c0', title: this.$t('sections.myContacts'), to: 1 },
+        { icon: '0xf041', title: this.$t('sections.myPlaces'), to: 2 },
+        { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 3 }
       ],
 
       watchId: 0,
