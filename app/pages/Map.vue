@@ -17,7 +17,7 @@
           <ListView for="item in menuItems" @itemTap="menuTap" separatorColor="#ffffff" class="menu-list">
             <v-template>
               <GridLayout rows="auto" columns="40, *" class="item">
-                <Label row="0" column="0" verticalAlignment="center" class="fa">{{ iconFromCode(item.icon) }}</Label>
+                <Label row="0" column="0" verticalAlignment="center" class="fas">{{ iconFromCode(item.icon) }}</Label>
                 <Label row="0" column="1" verticalAlignment="center">{{ item.title }}</Label>
               </GridLayout>
             </v-template>
@@ -45,7 +45,7 @@
         <!-- Search bar -->
         <Label row="0" col="0" colSpan="2" class="search-bar" @tap="showDrawer">
           <FormattedString>
-            <Span class="fa" text.decode="&#xf0c9;" />
+            <Span class="fas" text.decode="&#xf0c9;" />
             <Span text="   " />
             <Span :text="$t('common.searchPlacesPlaceholder')" />
           </FormattedString>
@@ -171,7 +171,7 @@ export default {
 
       menuItems: [
         { icon: '0xf0c0', title: this.$t('sections.myContacts'), to: 1 },
-        { icon: '0xf041', title: this.$t('sections.myPlaces'), to: 2 },
+        { icon: '0xf3c5', title: this.$t('sections.myPlaces'), to: 2 },
         { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 3 }
       ],
 

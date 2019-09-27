@@ -8,12 +8,12 @@
     <GridLayout rows="*, *">
       
       <FlexboxLayout row="0" class="detail">
-        <Label class="fa">&#xf044;</Label>
+        <Label class="fas">&#xf304;</Label>
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceDetailMessage') }}</Label>
       </FlexboxLayout>
 
       <FlexboxLayout row="1" class="emergency">
-        <Label class="fa">&#xf071;</Label>
+        <Label class="fas">&#xf071;</Label>
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceEmergencyMessage') }}</Label>
         <Label textWrap="true" verticalAligment="center" class="bottom-message">{{ $t('sections.registerOccurrenceEmergencyBottomMessage') }}</Label>
       </FlexboxLayout>
@@ -34,7 +34,7 @@ FlexboxLayout {
   flex-direction: column;
   justify-content: center;
   
-  .fa {
+  .fas {
     font-size: 48;
     margin-bottom: 15;
   }
