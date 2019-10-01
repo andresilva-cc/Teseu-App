@@ -1,18 +1,21 @@
 <template>
   <Page class="auth-page" actionBarHidden="true" androidStatusBarBackground="#2196f3">
-    <StackLayout class="layout">
-
-      <Image class="logo" src="~/resources/images/logo.png"></Image>
-
-      <Label class="title">TESEU</Label>
-      <Label class="message" textWrap="true">{{ $t('common.welcomeMessage') }}</Label>
-
-      <Button class="login-button" :text="$t('auth.login')" @tap="$navigateTo(LoginPage)" />
-      <Button :text="$t('auth.register')" @tap="$navigateTo(RegisterPage)" />
+    <GridLayout rows="auto, *, auto" columns="*" class="layout">
       
-      <Label class="view-only" @tap="confirmViewOnly">{{ $t('auth.viewOnly') }}</Label> 
+      <StackLayout row="0">
+        <Image class="logo" src="~/resources/images/logo.png"></Image>
 
-    </StackLayout>
+        <Label class="title">TESEU</Label>
+        <Label class="message" textWrap="true">{{ $t('common.welcomeMessage') }}</Label>
+
+        <Button class="login-button" :text="$t('auth.login')" @tap="$navigateTo(LoginPage)" />
+        <Button :text="$t('auth.register')" @tap="$navigateTo(RegisterPage)" />
+      </StackLayout>
+
+      <Label row="2" class="view-only" @tap="confirmViewOnly">{{ $t('auth.viewOnly') }}</Label> 
+    
+    </GridLayout>
+
   </Page>
 </template>
 
@@ -41,7 +44,7 @@
 }
 
 .view-only {
-  margin-top: 100;
+  margin-bottom: 25;
   text-align: center;
 }
 </style>
