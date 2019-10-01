@@ -12,7 +12,7 @@
         <Label row="1" column="0" columnSpan="2">{{ $t('auth.usernameMessage') }}</Label>
       </GridLayout>
 
-      <TextField :hint="$t('fields.phone')" keyboardType="phone" v-model="phone" />
+      <MaskedTextField ref="phone" :hint="$t('fields.phone')" keyboardType="phone" mask="(99) 99999-9999" />
 
       <Button :text="$t('auth.sendSMSCode')" @tap="register" />
 
@@ -26,7 +26,7 @@ TextField, MaskedTextField {
   margin-top: 25;
 }
 
-.fa {
+.fas {
   padding: 0 0 14 10;
   font-size: 18;
 }
@@ -87,6 +87,10 @@ export default {
     async register () {
       try {
         LoadingIndicator.show()
+
+        // Format phone
+        this.phone = this.$refs.phone.nativeView.text.replace(/[+()-\s]/g, '')
+
         await this.$store.dispatch('auth/register', {
           username: this.username,
           phone: this.plainPhone

@@ -6,7 +6,7 @@
     </ActionBar>
 
     <StackLayout class="layout">
-      <TextField :hint="$t('fields.phone')" keyboardType="phone" v-model="phone" />
+      <MaskedTextField ref="phone" :hint="$t('fields.phone')" keyboardType="phone" mask="(99) 99999-9999" />
       <Button :text="$t('auth.sendSMSCode')" @tap="login" />
     </StackLayout>
   </Page>
@@ -47,7 +47,12 @@ export default {
     login () {
       try {
         LoadingIndicator.show()
+
+        // Format phone
+        this.phone = this.$refs.phone.nativeView.text.replace(/[+()-\s]/g, '')
+
         this.$store.commit('auth/setUser', { phone: this.plainPhone })
+        
         LoadingIndicator.hide()
         this.$navigateTo(this.ConfirmPage)
 
