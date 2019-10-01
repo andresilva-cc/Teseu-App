@@ -7,7 +7,7 @@
 
     <StackLayout class="layout">
       <Label textWrap="true">{{ $t('auth.SMSCodeMessage') }}</Label>
-      <TextField :hint="$t('fields.code')" v-model="code"></TextField>
+      <TextField :hint="$t('fields.code')" keyboardType="number" v-model="code"></TextField>
       <Button :text="$t('common.confirm')" @tap="confirm" />
     </StackLayout>
   </Page>
