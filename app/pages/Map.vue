@@ -90,7 +90,7 @@
       padding: 10 15;
     }
 
-    .fa {
+    .fas {
       padding-right: 15;
       text-align: center;
       font-size: 20;
