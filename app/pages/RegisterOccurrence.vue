@@ -24,7 +24,7 @@
 
 <style lang="scss" scoped>
 GridLayout {
-  font-size: 28;
+  font-size: 24;
   color: #ffffff;
   text-align: center;
   font-weight: 500;
@@ -33,9 +33,10 @@ GridLayout {
 FlexboxLayout {
   flex-direction: column;
   justify-content: center;
+  padding: 0 25;
   
   .fas {
-    font-size: 48;
+    font-size: 42;
     margin-bottom: 15;
   }
 
