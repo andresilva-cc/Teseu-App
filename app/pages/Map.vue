@@ -140,26 +140,6 @@ import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
 
 export default {
-  async mounted () {
-    try {
-      // Check if location is enabled
-      const isEnabled = await geolocation.isEnabled()
-
-      // If not enabled, ask for permission
-      if (!isEnabled) {
-        await geolocation.enableLocationRequest(true, true)
-
-      // If enabled, start location watch
-      } else {
-        this.watchLocation()
-      }
-
-    } catch (ex) {
-      console.log(ex)
-      alert(ErrorFormatter(ex))
-    }
-  },
-
   data () {
     return {
       pages: [
@@ -208,15 +188,26 @@ export default {
       return String.fromCharCode(code)
     },
 
-    mapReady (args) {
-      // Get map view
-      this.mapView = args.object
+    async mapReady (args) {
+      try {
+        // Get map view
+        this.mapView = args.object
 
-      // Settings
-      this.mapView.settings.rotateGesturesEnabled = false
-      this.mapView.settings.scrollGesturesEnabled = false
-      this.mapView.settings.tiltGesturesEnabled = false
-      this.mapView.settings.zoomGesturesEnabled = false
+        // Ask for location permission
+        await geolocation.enableLocationRequest(true, true)
+
+        // Check if location is enabled
+        const isEnabled = await geolocation.isEnabled()
+
+        // If enabled, start location watch
+        if (isEnabled) {
+          this.watchLocation()
+        }
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
+
     },
 
     watchLocation () {
