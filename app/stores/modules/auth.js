@@ -1,4 +1,4 @@
-import api from '../../api'
+import api from '../../services/api'
 import * as ApplicationSettings from 'application-settings'
 
 export default {
