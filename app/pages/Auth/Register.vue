@@ -45,7 +45,7 @@ Button {
 import LoadingIndicator from '../../utils/loading_indicator'
 import ErrorFormatter from '../../utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
-import api from '../../api'
+import api from '../../services/api'
 
 export default {
   async mounted () {
