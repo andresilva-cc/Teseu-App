@@ -39,6 +39,10 @@ export default {
   myContactsConfirmPhoneDialogMessage: 'O número de seu contato foi formatado, isto está certo?\n\n{name}\n{phone}',
   myContactsAddDialogTitle: 'Contato Adicionado',
   myContactsAddDialogMessage: 'O seu contato foi adicionado com sucesso, você pode visualizá-lo na lista de contatos',
+  myContactsConfirmDeleteDialogTitle: 'Deletar Contato',
+  myContactsConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o contato {name}?',
+  myContactsDeleteDialogTitle: 'Contato Deletado',
+  myContactsDeleteDialogMessage: 'O contato foi deletado com sucesso',
 
   // Alerts
   alertsSaveDialogTitle: 'Configurações Salvas',

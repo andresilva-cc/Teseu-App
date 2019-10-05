@@ -11,7 +11,7 @@
         
         <!-- Contacts list -->
         <ScrollView row="0" columns="0" rowSpan="2">
-          <ListView for="contact in userContacts" v-if="userContacts.length > 0">
+          <ListView for="contact in userContacts" v-if="userContacts.length > 0" @itemTap="listTap">
             <v-template>
               <StackLayout class="item">
                 <Label class="name">{{ contact.name }}</Label>
@@ -208,7 +208,36 @@ export default {
       } catch (ex) {
         alert(ErrorFormatter(ex))
       }
-    }
+    },
+
+    async listTap (event) {
+      confirm({
+        title: this.$t('sections.myContactsConfirmDeleteDialogTitle'),
+        message: this.$t('sections.myContactsConfirmDeleteDialogMessage', { name: event.item.name }),
+        cancelButtonText: this.$t('common.no'),
+        okButtonText: this.$t('common.yes')
+      }).then(async result => {
+        // If "yes"
+        if (result) {
+          try {
+            LoadingIndicator.show()
+    
+            await this.$store.dispatch('userContact/delete', event.item.id)
+    
+            LoadingIndicator.hide()
+            alert({
+              title: this.$t('sections.myContactsDeleteDialogTitle'),
+              message: this.$t('sections.myContactsDeleteDialogMessage'),
+              okButtonText: this.$t('common.yes')
+            })
+    
+          } catch (ex) {
+            LoadingIndicator.hide()
+            alert(ErrorFormatter(ex))
+          }
+        }
+      })
+    },
   }
 }
 </script>

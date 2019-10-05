@@ -19,8 +19,8 @@ export default {
     },
 
     push (state, contact) {
-
-    }
+      state.contacts.push(contact)
+    },
   },
 
   actions: {
@@ -42,6 +42,16 @@ export default {
         commit('push', res.data)
 
         return true
+
+      } catch (ex) {
+        throw ex.response.data
+      }
+    },
+
+    delete: async ({ dispatch }, id) => {
+      try {
+        await api.delete(`/user/contacts/${id}`)
+        await dispatch('fetch')
 
       } catch (ex) {
         throw ex.response.data
