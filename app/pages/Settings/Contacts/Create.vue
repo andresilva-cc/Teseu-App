@@ -48,10 +48,10 @@ Button {
 </style>
 
 <script>
-import LoadingIndicator from '../../../utils/loading_indicator'
-import ErrorFormatter from '../../../utils/error_formatter'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
 import ListContactsPage from './List'
-import Error from '../../../utils/error'
+import Error from '~/utils/error'
 
 export default {
   mounted () {

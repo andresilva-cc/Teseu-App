@@ -128,8 +128,8 @@
 </style>
 
 <script>
-import LoadingIndicator from '../utils/loading_indicator'
-import ErrorFormatter from '../utils/error_formatter'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
 import { Position, Marker } from "nativescript-google-maps-sdk";
 import * as geolocation from "nativescript-geolocation"
 import { Accuracy } from "tns-core-modules/ui/enums"

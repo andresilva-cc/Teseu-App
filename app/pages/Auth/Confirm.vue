@@ -30,9 +30,9 @@ Button {
 </style>
 
 <script>
-import LoadingIndicator from '../../utils/loading_indicator'
-import ErrorFormatter from '../../utils/error_formatter'
-import MapPage from '../Map'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
+import MapPage from '~/pages/Map'
 
 export default {
   async created () {

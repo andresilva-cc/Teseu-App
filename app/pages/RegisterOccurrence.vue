@@ -56,8 +56,8 @@ FlexboxLayout {
 </style>
 
 <script>
-import LoadingIndicator from '../utils/loading_indicator'
-import ErrorFormatter from '../utils/error_formatter'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
 
 export default {
 }

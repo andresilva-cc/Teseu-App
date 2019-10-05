@@ -61,14 +61,14 @@ Label.phone {
 </style>
 
 <script>
-import LoadingIndicator from '../../../utils/loading_indicator'
-import ErrorFormatter from '../../../utils/error_formatter'
-import PhoneParser from '../../../services/phone_parser'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
+import PhoneParser from '~/services/phone_parser'
 import Contacts from 'nativescript-contacts'
 import Permissions from 'nativescript-permissions'
 import CreateContactPage from './Create'
-import MapPage from '../../Map'
-import Error from '../../../utils/error'
+import MapPage from '~/pages/Map'
+import Error from '~/utils/error'
 
 export default {
   async created () {

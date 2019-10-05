@@ -42,10 +42,10 @@ Button {
 </style>
 
 <script>
-import LoadingIndicator from '../../utils/loading_indicator'
-import ErrorFormatter from '../../utils/error_formatter'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
-import api from '../../services/api'
+import api from '~/services/api'
 
 export default {
   async mounted () {
