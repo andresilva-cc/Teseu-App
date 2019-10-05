@@ -1,12 +1,15 @@
 export default {
   // Buttons
+  add: 'Adicionar',
   alert: 'Alerta',
   back: 'Voltar',
   cancel: 'Cancelar',
   confirm: 'Confirmar',
   continue: 'Continuar',
+  no: 'Não',
   ok: 'OK',
   save: 'Salvar',
+  yes: 'Sim',
   
   // Welcome page
   welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização',

@@ -2,6 +2,13 @@ import i18n from '../resources/lang'
 
 export default ex => {
   switch (ex.name) {
+    case 'DuplicateContactError':
+      return {
+        title: i18n.t('errors.duplicateContact'),
+        message: i18n.t('errors.duplicateContactDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
+
     case 'InvalidRequestCodeError':
       return {
         title: i18n.t('errors.invalidRequestCode'),

@@ -55,6 +55,10 @@ Switch.primary {
   }
 }
 
+.ui-confirmdialog-message {
+  white-space: pre-line;
+}
+
 // Page-specific style
 .auth-page {
   background-color: $background-blue;
