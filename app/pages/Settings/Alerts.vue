@@ -104,7 +104,7 @@ export default {
 
     } catch (ex) {
       LoadingIndicator.hide()
-      ErrorFormatter(ex)
+      alert(ErrorFormatter(ex))
     }
   },
 
@@ -173,7 +173,7 @@ export default {
       })
     },
 
-    save () {
+    async save () {
       try {
         LoadingIndicator.show()
 
@@ -206,7 +206,7 @@ export default {
             settings.categories.push({ id: category.id })
         })
 
-        this.$store.dispatch('userSettings/set', settings)
+        await this.$store.dispatch('userSettings/set', settings)
 
         LoadingIndicator.hide()
 
@@ -217,7 +217,6 @@ export default {
         })
 
       } catch (ex) {
-        console.log(ex)
         LoadingIndicator.hide()
         if (ex.name) {
           alert(ErrorFormatter(ex))

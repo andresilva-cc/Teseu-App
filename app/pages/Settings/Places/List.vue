@@ -70,7 +70,7 @@ export default {
 
     } catch (ex) {
       LoadingIndicator.hide()
-      ErrorFormatter(ex)
+      alert(ErrorFormatter(ex))
     }
   },
 
