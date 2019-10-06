@@ -1,11 +1,14 @@
 export default {
-  code: 'Código',
-  phone: 'Celular',
-  username: 'Nome de Usuário',
-  name: 'Nome',
-  enableNotifications: 'Alertar com o app fechado',
+  alertCategories: 'Categorias de alertas',
   alertFrequency: 'Com o app fechado, me alertar a cada',
   alertRadius: 'Distância dos alertas',
+  categories: 'Categorias',
+  code: 'Código',
+  distance: 'Distância',
+  enableNotifications: 'Alertar com o app fechado',
+  location: 'Localização',
   meters: 'metros',
-  alertCategories: 'Categorias de alertas'
+  name: 'Nome',
+  phone: 'Celular',
+  username: 'Nome de Usuário'
 }

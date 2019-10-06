@@ -4,8 +4,10 @@ export default {
   myContacts: 'Meus Contatos',
   addContact: 'Adicionar Contato',
   myPlaces: 'Meus Locais',
+  addPlace: 'Adicionar Local',
   alerts: 'Alertas',
   registerOccurrence: 'Registrar Ocorrência',
+  pickLocation: 'Escolher Localização',
   
 
   /** SECTION MESSAGES */
@@ -21,6 +23,7 @@ export default {
   myContactsImportedNumber: 'Número importado:',
   
   // My Places
+  myPlacesMessage: 'Um local é uma localização onde você receberá notificações de ocorrências registradas próximas ao local, de acordo com a distância e categorias definidas por você.',
   myPlacesNoResults: 'Nenhum local cadastrado ainda',
   
   // Alerts
@@ -43,6 +46,11 @@ export default {
   myContactsConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o contato {name}?',
   myContactsDeleteDialogTitle: 'Contato Deletado',
   myContactsDeleteDialogMessage: 'O contato foi deletado com sucesso',
+  
+  // My Places
+  myPlacesAddDialogTitle: 'Local Adicionado',
+  myPlacesAddDialogMessage: 'O seu local foi adicionado com sucesso, você pode visualizá-lo na lista de locais',
+
 
   // Alerts
   alertsSaveDialogTitle: 'Configurações Salvas',

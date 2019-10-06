@@ -30,6 +30,17 @@ export default {
       } catch (ex) {
         throw ex.response.data
       }
-    }
+    },
+
+    create: async ({ commit }, data) => {
+      try {
+        await api.post('/user/places', data)
+
+        return true
+
+      } catch (ex) {
+        throw ex.response.data
+      }
+    },
   }
 }

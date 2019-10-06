@@ -23,6 +23,13 @@ export default ex => {
         okButtonText: i18n.t('common.ok')
       }
 
+    case 'MinimumOneCategoryError':
+      return {
+        title: i18n.t('errors.minimumOneCategory'),
+        message: i18n.t('errors.minimumOneCategoryDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
+
     case 'TokenError':
       return {
         title: i18n.t('errors.tokenError'),

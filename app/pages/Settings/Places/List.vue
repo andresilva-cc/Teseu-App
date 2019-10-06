@@ -24,7 +24,7 @@
       </ScrollView>
 
       <!-- FAB -->
-      <fab row="1" columns="0" icon="~/resources/images/icons/add_white.png" class="fab" />
+      <fab row="1" columns="0" icon="~/resources/images/icons/add_white.png" class="fab" @tap="$navigateTo(CreatePlacePage)" />
 
     </GridLayout>
   </Page>
@@ -56,8 +56,9 @@ Label.radius {
 </style>
 
 <script>
-import LoadingIndicator from '../../../utils/loading_indicator'
-import ErrorFormatter from '../../../utils/error_formatter'
+import LoadingIndicator from '~/utils/loading_indicator'
+import ErrorFormatter from '~/utils/error_formatter'
+import CreatePlacePage from './Create'
 
 export default {
   async created () {
@@ -71,6 +72,12 @@ export default {
     } catch (ex) {
       LoadingIndicator.hide()
       alert(ErrorFormatter(ex))
+    }
+  },
+
+  data () {
+    return {
+      CreatePlacePage
     }
   },
 
