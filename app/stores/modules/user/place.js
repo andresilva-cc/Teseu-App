@@ -42,5 +42,15 @@ export default {
         throw ex.response.data
       }
     },
+
+    delete: async ({ dispatch }, id) => {
+      try {
+        await api.delete(`/user/places/${id}`)
+        await dispatch('fetch')
+
+      } catch (ex) {
+        throw ex.response.data
+      }
+    }
   }
 }

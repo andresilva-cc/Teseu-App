@@ -50,6 +50,10 @@ export default {
   // My Places
   myPlacesAddDialogTitle: 'Local Adicionado',
   myPlacesAddDialogMessage: 'O seu local foi adicionado com sucesso, você pode visualizá-lo na lista de locais',
+  myPlacesConfirmDeleteDialogTitle: 'Deletar Local',
+  myPlacesConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o local {name}?',
+  myPlacesDeleteDialogTitle: 'Local Deletado',
+  myPlacesDeleteDialogMessage: 'O local foi deletado com sucesso',
 
 
   // Alerts

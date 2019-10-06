@@ -9,7 +9,7 @@
       
       <!-- Places list -->
       <ScrollView row="0" columns="0" rowSpan="2">
-        <ListView for="place in userPlaces" v-if="userPlaces.length > 0">
+        <ListView for="place in userPlaces" v-if="userPlaces.length > 0" @itemTap="listTap">
           <v-template>
             <StackLayout class="item">
               <Label class="name">{{ place.name }}</Label>
@@ -84,6 +84,37 @@ export default {
   computed: {
     userPlaces () {
       return this.$store.getters['userPlace/get']
+    }
+  },
+
+  methods: {
+    async listTap (event) {
+      confirm({
+        title: this.$t('sections.myPlacesConfirmDeleteDialogTitle'),
+        message: this.$t('sections.myPlacesConfirmDeleteDialogMessage', { name: event.item.name }),
+        cancelButtonText: this.$t('common.no'),
+        okButtonText: this.$t('common.yes')
+      }).then(async result => {
+        // If "yes"
+        if (result) {
+          try {
+            LoadingIndicator.show()
+    
+            await this.$store.dispatch('userPlace/delete', event.item.id)
+    
+            LoadingIndicator.hide()
+            alert({
+              title: this.$t('sections.myPlacesDeleteDialogTitle'),
+              message: this.$t('sections.myPlacesDeleteDialogMessage'),
+              okButtonText: this.$t('common.yes')
+            })
+    
+          } catch (ex) {
+            LoadingIndicator.hide()
+            alert(ErrorFormatter(ex))
+          }
+        }
+      })
     }
   }
 }

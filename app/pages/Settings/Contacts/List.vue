@@ -237,7 +237,7 @@ export default {
           }
         }
       })
-    },
+    }
   }
 }
 </script>
