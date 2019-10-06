@@ -28,6 +28,8 @@ export default {
   
   // Alerts
   alertsMessage: 'Aqui você pode configurar os alertas que você recebe do aplicativo',
+  alertsOnlyWhenAppIsOpened: 'Apenas se o app estiver aberto',
+  alertsEvenWhenAppIsClosed: 'Mesmo que o app esteja fechado',
 
 
   /** DIALOGS */

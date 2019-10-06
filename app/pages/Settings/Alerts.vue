@@ -10,10 +10,10 @@
 
         <Label textWrap="true" class="message">{{ $t('sections.alertsMessage') }}</Label>
 
-        <GridLayout rows="auto" columns="*, auto" class="field border-bottom">
-          <Label row="0" column="0" verticalAlignment="center">{{ $t('fields.enableNotifications') }}</Label>
-          <Switch row="0" column="1" class="primary" v-model="data.enableNotifications" />
-        </GridLayout>
+        <StackLayout rows="auto, auto" columns="*" class="field border-bottom">
+          <Label class="hint">{{ $t('fields.alerts') }}</Label>
+          <DropDown itemsPadding="10 15" :items="alertOptions" selectedIndex="1" @selectedIndexChanged="alertDropdownIndexChanged" ref="alertDropdown" />
+        </StackLayout>
 
         <StackLayout rows="auto, auto" columns="*" class="field border-bottom">
           <Label class="hint">{{ $t('fields.alertFrequency') }}</Label>
@@ -117,6 +117,11 @@ export default {
         categories: []
       },
 
+      alertOptions: [
+        this.$t('sections.alertsOnlyWhenAppIsOpened'),
+        this.$t('sections.alertsEvenWhenAppIsClosed')
+      ],
+
       frequencyList: [
         '1 minuto',
         '5 minutos',
@@ -134,6 +139,10 @@ export default {
   },
 
   methods: {
+    alertDropdownIndexChanged () {
+      this.data.enableNotifications = this.$refs.alertDropdown.nativeView.selectedIndex === 1
+    },
+
     frequencyDropdownIndexChanged () {
       this.data.frequency = this.$refs.frequencyDropdown.nativeView.selectedIndex
     },
@@ -147,6 +156,8 @@ export default {
 
     setSettings (settings) {
       this.data.enableNotifications = settings.enableNotifications
+      this.$refs.alertDropdown.nativeView.selectedIndex = this.data.enableNotifications? 1 : 0
+
       this.data.radius = settings.radius
 
       switch (settings.frequency) {

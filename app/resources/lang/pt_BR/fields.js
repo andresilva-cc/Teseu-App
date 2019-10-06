@@ -1,11 +1,11 @@
 export default {
+  alerts: 'Alertas',
   alertCategories: 'Categorias de alertas',
-  alertFrequency: 'Com o app fechado, me alertar a cada',
+  alertFrequency: 'Intervalo para verificação de ocorrências',
   alertRadius: 'Distância dos alertas',
   categories: 'Categorias',
   code: 'Código',
   distance: 'Distância',
-  enableNotifications: 'Alertar com o app fechado',
   location: 'Localização',
   meters: 'metros',
   name: 'Nome',
