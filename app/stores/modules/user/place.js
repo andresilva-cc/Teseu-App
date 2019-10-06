@@ -16,7 +16,11 @@ export default {
   mutations: {
     set (state, places) {
       state.places = places
-    }
+    },
+
+    push (state, place) {
+      state.places.push(place)
+    },
   },
 
   actions: {
@@ -34,7 +38,8 @@ export default {
 
     create: async ({ commit }, data) => {
       try {
-        await api.post('/user/places', data)
+        const res = await api.post('/user/places', data)
+        commit('push', res.data)
 
         return true
 
