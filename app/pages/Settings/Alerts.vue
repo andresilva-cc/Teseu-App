@@ -10,12 +10,12 @@
 
         <Label textWrap="true" class="message">{{ $t('sections.alertsMessage') }}</Label>
 
-        <StackLayout rows="auto, auto" columns="*" class="field border-bottom">
+        <StackLayout class="field border-bottom">
           <Label class="hint">{{ $t('fields.alerts') }}</Label>
           <DropDown itemsPadding="10 15" :items="alertOptions" selectedIndex="1" @selectedIndexChanged="alertDropdownIndexChanged" ref="alertDropdown" />
         </StackLayout>
 
-        <StackLayout rows="auto, auto" columns="*" class="field border-bottom">
+        <StackLayout class="field border-bottom">
           <Label class="hint">{{ $t('fields.alertFrequency') }}</Label>
           <DropDown itemsPadding="10 15" :items="frequencyList" selectedIndex="1" @selectedIndexChanged="frequencyDropdownIndexChanged" ref="frequencyDropdown" />
         </StackLayout>
