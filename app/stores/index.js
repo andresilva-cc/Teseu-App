@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 // Modules
 import auth from './modules/auth'
 import category from './modules/category'
+import occurrence from './modules/occurrence'
 import userContact from './modules/user/contact'
 import userPlace from './modules/user/place'
 import userSettings from './modules/user/settings'
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     category,
+    occurrence,
     userContact,
     userPlace,
     userSettings

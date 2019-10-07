@@ -16,6 +16,14 @@ export default {
   registerOccurrenceEmergencyMessage: 'Estou em uma emergência',
   registerOccurrenceEmergencyBottomMessage: 'Avisar meus contatos',
 
+  // Detail Occurrence
+  detailOccurrenceMessage: 'Forneça o maior número de detalhes possíveis para que os outros usuários possam ficar atentos ao perigo',
+  detailOccurrenceVictim: 'Eu',
+  detailOccurrenceNotVictim: 'Outra pessoa',
+  detailOccurrenceWhenNow: 'Agora',
+  detailOccurrenceWhenHalfHourAgo: '30 minutos atrás',
+  detailOccurrenceWhenMoreThanAHourAgo: 'Mais de 1 hora atrás',
+
   // My Contacts
   myContactsMessage: 'Um contato é alguém que receberá notificações via aplicativo e/ou SMS caso você alerte que está em perigo ou cadastre uma ocorrência com a opção "Notificar contatos" selecionada',
   myContactsNoResults: 'Nenhum contato cadastrado ainda',
@@ -33,6 +41,10 @@ export default {
 
 
   /** DIALOGS */
+  // Detail Occurrence
+  detailOccurrenceRegisterDialogTitle: 'Ocorrência Registrada',
+  detailOccurrenceRegisterDialogMessage: 'Sua ocorrência foi registrada com sucesso',
+
   // My Contacts
   myContactsNoPhoneDialogTitle: 'Nenhum número encontrado',
   myContactsNoPhoneDialogMessage: 'O contato escolhido não possui nenhum número, escolha outro ou adicione um número ao contato',

@@ -8,6 +8,7 @@ export default {
   continue: 'Continuar',
   no: 'Não',
   ok: 'OK',
+  register: 'Registrar',
   save: 'Salvar',
   yes: 'Sim',
   

@@ -7,7 +7,7 @@
 
     <GridLayout rows="*, *">
       
-      <FlexboxLayout row="0" class="detail">
+      <FlexboxLayout row="0" class="detail" @tap="$navigateTo(DetailOccurrencePage)">
         <Label class="fas">&#xf304;</Label>
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceDetailMessage') }}</Label>
       </FlexboxLayout>
@@ -58,7 +58,13 @@ FlexboxLayout {
 <script>
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import DetailOccurrencePage from './Detail'
 
 export default {
+  data () {
+    return {
+      DetailOccurrencePage
+    }
+  }
 }
 </script>

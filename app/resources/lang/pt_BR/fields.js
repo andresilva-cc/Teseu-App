@@ -3,12 +3,19 @@ export default {
   alertCategories: 'Categorias de alertas',
   alertFrequency: 'Intervalo para verificação de ocorrências',
   alertRadius: 'Distância dos alertas',
+  category: 'Categoria',
+  categoryId: 'Categoria',
   categories: 'Categorias',
   code: 'Código',
+  description: 'Descrição',
   distance: 'Distância',
   location: 'Localização',
   meters: 'metros',
   name: 'Nome',
+  notifyContacts: 'Alertar meus contatos',
   phone: 'Celular',
-  username: 'Nome de Usuário'
+  photo: 'Foto',
+  username: 'Nome de Usuário',
+  when: 'Quando',
+  who: 'Quem'
 }
