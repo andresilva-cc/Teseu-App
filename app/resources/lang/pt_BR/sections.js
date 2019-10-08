@@ -7,6 +7,7 @@ export default {
   addPlace: 'Adicionar Local',
   alerts: 'Alertas',
   registerOccurrence: 'Registrar Ocorrência',
+  viewOccurrence: 'Visualizar Ocorrência',
   pickLocation: 'Escolher Localização',
   
 
@@ -23,6 +24,13 @@ export default {
   detailOccurrenceWhenNow: 'Agora',
   detailOccurrenceWhenHalfHourAgo: '30 minutos atrás',
   detailOccurrenceWhenMoreThanAHourAgo: 'Mais de 1 hora atrás',
+
+  // View Occurrence
+  viewOccurrenceVictim: 'Com ele(a) mesmo(a)',
+  viewOccurrenceNotVictim: 'Com outra pessoa',
+  viewOccurrenceReactions: 'Reações',
+  viewOccurrenceComments: 'Comentários',
+  viewOccurrenceNewCommentPlaceholder: 'Escreva seu comentário aqui...',
 
   // My Contacts
   myContactsMessage: 'Um contato é alguém que receberá notificações via aplicativo e/ou SMS caso você alerte que está em perigo ou cadastre uma ocorrência com a opção "Notificar contatos" selecionada',

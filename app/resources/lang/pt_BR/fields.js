@@ -3,6 +3,7 @@ export default {
   alertCategories: 'Categorias de alertas',
   alertFrequency: 'Intervalo para verificação de ocorrências',
   alertRadius: 'Distância dos alertas',
+  author: 'Autor',
   category: 'Categoria',
   categoryId: 'Categoria',
   categories: 'Categorias',

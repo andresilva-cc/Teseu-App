@@ -136,6 +136,7 @@ import * as geolocation from 'nativescript-geolocation'
 import { Accuracy } from 'tns-core-modules/ui/enums'
 import WelcomePage from './Welcome'
 import RegisterOccurrencePage from './Occurrence/Register'
+import ViewOccurrencePage from './Occurrence/View'
 import AlertsPage from './Settings/Alerts'
 import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
@@ -159,6 +160,8 @@ export default {
       ],
 
       watchId: 0,
+
+      mapLoaded: false,
 
       mapView: null,
 
@@ -202,29 +205,65 @@ export default {
 
   methods: {
     async loaded (args) {
-      // Get user settings
-      await this.$store.dispatch('userSettings/get')
-      
-      // Ask for location permission
-      await geolocation.enableLocationRequest(true, true)
-
-      // Check if location is enabled
-      const isEnabled = await geolocation.isEnabled()
-      
-      // If location is enabled
-      if (isEnabled) {
-        // Start location watch
-        this.watchLocation()
-        
-        // Set timer
-        this.setTimer()
-      }
+      this.startTracking()
     },
 
     unloaded (args) {
-      // Stop timer and location watcher when page is unloaded
-      geolocation.clearWatch(this.watchId)
-      Timer.clearInterval(this.timerId)
+      try {
+        // Stop timer and location watcher when page is unloaded
+        geolocation.clearWatch(this.watchId)
+        Timer.clearInterval(this.timerId)
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    async startTracking () {
+      try {
+        if (this.mapLoaded) {
+
+          // Get user settings
+          await this.$store.dispatch('userSettings/get')
+          
+          // Ask for location permission
+          await geolocation.enableLocationRequest(true, true)
+    
+          // Check if location is enabled
+          const isEnabled = await geolocation.isEnabled()
+          
+          // If location is enabled
+          if (isEnabled) {
+          
+            // Get location
+            const { latitude, longitude } = await geolocation.getCurrentLocation({
+              desiredAccuracy: Accuracy.high
+            })
+            this.map.latitude = latitude
+            this.map.longitude = longitude
+    
+            // Fetch nearby occurrences
+            await this.$store.dispatch('occurrence/nearby', {
+              coordinates: [
+                this.map.latitude,
+                this.map.longitude
+              ]
+            })
+    
+            // Update markers
+            this.updateNearbyOccurrencesMarkers()
+    
+            // Start location watch
+            this.watchLocation()
+            
+            // Set timer
+            this.setTimer()
+          }
+        }
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
     },
 
     showDrawer () {
@@ -241,35 +280,13 @@ export default {
 
     async mapReady (args) {
       try {
+        this.mapLoaded = true
+
         // Get map view
         this.mapView = args.object
 
-        // Ask for location permission
-        await geolocation.enableLocationRequest(true, true)
-
-        // Check if location is enabled
-        const isEnabled = await geolocation.isEnabled()
-        
-        // If location is enabled
-        if (isEnabled) {
-        
-          // Get first location
-          const { latitude, longitude } = await geolocation.getCurrentLocation({
-            desiredAccuracy: Accuracy.high
-          })
-          this.map.latitude = latitude
-          this.map.longitude = longitude
-
-          // Fetch nearby occurrences for the first time
-          await this.$store.dispatch('occurrence/nearby', {
-            coordinates: [
-              this.map.latitude,
-              this.map.longitude
-            ]
-          })
-
-          this.updateNearbyOccurrencesMarkers()
-        }
+        // Start tracking
+        await this.startTracking()
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
@@ -277,7 +294,11 @@ export default {
     },
 
     markerSelect (args) {
-      console.log('Selected: ' + args.marker.userData.id)
+      this.$navigateTo(ViewOccurrencePage, {
+        props: {
+          occurrence: args.marker.userData
+        }
+      })
     },
 
     setTimer () {
