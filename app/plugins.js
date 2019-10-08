@@ -5,6 +5,7 @@ import Vue from 'nativescript-vue'
 import VueDevTools from 'nativescript-vue-devtools'
 import RadDataForm from 'nativescript-ui-dataform/vue'
 import RadSideDrawer from 'nativescript-ui-sidedrawer/vue'
+import moment from 'moment'
 
 import config from './config.json'
 
@@ -30,6 +31,8 @@ Vue.registerElement('Fab', () => require('@nstudio/nativescript-floatingactionbu
 Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown)
 Vue.use(RadDataForm)
 Vue.use(RadSideDrawer)
+
+moment.locale('pt-br')
 
 // Vue Dev Tools
 if (config.ENVIRONMENT === 'development')

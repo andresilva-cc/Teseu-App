@@ -1,5 +1,5 @@
 <template>
-  <Page actionBarHidden="true" androidStatusBarBackground="#2196f3">
+  <Page actionBarHidden="true" androidStatusBarBackground="#2196f3" @loaded="loaded" @unloaded="unloaded">
     <RadSideDrawer ref="drawer">
 
       <!-- Drawer Content -->
@@ -40,6 +40,7 @@
           :minZoom="map.minZoom"
           :maxZoom="map.maxZoom"
           @mapReady="mapReady"
+          @markerSelect="markerSelect"
         />
 
         <!-- Search bar -->
@@ -55,7 +56,7 @@
         <fab row="2" col="1" icon="~/resources/images/icons/add_white.png" class="fab" @tap="$navigateTo(pages[0])" />
 
         <!-- Last update -->
-        <Label row="3" col="0" colSpan="2" class="last-update">{{ $t('common.lastSuccessfulUpdate', { time: '1 min' }) }}</Label>
+        <Label row="3" col="0" colSpan="2" class="last-update">{{ lastUpdateAt }}</Label>
       
       </GridLayout>
     </RadSideDrawer>
@@ -138,6 +139,8 @@ import RegisterOccurrencePage from './Occurrence/Register'
 import AlertsPage from './Settings/Alerts'
 import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
+const Timer = require('tns-core-modules/timer')
+import moment from 'moment'
 
 export default {
   data () {
@@ -166,16 +169,64 @@ export default {
         minZoom: 0,
         maxZoom: 22
       },
+
+      nearbyOccurrencesMarkers: [],
+
+      timerId: null
     }
   },
 
   computed: {
     user () {
       return this.$store.getters['auth/getUser']
+    },
+
+    userSettings () {
+      return this.$store.getters['userSettings/get']
+    },
+
+    lastUpdateAt () {
+      if (this.$store.getters['occurrence/getLastUpdateAt'])
+        return `${this.$t('common.lastSuccessfulUpdate')} ${this.$store.getters['occurrence/getLastUpdateAt'].fromNow()}`
+
+      return 'Sincronizando...'
+    },
+
+    updateInterval () {
+      if (this.userSettings.frequency)
+        return this.userSettings.frequency * 60000
+
+      return false
     }
   },
 
   methods: {
+    async loaded (args) {
+      // Get user settings
+      await this.$store.dispatch('userSettings/get')
+      
+      // Ask for location permission
+      await geolocation.enableLocationRequest(true, true)
+
+      // Check if location is enabled
+      const isEnabled = await geolocation.isEnabled()
+      
+      // If location is enabled
+      if (isEnabled) {
+        // Start location watch
+        this.watchLocation()
+        
+        // Set timer
+        this.setTimer()
+      }
+    },
+
+    unloaded (args) {
+      // Stop timer and location watcher when page is unloaded
+      geolocation.clearWatch(this.watchId)
+      Timer.clearInterval(this.timerId)
+    },
+
     showDrawer () {
       this.$refs.drawer.showDrawer()
     },
@@ -198,16 +249,57 @@ export default {
 
         // Check if location is enabled
         const isEnabled = await geolocation.isEnabled()
-
-        // If enabled, start location watch
+        
+        // If location is enabled
         if (isEnabled) {
-          this.watchLocation()
+        
+          // Get first location
+          const { latitude, longitude } = await geolocation.getCurrentLocation({
+            desiredAccuracy: Accuracy.high
+          })
+          this.map.latitude = latitude
+          this.map.longitude = longitude
+
+          // Fetch nearby occurrences for the first time
+          await this.$store.dispatch('occurrence/nearby', {
+            coordinates: [
+              this.map.latitude,
+              this.map.longitude
+            ]
+          })
+
+          this.updateNearbyOccurrencesMarkers()
         }
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
       }
+    },
 
+    markerSelect (args) {
+      console.log('Selected: ' + args.marker.userData.id)
+    },
+
+    setTimer () {
+      this.timerId = Timer.setInterval(async () => {
+        try {
+          // Fetch nearby occurrences
+          await this.$store.dispatch('occurrence/nearby', {
+            coordinates: [
+              this.map.latitude,
+              this.map.longitude
+            ]
+          })
+          
+          // Update map
+          if (this.mapView)
+            this.updateNearbyOccurrencesMarkers()
+
+        } catch (ex) {
+          alert(ErrorFormatter(ex))
+        }
+
+      }, this.updateInterval)
     },
 
     watchLocation () {
@@ -219,10 +311,11 @@ export default {
               this.map.longitude = loc.longitude
             }
           },
+
           e => {
-            console.log(e)
             alert(ErrorFormatter(e))
           },
+
           {
             desiredAccuracy: Accuracy.HIGH,
             updateDistance: 1,
@@ -232,7 +325,45 @@ export default {
         )
 
       } catch (ex) {
-        console.log(ex)
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    updateNearbyOccurrencesMarkers () {
+      try {
+        // Remove all nearby occurrences markers
+        this.nearbyOccurrencesMarkers.forEach(marker => {
+          this.mapView.removeMarker(marker)
+        })
+  
+        // Empty nearby occurrences markers array
+        this.nearbyOccurrencesMarkers = []
+
+        // Get nearby occurrences
+        const nearbyOccurrences = this.$store.getters['occurrence/getNearby']
+  
+        // Create a marker for each occurrence
+        nearbyOccurrences.forEach(occurrence => {
+          const marker = new Marker()
+
+          marker.position = Position.positionFromLatLng(
+            occurrence.location.coordinates[0],
+            occurrence.location.coordinates[1]
+          )
+
+          marker.title = occurrence.description
+
+          marker.userData = occurrence
+
+          this.nearbyOccurrencesMarkers.push(marker)
+        })
+  
+        // Add new nearby occurrences markers
+        this.nearbyOccurrencesMarkers.forEach(marker => {
+          this.mapView.addMarker(marker)
+        })
+
+      } catch (ex) {
         alert(ErrorFormatter(ex))
       }
     },
