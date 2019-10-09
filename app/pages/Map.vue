@@ -285,6 +285,12 @@ export default {
 
         // Set map settings
         this.mapView.settings.mapToolbarEnabled = false
+        this.mapView.setStyle([
+          {
+            featureType: 'poi',
+            stylers: [{ visibility: 'off' }]
+          }
+        ])
 
         // Start tracking
         if (!this.tracking)
