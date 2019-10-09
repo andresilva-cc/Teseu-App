@@ -16,7 +16,7 @@
         <ScrollView row="1" columns="0">
           <ListView for="item in menuItems" @itemTap="menuTap" separatorColor="#ffffff" class="menu-list">
             <v-template>
-              <GridLayout rows="auto" columns="40, *" class="item">
+              <GridLayout rows="auto" columns="45, *" class="item">
                 <Label row="0" column="0" verticalAlignment="center" class="fas">{{ iconFromCode(item.icon) }}</Label>
                 <Label row="0" column="1" verticalAlignment="center">{{ item.title }}</Label>
               </GridLayout>
@@ -161,7 +161,7 @@ export default {
 
       watchId: 0,
 
-      mapLoaded: false,
+      tracking: false,
 
       mapView: null,
 
@@ -199,18 +199,20 @@ export default {
       if (this.userSettings.frequency)
         return this.userSettings.frequency * 60000
 
-      return false
+      return 60000
     }
   },
 
   methods: {
     async loaded (args) {
-      this.startTracking()
+      if (!this.tracking)
+        await this.startTracking()
     },
 
     unloaded (args) {
       try {
         // Stop timer and location watcher when page is unloaded
+        this.tracking = false
         geolocation.clearWatch(this.watchId)
         Timer.clearInterval(this.timerId)
 
@@ -221,44 +223,42 @@ export default {
 
     async startTracking () {
       try {
-        if (this.mapLoaded) {
+        this.tracking = true
 
-          // Get user settings
-          await this.$store.dispatch('userSettings/get')
+        // Get user settings
+        await this.$store.dispatch('userSettings/get')
+        
+        // Ask for location permission
+        await geolocation.enableLocationRequest(true, true)
+  
+        // Check if location is enabled
+        const isEnabled = await geolocation.isEnabled()
+
+        // If location is enabled
+        if (isEnabled) {
+          // Get location
+          const { latitude, longitude } = await geolocation.getCurrentLocation({
+            desiredAccuracy: Accuracy.high
+          })
+          this.map.latitude = latitude
+          this.map.longitude = longitude
+  
+          // Fetch nearby occurrences
+          await this.$store.dispatch('occurrence/nearby', {
+            coordinates: [
+              this.map.latitude,
+              this.map.longitude
+            ]
+          })
+  
+          // Update markers
+          this.updateNearbyOccurrencesMarkers()
+  
+          // Start location watch
+          this.watchLocation()
           
-          // Ask for location permission
-          await geolocation.enableLocationRequest(true, true)
-    
-          // Check if location is enabled
-          const isEnabled = await geolocation.isEnabled()
-          
-          // If location is enabled
-          if (isEnabled) {
-          
-            // Get location
-            const { latitude, longitude } = await geolocation.getCurrentLocation({
-              desiredAccuracy: Accuracy.high
-            })
-            this.map.latitude = latitude
-            this.map.longitude = longitude
-    
-            // Fetch nearby occurrences
-            await this.$store.dispatch('occurrence/nearby', {
-              coordinates: [
-                this.map.latitude,
-                this.map.longitude
-              ]
-            })
-    
-            // Update markers
-            this.updateNearbyOccurrencesMarkers()
-    
-            // Start location watch
-            this.watchLocation()
-            
-            // Set timer
-            this.setTimer()
-          }
+          // Set timer
+          this.setTimer()
         }
 
       } catch (ex) {
@@ -280,13 +280,15 @@ export default {
 
     async mapReady (args) {
       try {
-        this.mapLoaded = true
-
         // Get map view
         this.mapView = args.object
 
+        // Set map settings
+        this.mapView.settings.mapToolbarEnabled = false
+
         // Start tracking
-        await this.startTracking()
+        if (!this.tracking)
+          await this.startTracking()
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
@@ -371,8 +373,6 @@ export default {
             occurrence.location.coordinates[0],
             occurrence.location.coordinates[1]
           )
-
-          marker.title = occurrence.description
 
           marker.userData = occurrence
 
