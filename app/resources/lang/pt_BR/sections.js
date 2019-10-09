@@ -31,6 +31,9 @@ export default {
   viewOccurrenceReactions: 'Reações',
   viewOccurrenceComments: 'Comentários',
   viewOccurrenceNewCommentPlaceholder: 'Escreva seu comentário aqui...',
+  viewOccurrenceNoComments: 'Nenhum comentário foi encontrado',
+  viewOccurrenceCommentConfirmDeleteDialogTitle: 'Deletar Comentário',
+  viewOccurrenceCommentConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o seu comentário?',
 
   // My Contacts
   myContactsMessage: 'Um contato é alguém que receberá notificações via aplicativo e/ou SMS caso você alerte que está em perigo ou cadastre uma ocorrência com a opção "Notificar contatos" selecionada',

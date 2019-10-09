@@ -29,7 +29,6 @@ export default {
   actions: {
     nearby: async ({ commit }, data) => {
       try {
-        console.log('entrou na action')
         const res = await api.post('/occurrences/nearby', data)
         commit('setNearby', res.data)
 
@@ -37,7 +36,6 @@ export default {
         return true
 
       } catch (ex) {
-        console.log(ex)
         throw ex.response.data
       }
     },
