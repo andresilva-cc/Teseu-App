@@ -23,13 +23,11 @@ export default {
     fetch: async ({ commit }, occurrenceId) => {
       try {
         const res = await api.get(`/occurrences/${occurrenceId}/comments`)
-        console.log('ACTION: ' + res.data.length)
         commit('setComments', res.data)
 
         return true
 
       } catch (ex) {
-        console.log(ex)
         throw ex.response.data
       }
     },

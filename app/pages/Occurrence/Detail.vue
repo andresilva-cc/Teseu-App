@@ -220,7 +220,6 @@ export default {
         }
 
       } catch (ex) {
-        console.log(ex)
         alert(ErrorFormatter(ex))
       }
     },
@@ -243,7 +242,6 @@ export default {
         }
         
       } catch (ex) {
-        console.log(ex)
         alert(ErrorFormatter(ex))
       }
     },
@@ -268,7 +266,6 @@ export default {
         this.$navigateTo(MapPage, { clearHistory: true })
 
       } catch (ex) {
-        console.log(ex)
         LoadingIndicator.hide()
         alert(ErrorFormatter(ex))
       }

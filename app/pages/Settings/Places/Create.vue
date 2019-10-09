@@ -177,7 +177,6 @@ export default {
         }
 
       } catch (ex) {
-        console.log(ex)
         alert(ErrorFormatter(ex))
       }
     },
@@ -200,7 +199,6 @@ export default {
         }
         
       } catch (ex) {
-        console.log(ex)
         alert(ErrorFormatter(ex))
       }
     },
