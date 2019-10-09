@@ -175,7 +175,7 @@ GridLayout.comment {
 
 <script>
 import moment from 'moment'
-import * as Toast from 'nativescript-toast';
+import * as Toast from 'nativescript-toast'
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
 
