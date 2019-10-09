@@ -69,6 +69,7 @@ import Permissions from 'nativescript-permissions'
 import CreateContactPage from './Create'
 import MapPage from '~/pages/Map'
 import Error from '~/utils/error'
+import * as Toast from 'nativescript-toast'
 
 export default {
   async created () {
@@ -225,11 +226,8 @@ export default {
             await this.$store.dispatch('userContact/delete', event.item.id)
     
             LoadingIndicator.hide()
-            alert({
-              title: this.$t('sections.myContactsDeleteDialogTitle'),
-              message: this.$t('sections.myContactsDeleteDialogMessage'),
-              okButtonText: this.$t('common.yes')
-            })
+
+            Toast.makeText(this.$t('sections.myContactsDeleteDialogMessage')).show()
     
           } catch (ex) {
             LoadingIndicator.hide()

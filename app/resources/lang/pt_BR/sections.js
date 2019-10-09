@@ -75,7 +75,6 @@ export default {
   myContactsAddDialogMessage: 'O seu contato foi adicionado com sucesso, você pode visualizá-lo na lista de contatos',
   myContactsConfirmDeleteDialogTitle: 'Deletar Contato',
   myContactsConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o contato {name}?',
-  myContactsDeleteDialogTitle: 'Contato Deletado',
   myContactsDeleteDialogMessage: 'O contato foi deletado com sucesso',
   
   // My Places
@@ -83,7 +82,6 @@ export default {
   myPlacesAddDialogMessage: 'O seu local foi adicionado com sucesso, você pode visualizá-lo na lista de locais',
   myPlacesConfirmDeleteDialogTitle: 'Deletar Local',
   myPlacesConfirmDeleteDialogMessage: 'Você tem certeza que deseja deletar o local {name}?',
-  myPlacesDeleteDialogTitle: 'Local Deletado',
   myPlacesDeleteDialogMessage: 'O local foi deletado com sucesso',
 
 

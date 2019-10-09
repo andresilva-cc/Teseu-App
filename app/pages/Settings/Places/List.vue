@@ -59,6 +59,7 @@ Label.radius {
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
 import CreatePlacePage from './Create'
+import * as Toast from 'nativescript-toast'
 
 export default {
   async created () {
@@ -103,11 +104,8 @@ export default {
             await this.$store.dispatch('userPlace/delete', event.item.id)
     
             LoadingIndicator.hide()
-            alert({
-              title: this.$t('sections.myPlacesDeleteDialogTitle'),
-              message: this.$t('sections.myPlacesDeleteDialogMessage'),
-              okButtonText: this.$t('common.yes')
-            })
+
+            Toast.makeText(this.$t('sections.myPlacesDeleteDialogMessage')).show()
     
           } catch (ex) {
             LoadingIndicator.hide()
