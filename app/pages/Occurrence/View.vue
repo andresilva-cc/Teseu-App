@@ -34,8 +34,28 @@
           <TextView :text="occurrence.description" editable="false" />
         </StackLayout>
 
+        <!-- Reactions -->
+        <Label horizontalAlignment="center" class="section">{{ $t('sections.viewOccurrenceReactions') }}</Label>
+
+        <GridLayout rows="auto" columns="*, auto, auto, auto, *" class="reactions">
+          <StackLayout row="0" column="1" orientation="horizontal">
+            <Label class="like fas" :class="{ reacted: reactions[0] }" verticalAlignment="center" @tap="submitReaction(0)">&#xf164;</Label>
+            <Label verticalAlignment="center">{{ reactions[0] }}</Label>
+          </StackLayout>
+          
+          <StackLayout row="0" column="2" orientation="horizontal">
+            <Label class="still-happening fas" :class="{ reacted: reactions[1] }" verticalAlignment="center" @tap="submitReaction(1)">&#xf00c;</Label>
+            <Label verticalAlignment="center">{{ reactions[1] }}</Label>
+          </StackLayout>
+
+          <StackLayout row="0" column="3" orientation="horizontal">
+            <Label class="not-happening fas" :class="{ reacted: reactions[2] }" verticalAlignment="center" @tap="submitReaction(2)">&#xf00d;</Label>
+            <Label verticalAlignment="center">{{ reactions[2] }}</Label>
+          </StackLayout>
+        </GridLayout>
+
         <!-- Comments -->
-        <Label horizontalAlignment="center" class="comments">{{ $t('sections.viewOccurrenceComments') }}</Label>
+        <Label horizontalAlignment="center" class="section">{{ $t('sections.viewOccurrenceComments') }}</Label>
 
         <GridLayout rows="*, auto" columns="*, auto" class="field new-comment">
           <TextView row="0" column="0" rowSpan="2" columnSpan="2" v-model="newComment" autocorrect="true" :hint="$t('sections.viewOccurrenceNewCommentPlaceholder')" />
@@ -73,11 +93,43 @@
   font-size: 14;
 }
 
-Label.comments {
+Label.section {
   margin-top: 30;
   font-size: 18;
   font-weight: bold;
   color: #333333;
+}
+
+GridLayout.reactions {
+  margin: 15 0;
+  font-size: 24;
+  color: #333333;
+
+  StackLayout {
+    margin: 0 20;
+
+    .fas {
+      margin-right: 10;
+      opacity: .5;
+    }
+
+    .fas.reacted {
+      opacity: 1;
+    }
+
+    .like {
+      color: #2196f3;
+    }
+  
+    .still-happening {
+      color: #4caF50;
+    }
+  
+    .not-happening {
+      color: #f44336;
+    }
+  }
+
 }
 
 .new-comment {
@@ -86,6 +138,7 @@ Label.comments {
   }
 
   .fas {
+    padding: 10;
     color: #00a6ff;
     margin-bottom: 10;
   }
@@ -122,6 +175,7 @@ GridLayout.comment {
 
 <script>
 import moment from 'moment'
+import * as Toast from 'nativescript-toast';
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
 
@@ -146,6 +200,14 @@ export default {
       return this.$options.filters.capitalizeFirstLetter(moment(this.occurrence.when).fromNow())
     },
 
+    reactions () {
+      return this.$store.getters['occurrenceReaction/getReactions']
+    },
+
+    myReactions () {
+      return this.$store.getters['occurrenceReaction/getMyReactions']
+    },
+
     comments () {
       return this.$store.getters['occurrenceComment/getComments']
     },
@@ -160,11 +222,55 @@ export default {
       try {
         LoadingIndicator.show()
   
+        await this.$store.dispatch('occurrenceReaction/fetch', this.occurrence.id)
+        await this.$store.dispatch('occurrenceReaction/myReactions', this.occurrence.id)
         await this.$store.dispatch('occurrenceComment/fetch', this.occurrence.id)
+
         LoadingIndicator.hide()
 
       } catch (ex) {
-        console.log(ex)
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    async submitReaction (reaction) {
+      try {
+        // First, check if user has an opposite reaction
+        if ((reaction === 1 && this.myReactions[2]) || (reaction === 2 && this.myReactions[1])) {
+          Toast.makeText(this.$t('sections.viewOccurrenceOppositeReaction')).show()
+          return
+        }
+  
+        LoadingIndicator.show()
+  
+        // Check if removing reaction
+        if (this.myReactions[reaction]) {
+          await this.$store.dispatch('occurrenceReaction/delete', {
+            occurrenceId: this.occurrence.id,
+            reaction
+          })
+          Toast.makeText(
+            this.$t('sections.viewOccurrenceDisreacted', {
+              reaction: this.$t(`sections.viewOccurrenceReaction${reaction}`) 
+            })
+          ).show()
+  
+        // At last, check if adding reaction
+        } else if (!this.myReactions[reaction]) {
+          await this.$store.dispatch('occurrenceReaction/create', {
+            occurrenceId: this.occurrence.id,
+            reaction
+          })
+          Toast.makeText(
+            this.$t('sections.viewOccurrenceReacted', {
+              reaction: this.$t(`sections.viewOccurrenceReaction${reaction}`) 
+            })
+          ).show()
+        }
+  
+        LoadingIndicator.hide()
+
+      } catch (ex) {
         alert(ErrorFormatter(ex))
       }
     },
