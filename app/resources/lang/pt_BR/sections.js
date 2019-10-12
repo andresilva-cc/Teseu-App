@@ -12,6 +12,12 @@ export default {
   
 
   /** SECTION MESSAGES */
+  // Emergency Mode
+  emergencyMode: 'Modo de Emergência',
+  emergencyModeDisable: 'Clique aqui para desativar',
+  emergencyModeEnabled: 'Modo de emergência ativado',
+  emergencyModeDisabled: 'Modo de emergência desativado',
+
   // Register Occurrence
   registerOccurrenceDetailMessage: 'Detalhar o que aconteceu comigo ou com outra pessoa',
   registerOccurrenceEmergencyMessage: 'Estou em uma emergência',
@@ -58,6 +64,10 @@ export default {
 
 
   /** DIALOGS */
+  // Emergency Mode
+  emergencyModeEnableDialogMessage: 'Seus contatos serão alertados que você está em uma emergência',
+  emergencyModeDisableDialogMessage: 'O modo de emergência será desativado e seus contatos serão notificados',
+
   // Detail Occurrence
   detailOccurrenceRegisterDialogTitle: 'Ocorrência Registrada',
   detailOccurrenceRegisterDialogMessage: 'Sua ocorrência foi registrada com sucesso',

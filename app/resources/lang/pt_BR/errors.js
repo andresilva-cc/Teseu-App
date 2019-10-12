@@ -1,6 +1,8 @@
 export default {
   // Titles
   duplicateContact: 'Contato Duplicado',
+  emergencyModeAlreadyEnabled: 'Erro',
+  emergencyModeNotEnabled: 'Erro',
   invalidRequestCode: 'Código de Solicitação Inválido',
   invalidVerificationCode: 'Código de Verificação Inválido',
   minimumOneCategory: 'Erro',
@@ -13,6 +15,8 @@ export default {
 
   // Descriptions
   duplicateContactDescription: 'Já existe um contato cadastrado com este número.',
+  emergencyModeAlreadyEnabledDescription: 'O modo de emergência já está ativo, desative-o primeiro para ativar novamente.',
+  emergencyModeNotEnabledDescription: 'O modo de emergência não está ativo no momento.',
   invalidRequestCodeDescription: 'O código de solicitação fornecido é inválido ou já foi verificado.',
   invalidVerificationCodeDescription: 'O código fornecido é inválido.',
   minimumOneCategoryDescription: 'Selecione pelo menos uma categoria.',

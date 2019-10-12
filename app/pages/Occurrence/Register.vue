@@ -12,7 +12,7 @@
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceDetailMessage') }}</Label>
       </FlexboxLayout>
 
-      <FlexboxLayout row="1" class="emergency">
+      <FlexboxLayout row="1" class="emergency" @tap="enableEmergencyMode">
         <Label class="fas">&#xf071;</Label>
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceEmergencyMessage') }}</Label>
         <Label textWrap="true" verticalAligment="center" class="bottom-message">{{ $t('sections.registerOccurrenceEmergencyBottomMessage') }}</Label>
@@ -56,14 +56,45 @@ FlexboxLayout {
 </style>
 
 <script>
+import * as Toast from 'nativescript-toast'
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import MapPage from '~/pages/Map'
 import DetailOccurrencePage from './Detail'
 
 export default {
   data () {
     return {
       DetailOccurrencePage
+    }
+  },
+
+  methods: {
+    async enableEmergencyMode () {
+      try {
+        confirm({
+          title: this.$t('common.attention'),
+          message: this.$t('sections.emergencyModeEnableDialogMessage'),
+          cancelButtonText: this.$t('common.cancel'),
+          okButtonText: this.$t('common.alertAction')
+        }).then(async result => {
+          if (result) {
+            LoadingIndicator.show()
+    
+            await this.$store.dispatch('emergencyMode/enable')
+    
+            LoadingIndicator.hide()
+    
+            Toast.makeText(this.$t('sections.emergencyModeEnabled')).show()
+
+            this.$navigateTo(MapPage, { clearHistory: true })
+          }
+        })
+
+      } catch (ex) {
+        LoadingIndicator.hide()
+        alert(ErrorFormatter(ex))
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 // Modules
 import auth from './modules/auth'
 import category from './modules/category'
+import emergencyMode from './modules/emergencyMode'
 import occurrence from './modules/occurrence/'
 import occurrenceComment from './modules/occurrence/comment'
 import occurrenceReaction from './modules/occurrence/reaction'
@@ -17,6 +18,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     category,
+    emergencyMode,
     occurrence,
     occurrenceComment,
     occurrenceReaction,

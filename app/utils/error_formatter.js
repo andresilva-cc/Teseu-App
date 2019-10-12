@@ -9,6 +9,20 @@ export default ex => {
         okButtonText: i18n.t('common.ok')
       }
 
+    case 'EmergencyModeAlreadyEnabledError':
+      return {
+        title: i18n.t('errors.emergencyModeAlreadyEnabled'),
+        message: i18n.t('errors.emergencyModeAlreadyEnabledDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
+
+    case 'EmergencyModeNotEnabledError':
+      return {
+        title: i18n.t('errors.emergencyModeNotEnabled'),
+        message: i18n.t('errors.emergencyModeNotEnabledDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
+
     case 'InvalidRequestCodeError':
       return {
         title: i18n.t('errors.invalidRequestCode'),

@@ -2,10 +2,13 @@ export default {
   // Buttons
   add: 'Adicionar',
   alert: 'Alerta',
+  alertAction: 'Alertar',
+  attention: 'Atenção',
   back: 'Voltar',
   cancel: 'Cancelar',
   confirm: 'Confirmar',
   continue: 'Continuar',
+  disable: 'Desativar',
   no: 'Não',
   ok: 'OK',
   register: 'Registrar',

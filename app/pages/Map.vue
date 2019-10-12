@@ -1,5 +1,5 @@
 <template>
-  <Page actionBarHidden="true" androidStatusBarBackground="#2196f3" @loaded="loaded" @unloaded="unloaded">
+  <Page actionBarHidden="true" :androidStatusBarBackground="statusBarBackground" @loaded="loaded" @unloaded="unloaded">
     <RadSideDrawer ref="drawer">
 
       <!-- Drawer Content -->
@@ -33,7 +33,7 @@
       <GridLayout rows="auto, *, auto, auto" columns="*, auto" ~mainContent>
 
         <!-- Map -->
-        <MapView row="0" col="0" rowSpan="4" colSpan="2"
+        <MapView row="0" col="0" rowSpan="5" colSpan="2"
           :latitude="map.latitude"
           :longitude="map.longitude"
           :zoom="map.zoom"
@@ -43,14 +43,25 @@
           @markerSelect="markerSelect"
         />
 
-        <!-- Search bar -->
-        <Label row="0" col="0" colSpan="2" class="search-bar" @tap="showDrawer">
-          <FormattedString>
-            <Span class="fas" text.decode="&#xf0c9;" />
-            <Span text="   " />
-            <Span :text="$t('common.searchPlacesPlaceholder')" />
-          </FormattedString>
-        </Label>
+        <GridLayout row="0" col="0" colSpan="2" rows="auto, auto" columns="*">
+          <!-- Search bar -->
+          <StackLayout row="0" col="0" class="search-bar" :class="{ 'red-background': emergencyModeEnabled }" @tap="showDrawer">
+            <Label>
+              <FormattedString>
+                <Span class="fas" text.decode="&#xf0c9;" />
+                <Span text="   " />
+                <Span :text="$t('common.searchPlacesPlaceholder')" />
+              </FormattedString>
+            </Label>
+          </StackLayout>
+
+          <!-- Emergency Mode -->
+          <GridLayout v-if="emergencyModeEnabled" row="1" column="0" rows="auto, auto" columns="auto, auto" class="emergency-mode" @tap="disableEmergencyMode">
+            <Label row="0" col="0" rowSpan="2" verticalAlignment="center" class="fas">&#xf071;</Label>
+            <Label row="0" col="1" verticalAlignment="center" textWrap="true" class="title">{{ $t('sections.emergencyMode') }}</Label>
+            <Label row="1" col="1" verticalAlignment="center" textWrap="true">{{ $t('sections.emergencyModeDisable') }}</Label>
+          </GridLayout>
+        </GridLayout>
 
         <!-- FAB -->
         <fab row="2" col="1" icon="~/resources/images/icons/add_white.png" class="fab" @tap="$navigateTo(pages[0])" />
@@ -109,13 +120,37 @@
   }
 }
 
-.search-bar {
-  width: 95%;
-  margin-top: 15;
-  padding: 10 20;
-  border-radius: 10;
-  background-color: #ffffff;
+.emergency-mode {
+  padding: 20 20 30 20;
+  background-color: #f44336;
+  color: #ffffff;
   font-size: 18;
+
+  .fas {
+    font-size: 42;
+    padding-right: 15;
+  }
+
+  .title {
+    font-size: 26;
+  }
+}
+
+.red-background {
+  background-color: #f44336;
+}
+
+.search-bar {
+  padding-top: 15;
+
+  Label {
+    width: 95%;
+    font-size: 18;
+    padding: 10 20;
+    border-radius: 10;
+    background-color: #ffffff;
+
+  }
 }
 
 .last-update {
@@ -129,6 +164,7 @@
 </style>
 
 <script>
+import * as Toast from 'nativescript-toast'
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
 import { Position, Marker } from 'nativescript-google-maps-sdk'
@@ -188,6 +224,14 @@ export default {
       return this.$store.getters['userSettings/get']
     },
 
+    emergencyModeEnabled () {
+      return this.$store.getters['emergencyMode/isEnabled']
+    },
+
+    statusBarBackground () {
+      return this.emergencyModeEnabled? '#f44336' : '#2196f3'
+    },
+
     lastUpdateAt () {
       if (this.$store.getters['occurrence/getLastUpdateAt'])
         return `${this.$t('common.lastSuccessfulUpdate')} ${this.$store.getters['occurrence/getLastUpdateAt'].fromNow()}`
@@ -205,6 +249,8 @@ export default {
 
   methods: {
     async loaded (args) {
+      await this.$store.dispatch('emergencyMode/check')
+
       if (!this.tracking)
         await this.startTracking()
     },
@@ -391,6 +437,31 @@ export default {
         })
 
       } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    async disableEmergencyMode () {
+      try {
+        confirm({
+          title: this.$t('common.attention'),
+          message: this.$t('sections.emergencyModeDisableDialogMessage'),
+          cancelButtonText: this.$t('common.cancel'),
+          okButtonText: this.$t('common.disable')
+        }).then(async result => {
+          if (result) {
+            LoadingIndicator.show()
+    
+            await this.$store.dispatch('emergencyMode/disable')
+    
+            Toast.makeText(this.$t('sections.emergencyModeDisabled')).show()
+
+            LoadingIndicator.hide()
+          }
+        })
+
+      } catch (ex) {
+        LoadingIndicator.hide()
         alert(ErrorFormatter(ex))
       }
     },
