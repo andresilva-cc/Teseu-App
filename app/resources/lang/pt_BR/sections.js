@@ -50,6 +50,7 @@ export default {
   // My Contacts
   myContactsMessage: 'Um contato é alguém que receberá notificações via aplicativo e/ou SMS caso você alerte que está em perigo ou cadastre uma ocorrência com a opção "Notificar contatos" selecionada',
   myContactsNoResults: 'Nenhum contato cadastrado ainda',
+  myContactsPickNumber: 'Escolha um número',
   myContactsCreateMessage: 'Corrija os dados do seu contato para adicioná-lo',
   myContactsImportedNumber: 'Número importado:',
   
@@ -75,8 +76,6 @@ export default {
   // My Contacts
   myContactsNoPhoneDialogTitle: 'Nenhum número encontrado',
   myContactsNoPhoneDialogMessage: 'O contato escolhido não possui nenhum número, escolha outro ou adicione um número ao contato',
-  myContactsMultiplePhonesDialogTitle: 'Erro',
-  myContactsMultiplePhonesDialogMessage: 'O contato possui {quantity} números. Ainda não é possível adicionar contatos com mais de um número :(',
   myContactsUnsupportedFormatDialogTitle: 'Formato desconhecido',
   myContactsUnsupportedFormatDialogMessage: 'O número possui um formato desconhecido. Clique em OK e corrija-o na próxima tela',
   myContactsConfirmPhoneDialogTitle: 'Confirmar número',
