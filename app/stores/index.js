@@ -8,6 +8,7 @@ import emergencyMode from './modules/emergencyMode'
 import occurrence from './modules/occurrence/'
 import occurrenceComment from './modules/occurrence/comment'
 import occurrenceReaction from './modules/occurrence/reaction'
+import occurrenceReport from './modules/occurrence/report'
 import userContact from './modules/user/contact'
 import userPlace from './modules/user/place'
 import userSettings from './modules/user/settings'
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     occurrence,
     occurrenceComment,
     occurrenceReaction,
+    occurrenceReport,
     userContact,
     userPlace,
     userSettings

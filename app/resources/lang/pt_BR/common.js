@@ -13,6 +13,7 @@ export default {
   ok: 'OK',
   register: 'Registrar',
   save: 'Salvar',
+  send: 'Enviar',
   yes: 'Sim',
   
   // Welcome page

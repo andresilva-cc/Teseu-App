@@ -3,6 +3,11 @@
 
     <ActionBar :title="$t('sections.viewOccurrence')" flat="true">
       <NavigationButton :text="$t('common.back')" android.systemIcon="ic_menu_back" @tap="$navigateBack"></NavigationButton>
+      <ActionItem @tap="reportOccurrence">
+        <template>
+          <Label class="fas report">&#xf06a;</Label>
+        </template>
+      </ActionItem>
     </ActionBar>
 
     <ScrollView>
@@ -81,6 +86,12 @@
 </template>
 
 <style lang="scss" scoped>
+.report {
+  padding: 5 15;
+  font-size: 22;
+  color: #f44336;
+}
+
 .field {
   margin-top: 10;
   font-size: 18;
@@ -178,6 +189,7 @@ import moment from 'moment'
 import * as Toast from 'nativescript-toast'
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import OccurrenceReport from '~/components/OccurrenceReport'
 
 export default {
   props: {
@@ -316,6 +328,14 @@ export default {
       } catch (ex) {
         alert(ErrorFormatter(ex))
       }
+    },
+
+    async reportOccurrence () {
+      this.$showModal(OccurrenceReport, {
+        props: {
+          occurrenceId: this.occurrence.id
+        }
+      })
     }
   }
 }
