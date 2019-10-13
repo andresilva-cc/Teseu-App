@@ -41,6 +41,8 @@ export default {
         const res = await api.post('/user/contacts', data)
         commit('push', res.data)
 
+        await dispatch('auth/updateLevel', {}, { root: true })
+
         return true
 
       } catch (ex) {
@@ -52,6 +54,8 @@ export default {
       try {
         await api.delete(`/user/contacts/${id}`)
         await dispatch('fetch')
+
+        await dispatch('auth/updateLevel', {}, { root: true })
 
       } catch (ex) {
         throw ex.response.data

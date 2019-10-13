@@ -1,5 +1,7 @@
-import api from '../../services/api'
+import api from '~/services/api'
 import * as ApplicationSettings from 'application-settings'
+import * as Toast from 'nativescript-toast'
+import i18n from '~/resources/lang'
 
 export default {
   namespaced: true,
@@ -48,6 +50,11 @@ export default {
 
     setRequestId (state, requestId) {
       state.requestId = requestId
+    },
+
+    updateLevel (state, level) {
+      state.user.level = level.level
+      state.user.points = level.points
     },
 
     logout (state) {
@@ -99,6 +106,26 @@ export default {
         commit('setToken', res.data.token)
         commit('setUser', res.data.user)
         commit('setRequestId', '')
+
+        return true
+
+      } catch (ex) {
+        throw ex.response.data
+      }
+    },
+
+    updateLevel: async ({ state, commit }) => {
+      try {
+        const res = await api.get('/user/level')
+
+        if (res.data.level !== state.user.level) {
+          Toast.makeText(i18n.t('auth.levelUp', {
+            level: res.data.level
+          })).show()
+        }
+
+        commit('updateLevel', res.data)
+
 
         return true
 

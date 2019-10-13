@@ -14,10 +14,11 @@
       <StackLayout class="layout">
 
         <!-- Occurrence Info -->
-        <StackLayout class="field">
-          <Label class="hint">{{ $t('fields.author') }}</Label>
-          <TextField :text="occurrence.user.username" editable="false" />
-        </StackLayout>
+        <GridLayout rows="auto, auto" columns="auto, *" class="field">
+          <Label row="0" column="0" colSpan="2" class="hint">{{ $t('fields.author') }}</Label>
+          <Image row="1" col="0" :src="`~/resources/images/badges/${occurrence.user.level}.png`" class="username-badge" />
+          <TextField row="1" column="0" colSpan="2" :text="occurrence.user.username" editable="false" class="username" />
+        </GridLayout>
 
         <StackLayout class="field">
           <Label class="hint">{{ $t('fields.who') }}</Label>
@@ -68,12 +69,13 @@
         </GridLayout>
 
         <StackLayout v-if="comments.length > 0" class="field">
-          <GridLayout v-for="comment in comments" :key="comment.id" rows="auto, auto" columns="auto, 30, auto, *, auto" class="comment">
-            <Label row="0" column="0" class="username" verticalAligment="center">{{ comment.user.username }}</Label>
-            <Label row="0" column="1" class="separator" verticalAligment="center" horizontalAlignment="center">•</Label>
-            <Label row="0" column="2" class="relative-time" verticalAligment="center">{{ comment.createdAt | relativeTime }}</Label>
-            <Label v-if="user.id === comment.userId" row="0" column="4" class="delete fas" verticalAligment="center" @tap="deleteComment(comment.id)">&#xf1f8;</Label>
-            <Label row="1" column="0" columnSpan="3" textWrap="true">{{ comment.comment }}</Label>
+          <GridLayout v-for="comment in comments" :key="comment.id" rows="auto, auto" columns="auto, auto, 30, auto, *, auto" class="comment">
+            <Image row="0" col="0" :src="`~/resources/images/badges/${comment.user.level}.png`" class="comment-badge" />
+            <Label row="0" col="1" class="username" verticalAligment="center">{{ comment.user.username }}</Label>
+            <Label row="0" col="2" class="separator" verticalAligment="center" horizontalAlignment="center">•</Label>
+            <Label row="0" col="3" class="relative-time" verticalAligment="center">{{ comment.createdAt | relativeTime }}</Label>
+            <Label v-if="user.id === comment.userId" row="0" col="5" class="delete fas" verticalAligment="center" @tap="deleteComment(comment.id)">&#xf1f8;</Label>
+            <Label row="1" col="0" colSpan="4" textWrap="true" class="comment">{{ comment.comment }}</Label>
           </GridLayout>
         </StackLayout>
 
@@ -102,6 +104,15 @@
 .hint {
   color: #666666;
   font-size: 14;
+}
+
+.username-badge {
+  height: 20;
+  margin-left: 5;
+}
+
+.username {
+  padding-left: 30;
 }
 
 Label.section {
@@ -163,7 +174,12 @@ GridLayout.comment {
   padding: 10 15;
   margin-bottom: 15;
 
+  .comment-badge {
+    height: 20;
+  }
+
   .username {
+    padding-left: 5;
     color: #00a6ff;
     font-size: 14;
   }
@@ -180,6 +196,11 @@ GridLayout.comment {
   .delete {
     color: #666666;
     font-size: 14;
+  }
+
+  .comment {
+    margin-top: 5;
+    font-size: 16;
   }
 }
 </style>

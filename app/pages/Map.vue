@@ -7,9 +7,9 @@
 
         <!-- User Info -->
         <GridLayout rows="auto, auto" columns="auto, *" row="0" column="0" backgroundColor="#bbdefb" class="user-info">
-          <Image src="~/resources/images/user.png" row="0" col="0" rowSpan="2"></Image>
-          <Label row="0" col="1">{{ user.username }}</Label>
-          <Label row="1" col="1" class="phone">{{ user.phone | phone }}</Label>
+          <Image row="0" col="0" rowSpan="2" :src="`~/resources/images/badges/${user.level}.png`" class="badge" />
+          <Label row="0" col="1" verticalAlignment="center">{{ user.username }}</Label>
+          <Label row="1" col="1" class="phone" verticalAlignment="center">{{ user.phone | phone }}</Label>
         </GridLayout>
 
         <!-- Menu Items -->
@@ -84,9 +84,8 @@
     padding: 15;
     font-weight: bold;
 
-    Image {
-      width: 60;
-      height: 60;
+    .badge {
+      height: 50;
       margin-right: 15;
     }
 
@@ -258,6 +257,8 @@ export default {
   
         if (!this.tracking)
           await this.startTracking()
+
+        await this.$store.dispatch('auth/updateLevel')
 
       } catch (ex) {
         alert(ErrorFormatter(ex))

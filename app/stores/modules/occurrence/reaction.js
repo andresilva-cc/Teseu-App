@@ -64,6 +64,8 @@ export default {
         })
         await dispatch('fetch', payload.occurrenceId)
         commit('setMyReaction', { reaction: payload.reaction, value: true })
+
+        await dispatch('auth/updateLevel', {}, { root: true })
         
         return true
         
@@ -77,6 +79,8 @@ export default {
         await api.delete(`/occurrences/${payload.occurrenceId}/reactions/${payload.reaction}`)
         await dispatch('fetch', payload.occurrenceId)
         commit('setMyReaction', { reaction: payload.reaction, value: false })
+
+        await dispatch('auth/updateLevel', {}, { root: true })
 
         return true
 

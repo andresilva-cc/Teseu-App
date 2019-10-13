@@ -39,6 +39,8 @@ export default {
         })
         await dispatch('fetch', payload.occurrenceId)
         
+        await dispatch('auth/updateLevel', {}, { root: true })
+
         return true
         
       } catch (ex) {
@@ -50,6 +52,8 @@ export default {
       try {
         await api.delete(`/occurrences/${payload.occurrenceId}/comments/${payload.commentId}`)
         await dispatch('fetch', payload.occurrenceId)
+
+        await dispatch('auth/updateLevel', {}, { root: true })
 
         return true
 

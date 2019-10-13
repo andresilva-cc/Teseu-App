@@ -37,6 +37,8 @@ export default {
         const res = await api.patch('/user/settings', settings)
         commit('set', res.data)
 
+        await dispatch('auth/updateLevel', {}, { root: true })
+
         return true
 
       } catch (ex) {

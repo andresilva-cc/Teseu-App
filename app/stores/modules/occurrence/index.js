@@ -40,9 +40,11 @@ export default {
       }
     },
 
-    create: async (ctx, data) => {
+    create: async ({ dispatch }, data) => {
       try {
         const res = await api.post('/occurrences', data)
+
+        await dispatch('auth/updateLevel', {}, { root: true })
 
         return true
 
