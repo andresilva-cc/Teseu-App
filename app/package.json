@@ -1,7 +1,9 @@
 {
-  "main": "app.js",
   "android": {
     "v8Flags": "--expose_gc",
     "markingMode": "none"
-  }
+  },
+  "main": "app.js",
+  "name": "teseu-app",
+  "version": "0.2.0"
 }

@@ -1,13 +1,14 @@
 {
+  "name": "teseu-app",
+  "version": "0.2.0",
+  "description": "Teseu App",
+  "author": "André Luiz da Silva <andreluiz.97@outlook.com>",
   "nativescript": {
     "id": "app.teseu.app",
     "tns-android": {
       "version": "6.1.1"
     }
   },
-  "description": "Teseu App",
-  "license": "SEE LICENSE IN <your-license-filename>",
-  "repository": "<fill-your-repository-here>",
   "dependencies": {
     "@nstudio/nativescript-checkbox": "^1.0.0",
     "@nstudio/nativescript-floatingactionbutton": "^1.1.0",
@@ -29,7 +30,6 @@
     "nativescript-ui-sidedrawer": "^7.0.2",
     "nativescript-vue": "~2.4.0",
     "nativescript-vue-devtools": "^1.2.0",
-    "net": "^1.0.2",
     "tns-core-modules": "^6.1.1",
     "vue-i18n": "^8.14.1",
     "vuex": "^3.1.1"
@@ -40,9 +40,8 @@
     "babel-loader": "~8.0.6",
     "nativescript-dev-webpack": "^1.2.1",
     "nativescript-vue-template-compiler": "~2.4.0",
+    "nativescript-worker-loader": "~0.9.5",
     "node-sass": "^4.12.0",
     "vue-loader": "~15.7.1"
-  },
-  "gitHead": "1350d382fb4b0ed4c6e9685df909518b2688e004",
-  "readme": "NativeScript Application"
+  }
 }
