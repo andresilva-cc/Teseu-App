@@ -253,7 +253,7 @@ export default {
       try {
         const token = await firebase.getCurrentPushToken()
         await this.$store.dispatch('user/updateFCMToken', token)
-        
+
         await this.$store.dispatch('emergencyMode/check')
   
         if (!this.tracking)
@@ -490,6 +490,7 @@ export default {
         }).then(async result => {
           if (result) {
             await this.$store.commit('auth/logout')
+            await this.$store.dispatch('user/updateFCMToken', null)
             this.$navigateTo(WelcomePage, { clearHistory: true })
           }
         })
