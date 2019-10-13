@@ -3,12 +3,27 @@ import Vue from 'nativescript-vue'
 
 // Plugins
 import VueDevTools from 'nativescript-vue-devtools'
+const firebase = require('nativescript-plugin-firebase')
 import RadDataForm from 'nativescript-ui-dataform/vue'
 import RadSideDrawer from 'nativescript-ui-sidedrawer/vue'
 import moment from 'moment'
 
 import config from './config.json'
 
+firebase.init({
+  showNotifications: true,
+  showNotificationsWhenInForeground: true,
+
+  onMessageReceivedCallback: message => {
+    console.log(`[Firebase] onMessageReceivedCallback: ${JSON.stringify(message)}`)
+  }
+})
+  .then(() => {
+    console.log('[Firebase] Initialized')
+  })
+  .catch(ex => {
+    console.log('[Firebase Initialize Error: ' + ex)
+  })
 
 Vue.registerElement('MaskedTextField', () => require('nativescript-masked-text-field').MaskedTextField,
   {

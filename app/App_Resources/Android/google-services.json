@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "425025258627",
+    "firebase_url": "https://teseu-a0979.firebaseio.com",
+    "project_id": "teseu-a0979",
+    "storage_bucket": "teseu-a0979.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425025258627:android:624c9ad365c8e223db87b6",
+        "android_client_info": {
+          "package_name": "app.teseu.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425025258627-b2k4e1l5nhgurakav6nj85cg7ofqoo3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFPmz5M5QO0AYX5K7qY_clOV9FO2XmoGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425025258627-b2k4e1l5nhgurakav6nj85cg7ofqoo3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

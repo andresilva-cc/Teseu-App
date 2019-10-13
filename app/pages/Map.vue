@@ -177,6 +177,7 @@ import AlertsPage from './Settings/Alerts'
 import MyContactsPage from './Settings/Contacts/List'
 import MyPlacesPage from './Settings/Places/List'
 const Timer = require('tns-core-modules/timer')
+const firebase = require('nativescript-plugin-firebase')
 import moment from 'moment'
 
 export default {
@@ -250,6 +251,9 @@ export default {
   methods: {
     async loaded (args) {
       try {
+        const token = await firebase.getCurrentPushToken()
+        await this.$store.dispatch('user/updateFCMToken', token)
+        
         await this.$store.dispatch('emergencyMode/check')
   
         if (!this.tracking)
