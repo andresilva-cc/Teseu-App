@@ -249,10 +249,15 @@ export default {
 
   methods: {
     async loaded (args) {
-      await this.$store.dispatch('emergencyMode/check')
+      try {
+        await this.$store.dispatch('emergencyMode/check')
+  
+        if (!this.tracking)
+          await this.startTracking()
 
-      if (!this.tracking)
-        await this.startTracking()
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
     },
 
     unloaded (args) {
@@ -284,7 +289,7 @@ export default {
         if (isEnabled) {
           // Get location
           const { latitude, longitude } = await geolocation.getCurrentLocation({
-            desiredAccuracy: Accuracy.high
+            desiredAccuracy: Accuracy.HIGH
           })
           this.map.latitude = latitude
           this.map.longitude = longitude
@@ -348,11 +353,16 @@ export default {
     },
 
     markerSelect (args) {
-      this.$navigateTo(ViewOccurrencePage, {
-        props: {
-          occurrence: args.marker.userData
-        }
-      })
+      try {
+        this.$navigateTo(ViewOccurrencePage, {
+          props: {
+            occurrence: args.marker.userData
+          }
+        })
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
     },
 
     setTimer () {
