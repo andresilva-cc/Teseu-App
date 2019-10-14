@@ -16,7 +16,7 @@
 
       <Button :text="$t('auth.sendSMSCode')" @tap="register" />
 
-      <Label class="agreement" textWrap="true">{{ $t('auth.agreement') }}</Label>
+      <Label class="agreement" textWrap="true" @tap="openTermsOfUse">{{ $t('auth.agreement') }}</Label>
     </StackLayout>
   </Page>
 </template>
@@ -42,6 +42,7 @@ Button {
 </style>
 
 <script>
+const utilsModule = require('tns-core-modules/utils/utils')
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
 import ConfirmPage from './Confirm.vue'
@@ -106,6 +107,10 @@ export default {
           alert(ErrorFormatter(ex))
         }
       }
+    },
+
+    openTermsOfUse () {
+      utilsModule.openUrl('https://web.teseu.app/terms-of-use')
     }
   }
 }
