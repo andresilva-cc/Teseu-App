@@ -7,7 +7,7 @@
 
     <GridLayout rows="*, *">
       
-      <FlexboxLayout row="0" class="detail" @tap="$navigateTo(DetailOccurrencePage)">
+      <FlexboxLayout row="0" class="detail" @tap="goToDetailOccurrencePage">
         <Label class="fas">&#xf304;</Label>
         <Label textWrap="true" verticalAligment="center">{{ $t('sections.registerOccurrenceDetailMessage') }}</Label>
       </FlexboxLayout>
@@ -59,37 +59,71 @@ FlexboxLayout {
 import * as Toast from 'nativescript-toast'
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import WelcomePage from '~/pages/Welcome'
 import MapPage from '~/pages/Map'
 import DetailOccurrencePage from './Detail'
 
 export default {
-  data () {
-    return {
-      DetailOccurrencePage
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters['auth/isAuthenticated']
     }
   },
 
   methods: {
+    askForAuthentication () {
+      confirm({
+        title: this.$t('auth.authenticationRequired'),
+        message: this.$t('auth.authenticationRequiredDescription'),
+        cancelButtonText: this.$t('common.no'),
+        okButtonText: this.$t('common.yes')
+      }).then(async result => {
+        if (result) 
+          this.$navigateTo(WelcomePage, { clearHistory: true })
+      })
+    },
+
+    goToDetailOccurrencePage () {
+       if (!this.isAuthenticated) {
+         this.askForAuthentication()
+         return
+       }
+
+      this.$navigateTo(DetailOccurrencePage)
+    },
+
     async enableEmergencyMode () {
       try {
-        confirm({
-          title: this.$t('common.attention'),
-          message: this.$t('sections.emergencyModeEnableDialogMessage'),
-          cancelButtonText: this.$t('common.cancel'),
-          okButtonText: this.$t('common.alertAction')
-        }).then(async result => {
-          if (result) {
-            LoadingIndicator.show()
-    
-            await this.$store.dispatch('emergencyMode/enable')
-    
-            LoadingIndicator.hide()
-    
-            Toast.makeText(this.$t('sections.emergencyModeEnabled')).show()
-
-            this.$navigateTo(MapPage, { clearHistory: true })
-          }
-        })
+        if (!this.isAuthenticated) {
+          confirm({
+            title: this.$t('auth.authenticationRequired'),
+            message: this.$t('auth.authenticationRequiredDescription'),
+            cancelButtonText: this.$t('common.no'),
+            okButtonText: this.$t('common.yes')
+          }).then(async result => {
+            if (result) 
+              this.$navigateTo(WelcomePage, { clearHistory: true })
+          })
+        } else {
+          confirm({
+            title: this.$t('common.attention'),
+            message: this.$t('sections.emergencyModeEnableDialogMessage'),
+            cancelButtonText: this.$t('common.cancel'),
+            okButtonText: this.$t('common.alertAction')
+          }).then(async result => {
+            if (result) {
+              LoadingIndicator.show()
+      
+              await this.$store.dispatch('emergencyMode/enable')
+      
+              LoadingIndicator.hide()
+      
+              Toast.makeText(this.$t('sections.emergencyModeEnabled')).show()
+  
+              this.$navigateTo(MapPage, { clearHistory: true })
+            }
+          })
+        }
 
       } catch (ex) {
         LoadingIndicator.hide()

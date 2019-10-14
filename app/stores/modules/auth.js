@@ -20,8 +20,8 @@ export default {
       else
         return {
           id: 1,
-          username: 'Desconhecido',
-          phone: '5500000000000',
+          username: 'Não Autenticado',
+          phone: null,
           level: 1,
           points: 10
         }
@@ -46,6 +46,11 @@ export default {
     setToken (state, token) {
       state.token = token
       state.authenticated = true
+    },
+
+    setViewOnlyToken (state, token) {
+      state.token = token
+      state.authenticated = false
     },
 
     setRequestId (state, requestId) {
@@ -126,6 +131,19 @@ export default {
 
         commit('updateLevel', res.data)
 
+
+        return true
+
+      } catch (ex) {
+        throw ex.response.data
+      }
+    },
+
+    generateViewOnlyToken: async ({ commit }) => {
+      try {
+        const res = await api.get('/auth/viewOnly/token')
+        
+        commit('setViewOnlyToken', res.data.token)
 
         return true
 

@@ -50,6 +50,7 @@
 </style>
 
 <script>
+import LoadingIndicator from '~/utils/loading_indicator'
 import LoginPage from './Auth/Login'
 import RegisterPage from './Auth/Register'
 import MapPage from './Map'
@@ -64,14 +65,18 @@ export default {
   },
 
   methods: {
-    confirmViewOnly () {
+    async confirmViewOnly () {
       confirm({
         title: this.$t('common.alert'),
         message: this.$t('auth.viewOnlyMessage'),
         cancelButtonText: this.$t('common.cancel'),
         okButtonText: this.$t('common.continue')
-      }).then(result => {
+      }).then(async result => {
         if (result) {
+          LoadingIndicator.show()
+          await this.$store.dispatch('auth/generateViewOnlyToken')
+          LoadingIndicator.hide()
+          
           this.$navigateTo(this.MapPage, { clearHistory: true })
         }
       })

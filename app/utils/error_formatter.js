@@ -85,13 +85,27 @@ export default ex => {
         message: i18n.t('errors.unknownErrorDescription'),
         okButtonText: i18n.t('common.ok')
       }
+
+    case 'UnknownError':
+      return {
+        title: i18n.t('errors.unknownError'),
+        message: i18n.t('errors.unknownErrorDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
       
-      default:
-        return {
-          title: i18n.t('errors.unknownError'),
-          message: i18n.t('errors.unknownErrorDescription'),
-          okButtonText: i18n.t('common.ok')
-        }
+    case 'UserNotFoundError':
+      return {
+        title: i18n.t('errors.userNotFound'),
+        message: i18n.t('errors.userNotFoundDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
+
+    default:
+      return {
+        title: i18n.t('errors.unknownError'),
+        message: i18n.t('errors.unknownErrorDescription'),
+        okButtonText: i18n.t('common.ok')
+      }
       
   }
 }

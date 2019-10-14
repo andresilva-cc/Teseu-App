@@ -54,6 +54,7 @@ export default {
 
       } catch (ex) {
         if (ex.name) {
+          this.$navigateBack()
           alert(ErrorFormatter(ex))
         }
       }

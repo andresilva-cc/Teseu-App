@@ -6,7 +6,10 @@ Vue.filter('capitalizeFirstLetter', value => {
 })
 
 Vue.filter('phone', value => {
-  return `(${value.substring(2, 4)}) ${value.substring(4, 9)}-${value.substring(9, 13)}`
+  if (value)
+    return `(${value.substring(2, 4)}) ${value.substring(4, 9)}-${value.substring(9, 13)}`
+
+  return ''
 })
 
 Vue.filter('relativeTime', value => {

@@ -45,17 +45,17 @@
 
         <GridLayout rows="auto" columns="*, auto, auto, auto, *" class="reactions">
           <StackLayout row="0" column="1" orientation="horizontal">
-            <Label class="like fas" :class="{ reacted: reactions[0] }" verticalAlignment="center" @tap="submitReaction(0)">&#xf164;</Label>
+            <Label class="like fas" :class="{ reacted: myReactions[0] }" verticalAlignment="center" @tap="submitReaction(0)">&#xf164;</Label>
             <Label verticalAlignment="center">{{ reactions[0] }}</Label>
           </StackLayout>
           
           <StackLayout row="0" column="2" orientation="horizontal">
-            <Label class="still-happening fas" :class="{ reacted: reactions[1] }" verticalAlignment="center" @tap="submitReaction(1)">&#xf00c;</Label>
+            <Label class="still-happening fas" :class="{ reacted: myReactions[1] }" verticalAlignment="center" @tap="submitReaction(1)">&#xf00c;</Label>
             <Label verticalAlignment="center">{{ reactions[1] }}</Label>
           </StackLayout>
 
           <StackLayout row="0" column="3" orientation="horizontal">
-            <Label class="not-happening fas" :class="{ reacted: reactions[2] }" verticalAlignment="center" @tap="submitReaction(2)">&#xf00d;</Label>
+            <Label class="not-happening fas" :class="{ reacted: myReactions[2] }" verticalAlignment="center" @tap="submitReaction(2)">&#xf00d;</Label>
             <Label verticalAlignment="center">{{ reactions[2] }}</Label>
           </StackLayout>
         </GridLayout>
@@ -74,7 +74,7 @@
             <Label row="0" col="1" class="username" verticalAligment="center">{{ comment.user.username }}</Label>
             <Label row="0" col="2" class="separator" verticalAligment="center" horizontalAlignment="center">•</Label>
             <Label row="0" col="3" class="relative-time" verticalAligment="center">{{ comment.createdAt | relativeTime }}</Label>
-            <Label v-if="user.id === comment.userId" row="0" col="5" class="delete fas" verticalAligment="center" @tap="deleteComment(comment.id)">&#xf1f8;</Label>
+            <Label v-if="user.id === comment.userId && isAuthenticated" row="0" col="5" class="delete fas" verticalAligment="center" @tap="deleteComment(comment.id)">&#xf1f8;</Label>
             <Label row="1" col="0" colSpan="4" textWrap="true" class="comment">{{ comment.comment }}</Label>
           </GridLayout>
         </StackLayout>
@@ -224,6 +224,10 @@ export default {
   },
 
   computed: {
+    isAuthenticated () {
+      return this.$store.getters['auth/isAuthenticated']
+    },
+
     who () {
       return this.occurrence.victim?
         this.$t('sections.viewOccurrenceVictim') : this.$t('sections.viewOccurrenceNotVictim')
@@ -256,8 +260,10 @@ export default {
         LoadingIndicator.show()
   
         await this.$store.dispatch('occurrenceReaction/fetch', this.occurrence.id)
-        await this.$store.dispatch('occurrenceReaction/myReactions', this.occurrence.id)
         await this.$store.dispatch('occurrenceComment/fetch', this.occurrence.id)
+        
+        if (this.isAuthenticated)
+          await this.$store.dispatch('occurrenceReaction/myReactions', this.occurrence.id)
 
         LoadingIndicator.hide()
 
@@ -266,8 +272,25 @@ export default {
       }
     },
 
+    askForAuthentication () {
+      confirm({
+        title: this.$t('auth.authenticationRequired'),
+        message: this.$t('auth.authenticationRequiredDescription'),
+        cancelButtonText: this.$t('common.no'),
+        okButtonText: this.$t('common.yes')
+      }).then(async result => {
+        if (result) 
+          this.$navigateTo(WelcomePage, { clearHistory: true })
+      })
+    },
+
     async submitReaction (reaction) {
       try {
+        if (!this.isAuthenticated) {
+          this.askForAuthentication()
+          return
+        }
+
         // First, check if user has an opposite reaction
         if ((reaction === 1 && this.myReactions[2]) || (reaction === 2 && this.myReactions[1])) {
           Toast.makeText(this.$t('sections.viewOccurrenceOppositeReaction')).show()
@@ -310,6 +333,11 @@ export default {
 
     async submitComment () {
       try {
+        if (!this.isAuthenticated) {
+          this.askForAuthentication()
+          return
+        }
+
         LoadingIndicator.show()
   
         await this.$store.dispatch('occurrenceComment/create', {
@@ -328,6 +356,11 @@ export default {
 
     async deleteComment (commentId) {
       try {
+        if (!this.isAuthenticated) {
+          askForAuthentication()
+          return
+        }
+
         confirm({
           title: this.$t('sections.viewOccurrenceCommentConfirmDeleteDialogTitle'),
           message: this.$t('sections.viewOccurrenceCommentConfirmDeleteDialogMessage'),
@@ -352,6 +385,11 @@ export default {
     },
 
     async reportOccurrence () {
+      if (!this.isAuthenticated) {
+        this.askForAuthentication()
+        return
+      }
+
       this.$showModal(OccurrenceReport, {
         props: {
           occurrenceId: this.occurrence.id

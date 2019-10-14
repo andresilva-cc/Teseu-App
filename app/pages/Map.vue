@@ -216,6 +216,10 @@ export default {
   },
 
   computed: {
+    isAuthenticated () {
+      return this.$store.getters['auth/isAuthenticated']
+    },
+
     user () {
       return this.$store.getters['auth/getUser']
     },
@@ -250,15 +254,18 @@ export default {
   methods: {
     async loaded (args) {
       try {
-        const token = await firebase.getCurrentPushToken()
-        await this.$store.dispatch('user/updateFCMToken', token)
+        if (this.isAuthenticated) {
+          const token = await firebase.getCurrentPushToken()
+          await this.$store.dispatch('user/updateFCMToken', token)
+          
+          await this.$store.dispatch('emergencyMode/check')
 
-        await this.$store.dispatch('emergencyMode/check')
+          await this.$store.dispatch('auth/updateLevel')
+        }
   
         if (!this.tracking)
           await this.startTracking()
 
-        await this.$store.dispatch('auth/updateLevel')
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
@@ -277,12 +284,25 @@ export default {
       }
     },
 
+    askForAuthentication () {
+      confirm({
+        title: this.$t('auth.authenticationRequired'),
+        message: this.$t('auth.authenticationRequiredDescription'),
+        cancelButtonText: this.$t('common.no'),
+        okButtonText: this.$t('common.yes')
+      }).then(async result => {
+        if (result) 
+          this.$navigateTo(WelcomePage, { clearHistory: true })
+      })
+    },
+
     async startTracking () {
       try {
         this.tracking = true
 
         // Get user settings
-        await this.$store.dispatch('userSettings/get')
+        if (this.isAuthenticated)
+          await this.$store.dispatch('userSettings/get')
         
         // Ask for location permission
         await geolocation.enableLocationRequest(true, true)
@@ -327,7 +347,11 @@ export default {
     },
 
     menuTap (event) {
-      this.$navigateTo(this.pages[event.item.to])
+      if (this.isAuthenticated) {
+        this.$navigateTo(this.pages[event.item.to])
+      } else {
+        this.askForAuthentication()
+      }
     },
 
     iconFromCode (code) {
@@ -490,8 +514,10 @@ export default {
           okButtonText: this.$t('auth.logout')
         }).then(async result => {
           if (result) {
-            await this.$store.commit('auth/logout')
-            await this.$store.dispatch('user/updateFCMToken', null)
+            if (this.isAuthenticated) {
+              await this.$store.dispatch('user/updateFCMToken', null)
+              await this.$store.commit('auth/logout')
+            }
             this.$navigateTo(WelcomePage, { clearHistory: true })
           }
         })

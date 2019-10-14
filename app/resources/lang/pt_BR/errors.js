@@ -11,6 +11,7 @@ export default {
   tooManyAttempts: 'Muitas Tentativas',
   unauthorized: 'Não Autorizado',
   unknownError: 'Erro Desconhecido',
+  userNotFound: 'Usuário Não Encontrado',
   validationError: 'Erro',
 
   // Descriptions
@@ -24,5 +25,6 @@ export default {
   tokenErrorDescription: 'O token fornecido é inválido ou não tem acesso ao recurso solicitado.',
   tooManyAttemptsDescription: 'Muitas tentativas inválidas foram feitas. Um novo código será enviado.',
   unauthorizedDescription: 'Nenhum token de autorização foi encontrado.',
+  userNotFoundDescription: 'Não foi possível encontrar nenhum usuário com este número de celular',
   unknownErrorDescription: 'Ocorreu um erro, mas não pôde ser identificado.'
 }
