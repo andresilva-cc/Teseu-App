@@ -32,8 +32,7 @@ export default {
         return true
 
       } catch (ex) {
-        console.log('aqui3')
-        throw ex.response.data
+        throw ex.response? ex.response.data : ex
       }
     },
 
@@ -47,10 +46,7 @@ export default {
         return true
 
       } catch (ex) {
-        if (ex.response)
-          throw ex.response.data
-
-        throw ex
+        throw ex.response? ex.response.data : ex
       }
     },
 
@@ -64,10 +60,7 @@ export default {
         return true
 
       } catch (ex) {
-        if (ex.response)
-          throw ex.response.data
-
-        throw ex
+        throw ex.response? ex.response.data : ex
       }
     }
   }

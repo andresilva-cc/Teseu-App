@@ -31,8 +31,6 @@ import ConfirmPage from './Confirm.vue'
 export default {
   data () {
     return {
-      ConfirmPage,
-
       phone: ''
     }
   },
@@ -54,13 +52,11 @@ export default {
         this.$store.commit('auth/setUser', { phone: this.plainPhone })
         
         LoadingIndicator.hide()
-        this.$navigateTo(this.ConfirmPage)
+        this.$navigateTo(ConfirmPage)
 
       } catch (ex) {
         LoadingIndicator.hide()
-        if (ex.name) {
-          alert(ErrorFormatter(ex))
-        }
+        alert(ErrorFormatter(ex))
       }
     }
   }

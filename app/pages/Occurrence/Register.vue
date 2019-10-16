@@ -93,25 +93,28 @@ export default {
     },
 
     async enableEmergencyMode () {
-      try {
-        if (!this.isAuthenticated) {
-          confirm({
-            title: this.$t('auth.authenticationRequired'),
-            message: this.$t('auth.authenticationRequiredDescription'),
-            cancelButtonText: this.$t('common.no'),
-            okButtonText: this.$t('common.yes')
-          }).then(async result => {
-            if (result) 
-              this.$navigateTo(WelcomePage, { clearHistory: true })
-          })
-        } else {
-          confirm({
-            title: this.$t('common.attention'),
-            message: this.$t('sections.emergencyModeEnableDialogMessage'),
-            cancelButtonText: this.$t('common.cancel'),
-            okButtonText: this.$t('common.alertAction')
-          }).then(async result => {
-            if (result) {
+      // If not authenticated
+      if (!this.isAuthenticated) {
+        confirm({
+          title: this.$t('auth.authenticationRequired'),
+          message: this.$t('auth.authenticationRequiredDescription'),
+          cancelButtonText: this.$t('common.no'),
+          okButtonText: this.$t('common.yes')
+        }).then(async result => {
+          if (result) 
+            this.$navigateTo(WelcomePage, { clearHistory: true })
+        })
+
+      // If authenticated
+      } else {
+        confirm({
+          title: this.$t('common.attention'),
+          message: this.$t('sections.emergencyModeEnableDialogMessage'),
+          cancelButtonText: this.$t('common.cancel'),
+          okButtonText: this.$t('common.alertAction')
+        }).then(async result => {
+          if (result) {
+            try {
               LoadingIndicator.show()
       
               await this.$store.dispatch('emergencyMode/enable')
@@ -121,13 +124,12 @@ export default {
               Toast.makeText(this.$t('sections.emergencyModeEnabled')).show()
   
               this.$navigateTo(MapPage, { clearHistory: true })
-            }
-          })
-        }
 
-      } catch (ex) {
-        LoadingIndicator.hide()
-        alert(ErrorFormatter(ex))
+            } catch (ex) {
+              alert(ErrorFormatter(ex))
+            }
+          }
+        })
       }
     }
   }

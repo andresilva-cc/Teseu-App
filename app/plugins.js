@@ -2,13 +2,10 @@
 import Vue from 'nativescript-vue'
 
 // Plugins
-import VueDevTools from 'nativescript-vue-devtools'
 const firebase = require('nativescript-plugin-firebase')
 import RadDataForm from 'nativescript-ui-dataform/vue'
 import RadSideDrawer from 'nativescript-ui-sidedrawer/vue'
 import moment from 'moment'
-
-import config from './config.json'
 
 firebase.init({
   showNotifications: true,
@@ -48,7 +45,3 @@ Vue.use(RadDataForm)
 Vue.use(RadSideDrawer)
 
 moment.locale('pt-br')
-
-// Vue Dev Tools
-if (config.ENVIRONMENT === 'development')
-  Vue.use(VueDevTools, { host: config.DEVTOOLS_HOST })

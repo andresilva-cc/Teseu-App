@@ -36,13 +36,16 @@ import MapPage from '~/pages/Map'
 
 export default {
   async created () {
-    await this.sendSMS()
+    try {
+      await this.sendSMS()
+
+    } catch (ex) {
+      alert(ErrorFormatter(ex))
+    }
   },
 
   data () {
     return {
-      MapPage,
-
       code: ''
     }
   },
@@ -53,10 +56,9 @@ export default {
         await this.$store.dispatch('auth/sendSMS')
 
       } catch (ex) {
-        if (ex.name) {
+        if (ex.name === 'UserNotFoundError')
           this.$navigateBack()
-          alert(ErrorFormatter(ex))
-        }
+        alert(ErrorFormatter(ex))
       }
     },
 
@@ -65,16 +67,13 @@ export default {
         LoadingIndicator.show()
         await this.$store.dispatch('auth/checkSMS', this.code)
         LoadingIndicator.hide()
-        this.$navigateTo(this.MapPage, { clearHistory: true })
+        this.$navigateTo(MapPage, { clearHistory: true })
         
       } catch (ex) {
         LoadingIndicator.hide()
-        if (ex.name) {
-          alert(ErrorFormatter(ex))
-
-          if (ex.name === 'TooManyAttemptsError')
-            this.sendSMS()
-        }
+        alert(ErrorFormatter(ex))
+        if (ex.name === 'TooManyAttemptsError')
+          this.sendSMS()
       }
     }
   }

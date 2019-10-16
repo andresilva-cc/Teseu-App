@@ -481,14 +481,14 @@ export default {
     },
 
     async disableEmergencyMode () {
-      try {
-        confirm({
-          title: this.$t('common.attention'),
-          message: this.$t('sections.emergencyModeDisableDialogMessage'),
-          cancelButtonText: this.$t('common.cancel'),
-          okButtonText: this.$t('common.disable')
-        }).then(async result => {
-          if (result) {
+      confirm({
+        title: this.$t('common.attention'),
+        message: this.$t('sections.emergencyModeDisableDialogMessage'),
+        cancelButtonText: this.$t('common.cancel'),
+        okButtonText: this.$t('common.disable')
+      }).then(async result => {
+        if (result) {
+          try {
             LoadingIndicator.show()
     
             await this.$store.dispatch('emergencyMode/disable')
@@ -496,36 +496,35 @@ export default {
             Toast.makeText(this.$t('sections.emergencyModeDisabled')).show()
 
             LoadingIndicator.hide()
-          }
-        })
 
-      } catch (ex) {
-        LoadingIndicator.hide()
-        alert(ErrorFormatter(ex))
-      }
+          } catch (ex) {
+            LoadingIndicator.hide()
+            alert(ErrorFormatter(ex))
+          }
+        }
+      })
     },
 
     async logout () {
-      try {
-        confirm({
-          title: this.$t('auth.logout'),
-          message: this.$t('auth.logoutConfirm'),
-          cancelButtonText: this.$t('common.cancel'),
-          okButtonText: this.$t('auth.logout')
-        }).then(async result => {
-          if (result) {
+      confirm({
+        title: this.$t('auth.logout'),
+        message: this.$t('auth.logoutConfirm'),
+        cancelButtonText: this.$t('common.cancel'),
+        okButtonText: this.$t('auth.logout')
+      }).then(async result => {
+        if (result) {
+          try {
             if (this.isAuthenticated) {
               await this.$store.dispatch('user/updateFCMToken', null)
               await this.$store.commit('auth/logout')
             }
             this.$navigateTo(WelcomePage, { clearHistory: true })
+
+          } catch (ex) {
+            alert(ErrorFormatter(ex))
           }
-        })
-      } catch (ex) {
-        if (ex.name) {
-          alert(ErrorFormatter(ex))
         }
-      }
+      })
     }
   }
 }

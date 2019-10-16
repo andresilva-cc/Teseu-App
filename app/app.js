@@ -1,3 +1,4 @@
+import VueDevTools from 'nativescript-vue-devtools'
 import Vue from 'nativescript-vue'
 import * as ApplicationSettings from 'application-settings'
 import store from './stores'
@@ -7,6 +8,10 @@ import config from './config.json'
 // Pages
 import Welcome from './pages/Welcome'
 import Map from './pages/Map'
+
+// Vue Dev Tools
+if (config.ENVIRONMENT === 'development')
+  Vue.use(VueDevTools, { host: config.DEVTOOLS_HOST })
 
 // Load plugins
 require('./plugins')

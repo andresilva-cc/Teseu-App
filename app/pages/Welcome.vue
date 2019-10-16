@@ -50,6 +50,7 @@
 </style>
 
 <script>
+import ErrorFormatter from '~/utils/error_formatter'
 import LoadingIndicator from '~/utils/loading_indicator'
 import LoginPage from './Auth/Login'
 import RegisterPage from './Auth/Register'
@@ -73,11 +74,16 @@ export default {
         okButtonText: this.$t('common.continue')
       }).then(async result => {
         if (result) {
-          LoadingIndicator.show()
-          await this.$store.dispatch('auth/generateViewOnlyToken')
-          LoadingIndicator.hide()
-          
-          this.$navigateTo(this.MapPage, { clearHistory: true })
+          try {
+            LoadingIndicator.show()
+            await this.$store.dispatch('auth/generateViewOnlyToken')
+            LoadingIndicator.hide()
+            
+            this.$navigateTo(this.MapPage, { clearHistory: true })
+
+          } catch (ex) {
+            alert(ErrorFormatter(ex))
+          }
         }
       })
     }

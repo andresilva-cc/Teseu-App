@@ -385,16 +385,21 @@ export default {
     },
 
     async reportOccurrence () {
-      if (!this.isAuthenticated) {
-        this.askForAuthentication()
-        return
-      }
-
-      this.$showModal(OccurrenceReport, {
-        props: {
-          occurrenceId: this.occurrence.id
+      try {
+        if (!this.isAuthenticated) {
+          this.askForAuthentication()
+          return
         }
-      })
+  
+        this.$showModal(OccurrenceReport, {
+          props: {
+            occurrenceId: this.occurrence.id
+          }
+        })
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
     }
   }
 }

@@ -50,13 +50,16 @@ import api from '~/services/api'
 
 export default {
   async mounted () {
-    await this.generateUsername()
+    try {
+      await this.generateUsername()
+
+    } catch (ex) {
+      alert(ErrorFormatter(ex))
+    }
   },
 
   data () {
     return {
-      ConfirmPage,
-
       username: '',
       phone: ''
     }
@@ -99,18 +102,21 @@ export default {
 
         LoadingIndicator.hide()
 
-        this.$navigateTo(this.ConfirmPage)
+        this.$navigateTo(ConfirmPage)
 
       } catch (ex) {
         LoadingIndicator.hide()
-        if (ex.name) {
-          alert(ErrorFormatter(ex))
-        }
+        alert(ErrorFormatter(ex))
       }
     },
 
     openTermsOfUse () {
-      utilsModule.openUrl('https://web.teseu.app/terms-of-use')
+      try {
+        utilsModule.openUrl('https://web.teseu.app/terms-of-use')
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
     }
   }
 }

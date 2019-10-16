@@ -41,7 +41,7 @@ export default {
         return true
 
       } catch (ex) {
-        throw ex.response.data
+        throw ex.response? ex.response.data : ex
       }
     },
 
@@ -53,7 +53,7 @@ export default {
         return true
 
       } catch (ex) {
-        throw ex.response.data
+        throw ex.response? ex.response.data : ex
       }
     },
 
@@ -70,7 +70,7 @@ export default {
         return true
         
       } catch (ex) {
-        throw ex.response.data
+        throw ex.response? ex.response.data : ex
       }
     },
     
@@ -85,7 +85,7 @@ export default {
         return true
 
       } catch (ex) {
-        throw ex.response.data
+        throw ex.response? ex.response.data : ex
       }
     }
   }

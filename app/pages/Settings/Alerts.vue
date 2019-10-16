@@ -155,33 +155,38 @@ export default {
     },
 
     setSettings (settings) {
-      this.data.enableNotifications = settings.enableNotifications
-      this.$refs.alertDropdown.nativeView.selectedIndex = this.data.enableNotifications? 1 : 0
+      try {
+        this.data.enableNotifications = settings.enableNotifications
+        this.$refs.alertDropdown.nativeView.selectedIndex = this.data.enableNotifications? 1 : 0
+  
+        this.data.radius = settings.radius
+  
+        switch (settings.frequency) {
+          case 1:
+            this.data.frequency = 0
+            break
+          case 5:
+            this.data.frequency = 1
+            break
+          case 15:
+            this.data.frequency = 2
+            break
+          case 30:
+            this.data.frequency = 3
+            break
+          case 60:
+            this.data.frequency = 4
+            break
+        }
+        this.$refs.frequencyDropdown.nativeView.selectedIndex = this.data.frequency
+  
+        settings.categories.forEach(category => {
+          this.setCategoryChecked(category.categoryId, true)
+        })
 
-      this.data.radius = settings.radius
-
-      switch (settings.frequency) {
-        case 1:
-          this.data.frequency = 0
-          break
-        case 5:
-          this.data.frequency = 1
-          break
-        case 15:
-          this.data.frequency = 2
-          break
-        case 30:
-          this.data.frequency = 3
-          break
-        case 60:
-          this.data.frequency = 4
-          break
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
       }
-      this.$refs.frequencyDropdown.nativeView.selectedIndex = this.data.frequency
-
-      settings.categories.forEach(category => {
-        this.setCategoryChecked(category.categoryId, true)
-      })
     },
 
     async save () {
@@ -229,9 +234,7 @@ export default {
 
       } catch (ex) {
         LoadingIndicator.hide()
-        if (ex.name) {
-          alert(ErrorFormatter(ex))
-        }
+        alert(ErrorFormatter(ex))
       }
     }
   }
