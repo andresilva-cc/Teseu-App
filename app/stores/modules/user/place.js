@@ -32,11 +32,12 @@ export default {
         return true
 
       } catch (ex) {
+        console.log('aqui3')
         throw ex.response.data
       }
     },
 
-    create: async ({ commit }, data) => {
+    create: async ({ commit, dispatch }, data) => {
       try {
         const res = await api.post('/user/places', data)
         commit('push', res.data)
@@ -46,7 +47,10 @@ export default {
         return true
 
       } catch (ex) {
-        throw ex.response.data
+        if (ex.response)
+          throw ex.response.data
+
+        throw ex
       }
     },
 
@@ -60,7 +64,10 @@ export default {
         return true
 
       } catch (ex) {
-        throw ex.response.data
+        if (ex.response)
+          throw ex.response.data
+
+        throw ex
       }
     }
   }

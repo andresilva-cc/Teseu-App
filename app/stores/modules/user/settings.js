@@ -32,7 +32,7 @@ export default {
       }
     },
 
-    set: async ({ commit }, settings) => {
+    set: async ({ commit, dispatch }, settings) => {
       try {
         const res = await api.patch('/user/settings', settings)
         commit('set', res.data)

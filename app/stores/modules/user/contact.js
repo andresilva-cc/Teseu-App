@@ -36,7 +36,7 @@ export default {
       }
     },
 
-    create: async ({ commit }, data) => {
+    create: async ({ commit, dispatch }, data) => {
       try {
         const res = await api.post('/user/contacts', data)
         commit('push', res.data)
