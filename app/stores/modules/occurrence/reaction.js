@@ -24,7 +24,7 @@ export default {
     },
 
     setMyReaction (state, payload) {
-      state.myReactions[payload.reaction] = payload.value
+      state.myReactions.splice(payload.reaction, 1, payload.value)
     },
 
     setMyReactions (state, myReactions) {
