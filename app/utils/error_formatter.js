@@ -1,6 +1,11 @@
+import { crashlytics } from 'nativescript-plugin-firebase'
 import i18n from '../resources/lang'
 
 export default ex => {
+  // Send crash log to Crashlytics
+  crashlytics.sendCrashLog(ex)
+
+  // Format exception
   switch (ex.name) {
     case 'DuplicateContactError':
       return {
