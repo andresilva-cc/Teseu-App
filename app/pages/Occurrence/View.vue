@@ -327,6 +327,7 @@ export default {
         LoadingIndicator.hide()
 
       } catch (ex) {
+        LoadingIndicator.hide()
         alert(ErrorFormatter(ex))
       }
     },

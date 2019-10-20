@@ -126,6 +126,7 @@ export default {
               this.$navigateTo(MapPage, { clearHistory: true })
 
             } catch (ex) {
+              LoadingIndicator.hide()
               alert(ErrorFormatter(ex))
             }
           }
