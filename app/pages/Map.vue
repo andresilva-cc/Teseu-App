@@ -223,6 +223,8 @@ import MyPlacesPage from './Settings/Places/List'
 const Timer = require('tns-core-modules/timer')
 const firebase = require('nativescript-plugin-firebase')
 import moment from 'moment'
+import { Image } from 'tns-core-modules/ui/image'
+import { ImageSource } from 'tns-core-modules/image-source'
 
 export default {
   data () {
@@ -570,6 +572,13 @@ export default {
             occurrence.location.coordinates[0],
             occurrence.location.coordinates[1]
           )
+
+          const source = new ImageSource()
+          source.fromResource(`category_${occurrence.categoryId}`)
+          const icon = new Image()
+          icon.imageSource = source
+
+          marker.icon = icon
 
           marker.userData = occurrence
 
