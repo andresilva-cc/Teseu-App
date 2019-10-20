@@ -45,14 +45,30 @@
 
         <GridLayout row="0" col="0" colSpan="2" rows="auto, auto" columns="*">
           <!-- Search bar -->
-          <StackLayout row="0" col="0" class="search-bar" :class="{ 'red-background': emergencyModeEnabled }" @tap="showDrawer">
-            <Label>
-              <FormattedString>
-                <Span class="fas" text.decode="&#xf0c9;" />
-                <Span text="   " />
-                <Span :text="$t('common.searchPlacesPlaceholder')" />
-              </FormattedString>
-            </Label>
+          <StackLayout row="0" col="0" class="search-bar-container" :class="{ 'red-background': emergencyModeEnabled }">
+            
+            <GridLayout rows="*" columns="auto, *" class="search-bar" :class="{ 'search-bar-places-list': placesListOpen }">
+              <Label row="0" col="0" verticalAlignment="center" class="fas menu" @tap="showDrawer">&#xf0c9;</Label>
+              <Label row="0" col="1" verticalAlignment="center" @tap="placesListOpen = !placesListOpen">{{ $t('common.searchPlacesPlaceholder') }}</Label>
+            </GridLayout>
+            <StackLayout class="places" v-if="placesListOpen">
+              <ListView for="place in places" height="158" @itemTap="placesTap">
+                <v-template if="$index === 0">
+                  <GridLayout rows="*" columns="auto, auto, *, auto" class="item">
+                    <Label row="0" column="0" verticalAlignment="center" class="fas icon">&#xf124;</Label>
+                    <Label row="0" column="1" verticalAlignment="center" class="name">{{ place.name }}</Label>
+                    <Label row="0" column="3" verticalAlignment="center" class="fas">&#xf054;</Label>
+                  </GridLayout>
+                </v-template>
+
+                <v-template>
+                  <GridLayout rows="*" columns="auto, *, auto" class="item">
+                    <Label row="0" column="0" verticalAlignment="center" class="name">{{ place.name }}</Label>
+                    <Label row="0" column="2" verticalAlignment="center" class="fas">&#xf054;</Label>
+                  </GridLayout>
+                </v-template>
+              </ListView>
+            </StackLayout>
           </StackLayout>
 
           <!-- Emergency Mode -->
@@ -139,17 +155,46 @@
   background-color: #f44336;
 }
 
-.search-bar {
+.search-bar-container {
   padding-top: 15;
 
-  Label {
+  .places {
     width: 95%;
-    font-size: 18;
-    padding: 10 20;
-    border-radius: 10;
     background-color: #ffffff;
+    border-radius: 0 0 10 10;
 
+    .item {
+      padding: 10 15;
+
+      .icon {
+        margin-right: 10;
+        color: #444444;
+      }
+
+      .name {
+        color: #111111;
+      }
+    }
   }
+}
+
+.search-bar {
+  width: 95%;
+  font-size: 18;
+  padding: 10 15;
+  border-radius: 10;
+  background-color: #ffffff;
+
+  .menu {
+    padding-top: 4;
+    margin-right: 15;
+  }
+}
+
+.search-bar-places-list {
+  border-radius: 10 10 0 0;
+  border-width: 0 0 1 0;
+  border-color: #cccccc;
 }
 
 .last-update {
@@ -195,12 +240,19 @@ export default {
         { icon: '0xf0f3', title: this.$t('sections.alerts'), to: 3 }
       ],
 
-      watchId: 0,
+      placesListOpen: false,
 
+      watchId: 0,
+      timerId: null,
       tracking: false,
 
-      mapView: null,
+      showingUserLocation: true,
+      currentLocation: {
+        latitude: 0,
+        longitude: 0
+      },
 
+      mapView: null,
       map: {
         latitude: 0,
         longitude: 0,
@@ -208,10 +260,7 @@ export default {
         minZoom: 0,
         maxZoom: 22
       },
-
       nearbyOccurrencesMarkers: [],
-
-      timerId: null
     }
   },
 
@@ -226,6 +275,19 @@ export default {
 
     userSettings () {
       return this.$store.getters['userSettings/get']
+    },
+
+    userPlaces () {
+      return this.$store.getters['userPlace/get']
+    },
+
+    places () {
+      let places = this.userPlaces.slice()
+      places.splice(0, 0, {
+        name: 'Localização atual'
+      })
+
+      return places
     },
 
     emergencyModeEnabled () {
@@ -255,12 +317,18 @@ export default {
     async loaded (args) {
       try {
         if (this.isAuthenticated) {
+          LoadingIndicator.show()
+
           const token = await firebase.getCurrentPushToken()
           await this.$store.dispatch('user/updateFCMToken', token)
           
+          await this.$store.dispatch('userPlace/fetch')
+
           await this.$store.dispatch('emergencyMode/check')
 
           await this.$store.dispatch('auth/updateLevel')
+
+          LoadingIndicator.hide()
         }
   
         if (!this.tracking)
@@ -268,6 +336,7 @@ export default {
 
 
       } catch (ex) {
+        LoadingIndicator.hide()
         alert(ErrorFormatter(ex))
       }
     },
@@ -354,6 +423,34 @@ export default {
       }
     },
 
+    async placesTap (event) {
+      // Update map coordinates
+      if (event.index === 0) {
+        this.map.latitude = this.currentLocation.latitude
+        this.map.longitude = this.currentLocation.longitude
+        this.showingUserLocation = true
+      } else {
+        this.map.latitude = event.item.location.coordinates[0]
+        this.map.longitude = event.item.location.coordinates[1]
+        this.showingUserLocation = false
+      }
+
+      // Close places list
+      this.placesListOpen = false
+
+      // Fetch nearby occurrences
+      await this.$store.dispatch('occurrence/nearby', {
+        coordinates: [
+          this.map.latitude,
+          this.map.longitude
+        ]
+      })
+      
+      // Update map
+      if (this.mapView)
+        this.updateNearbyOccurrencesMarkers()
+    },
+
     iconFromCode (code) {
       return String.fromCharCode(code)
     },
@@ -364,6 +461,10 @@ export default {
         this.mapView = args.object
 
         // Set map settings
+        this.mapView.settings.rotateGesturesEnabled = false
+        this.mapView.settings.scrollGesturesEnabled = false
+        this.mapView.settings.tiltGesturesEnabled = false
+        this.mapView.settings.zoomGesturesEnabled = false
         this.mapView.settings.mapToolbarEnabled = false
         this.mapView.setStyle([
           {
@@ -421,8 +522,13 @@ export default {
         this.watchId = geolocation.watchLocation(
           loc => {
             if (loc) {
-              this.map.latitude = loc.latitude
-              this.map.longitude = loc.longitude
+              this.currentLocation.latitude = loc.latitude
+              this.currentLocation.longitude = loc.longitude
+
+              if (this.showingUserLocation) {
+                this.map.latitude = this.currentLocation.latitude
+                this.map.longitude = this.currentLocation.longitude
+              }
             }
           },
 

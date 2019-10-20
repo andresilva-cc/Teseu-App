@@ -20,6 +20,6 @@ export default {
   welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização',
 
   // Map page
-  searchPlacesPlaceholder: 'Pesquisar locais',
+  searchPlacesPlaceholder: 'Selecionar local',
   lastSuccessfulUpdate: 'Última atualização com sucesso: ',
 }
