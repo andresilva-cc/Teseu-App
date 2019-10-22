@@ -1,9 +1,11 @@
 import VueDevTools from 'nativescript-vue-devtools'
 import Vue from 'nativescript-vue'
+import * as application from 'tns-core-modules/application'
 import * as ApplicationSettings from 'application-settings'
 import store from './stores'
 import i18n from './resources/lang'
 import config from './config.json'
+import BackgroundServiceControl from '~/services/background_service_control'
 
 // Pages
 import Welcome from './pages/Welcome'
@@ -21,14 +23,25 @@ require('./utils/filters')
 
 // Load auth store from application settings
 store.commit('auth/load')
+store.commit('userSettings/load')
 
 // If development and bypass auth, set token provided in config
 if (config.ENVIRONMENT === 'development' && config.DEV_BYPASS_AUTH)
   store.commit('auth/setToken', config.DEV_ACCESSKEY)
 
-// Subscribe auth store to application settings
+// Subscribe store to application settings
 store.subscribe((mutation, state) => {
   ApplicationSettings.setString('store/auth', JSON.stringify(state.auth))
+  ApplicationSettings.setString('store/userSettings', JSON.stringify(state.userSettings))
+})
+
+// Application Lifecycle Events
+application.on(application.resumeEvent, args => {
+  console.log('[EVENT] resumeEvent')
+  if (store.getters['auth/isAuthenticated']) {
+    BackgroundServiceControl.stopBackgroundService()
+    BackgroundServiceControl.startBackgroundService()
+  }
 })
 
 // Create Vue instance and start it

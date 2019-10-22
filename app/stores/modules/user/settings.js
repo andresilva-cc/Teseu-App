@@ -1,4 +1,5 @@
 import api from '../../../services/api'
+import * as ApplicationSettings from 'application-settings'
 
 export default {
   namespaced: true,
@@ -14,6 +15,12 @@ export default {
   },
 
   mutations: {
+    load (state) {
+      if (ApplicationSettings.getString('store/userSettings')) {
+        Object.assign(state, JSON.parse(ApplicationSettings.getString('store/userSettings')))
+      }
+    },
+
     set (state, settings) {
       state.settings = settings
     }
