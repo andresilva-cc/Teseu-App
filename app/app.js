@@ -37,7 +37,6 @@ store.subscribe((mutation, state) => {
 
 // Application Lifecycle Events
 application.on(application.resumeEvent, args => {
-  console.log('[EVENT] resumeEvent')
   if (store.getters['auth/isAuthenticated']) {
     BackgroundServiceControl.stopBackgroundService()
     BackgroundServiceControl.startBackgroundService()
