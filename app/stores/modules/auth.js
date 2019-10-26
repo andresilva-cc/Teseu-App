@@ -2,6 +2,7 @@ import api from '~/services/api'
 import * as ApplicationSettings from 'application-settings'
 import * as Toast from 'nativescript-toast'
 import i18n from '~/resources/lang'
+import Error from '~/utils/error'
 
 export default {
   namespaced: true,
@@ -111,6 +112,23 @@ export default {
         commit('setToken', res.data.token)
         commit('setUser', res.data.user)
         commit('setRequestId', '')
+
+        return true
+
+      } catch (ex) {
+        throw ex.response? ex.response.data : ex
+      }
+    },
+
+    checkPhone: async (ctx, phone) => {
+      try {
+        const res = await api.post('/auth/phone/check', {
+          phone
+        })
+
+        if (!res.data) {
+          throw new Error('UserNotFoundError')
+        }
 
         return true
 

@@ -2,9 +2,6 @@ import { crashlytics } from 'nativescript-plugin-firebase'
 import i18n from '../resources/lang'
 
 export default ex => {
-  // Send crash log to Crashlytics
-  crashlytics.sendCrashLog(ex)
-
   // Format exception
   switch (ex.name) {
     case 'DuplicateContactError':
@@ -90,13 +87,6 @@ export default ex => {
         message: i18n.t('errors.unknownErrorDescription'),
         okButtonText: i18n.t('common.ok')
       }
-
-    case 'UnknownError':
-      return {
-        title: i18n.t('errors.unknownError'),
-        message: i18n.t('errors.unknownErrorDescription'),
-        okButtonText: i18n.t('common.ok')
-      }
       
     case 'UserNotFoundError':
       return {
@@ -106,11 +96,13 @@ export default ex => {
       }
 
     default:
+      // Send crash log to Crashlytics
+      crashlytics.sendCrashLog(ex)
+      
       return {
         title: i18n.t('errors.unknownError'),
         message: i18n.t('errors.unknownErrorDescription'),
         okButtonText: i18n.t('common.ok')
       }
-      
   }
 }

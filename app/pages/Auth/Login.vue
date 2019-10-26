@@ -42,12 +42,14 @@ export default {
   },
 
   methods: {
-    login () {
+    async login () {
       try {
         LoadingIndicator.show()
 
         // Format phone
         this.phone = this.$refs.phone.nativeView.text.replace(/[+()-\s]/g, '')
+
+        await this.$store.dispatch('auth/checkPhone', this.plainPhone)
 
         this.$store.commit('auth/setUser', { phone: this.plainPhone })
         
