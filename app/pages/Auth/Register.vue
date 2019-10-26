@@ -9,7 +9,7 @@
       <GridLayout rows="auto, auto" columns="*, auto">
         <TextField row="0" column="0" columnSpan="2" :hint="$t('fields.username')" v-model="username" />
         <Label row="0" column="1" class="fas" verticalAlignment="bottom" @tap="generateUsername">&#xf01e;</Label>
-        <Label row="1" column="0" columnSpan="2">{{ $t('auth.usernameMessage') }}</Label>
+        <Label row="1" column="0" columnSpan="2" textWrap="true">{{ $t('auth.usernameMessage') }}</Label>
       </GridLayout>
 
       <MaskedTextField ref="phone" :hint="$t('fields.phone')" keyboardType="phone" mask="(99) 99999-9999" />
