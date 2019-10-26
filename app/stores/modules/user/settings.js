@@ -5,7 +5,11 @@ export default {
   namespaced: true,
 
   state: {
-    settings: []
+    settings: {
+      enableNotifications: true,
+      frequency: 5,
+      radius: 1000
+    }
   },
 
   getters: {

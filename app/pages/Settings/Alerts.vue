@@ -81,6 +81,7 @@ Button {
 <script>
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import BackgroundServiceControl from '~/services/background_service_control'
 
 export default {
   async created () {
@@ -223,6 +224,12 @@ export default {
         })
 
         await this.$store.dispatch('userSettings/set', settings)
+
+        BackgroundServiceControl.stopBackgroundService()
+
+        if (settings.enableNotifications) {
+          BackgroundServiceControl.startBackgroundService()
+        }
 
         LoadingIndicator.hide()
 

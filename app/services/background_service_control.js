@@ -22,12 +22,12 @@ export default {
           context.startService(intent)
         }
       }
-     
+      
     } catch (ex) {
       alert(ErrorFormatter(ex))
     }
   },
-
+  
   stopBackgroundService () {
     try {
       if (application.android) {

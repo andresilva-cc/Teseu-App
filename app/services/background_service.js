@@ -18,7 +18,7 @@ function _startWatch() {
       const userSettings = JSON.parse(ApplicationSettings.getString('store/userSettings'))
       frequency = userSettings.settings.frequency * 60000
     }
-  
+
     // Start interval
     intervalId = setInterval(async () => {
       try {

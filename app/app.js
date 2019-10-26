@@ -37,8 +37,9 @@ store.subscribe((mutation, state) => {
 
 // Application Lifecycle Events
 application.on(application.resumeEvent, args => {
-  if (store.getters['auth/isAuthenticated']) {
-    BackgroundServiceControl.stopBackgroundService()
+  BackgroundServiceControl.stopBackgroundService()
+
+  if (store.getters['auth/isAuthenticated'] && store.getters['userSettings/get'].enableNotifications) {
     BackgroundServiceControl.startBackgroundService()
   }
 })
