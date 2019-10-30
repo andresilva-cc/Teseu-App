@@ -464,7 +464,7 @@ export default {
           if (latitude === this.mapView.latitude && longitude === this.mapView.longitude) {
             this.updateMap()
           }
-        }, 1000)
+        }, 1500)
       }
     },
 
