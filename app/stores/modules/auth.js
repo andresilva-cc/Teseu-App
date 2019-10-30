@@ -8,7 +8,13 @@ export default {
   namespaced: true,
 
   state: {
-    user: null,
+    user: {
+      id: 1,
+      username: 'Não Autenticado',
+      phone: null,
+      level: 1,
+      points: 10
+    },
     authenticated: false,
     token: '',
     requestId: ''
@@ -16,16 +22,7 @@ export default {
 
   getters: {
     getUser: state => {
-      if (state.user)
-        return state.user
-      else
-        return {
-          id: 1,
-          username: 'Não Autenticado',
-          phone: null,
-          level: 1,
-          points: 10
-        }
+      return state.user
     },
 
     isAuthenticated: state => {
