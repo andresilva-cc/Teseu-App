@@ -4,6 +4,7 @@ import errors from './errors'
 import fields from './fields'
 import permissions from './permissions'
 import sections from './sections'
+import tutorial from './tutorial'
 import validation from './validation'
 
 export default {
@@ -13,5 +14,6 @@ export default {
   fields,
   permissions,
   sections,
+  tutorial,
   validation
 }

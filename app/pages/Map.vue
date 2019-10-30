@@ -224,6 +224,7 @@ const firebase = require('nativescript-plugin-firebase')
 import moment from 'moment'
 import { Image } from 'tns-core-modules/ui/image'
 import { ImageSource } from 'tns-core-modules/image-source'
+import * as ApplicationSettings from 'application-settings'
 
 export default {
   data () {
@@ -330,6 +331,9 @@ export default {
           await this.$store.dispatch('auth/updateLevel')
 
           LoadingIndicator.hide()
+
+          if (!ApplicationSettings.hasKey('disableTutorial'))
+            this.showTutorial()
         }
   
         if (!this.tracking)
@@ -613,6 +617,58 @@ export default {
           }
         }
       })
+    },
+
+    async showTutorial () {
+      await alert({
+        title: this.$t('tutorial.welcomeTitle'),
+        message: this.$t('tutorial.welcomeMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.notificationsTitle'),
+        message: this.$t('tutorial.notificationsMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.contactsTitle'),
+        message: this.$t('tutorial.contactsMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.placesTitle'),
+        message: this.$t('tutorial.placesMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.alertsTitle'),
+        message: this.$t('tutorial.alertsMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.detailOccurrenceTitle'),
+        message: this.$t('tutorial.detailOccurrenceMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.emergencyModeTitle'),
+        message: this.$t('tutorial.emergencyModeMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      await alert({
+        title: this.$t('tutorial.endTitle'),
+        message: this.$t('tutorial.endMessage'),
+        okButtonText: this.$t('common.continue')
+      })
+
+      ApplicationSettings.setBoolean('disableTutorial', true)
     },
 
     async logout () {
