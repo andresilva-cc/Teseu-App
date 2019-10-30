@@ -35,11 +35,13 @@ store.subscribe((mutation, state) => {
   ApplicationSettings.setString('store/userSettings', JSON.stringify(state.userSettings))
 })
 
+const isAuthenticated = ApplicationSettings.hasKey('isAuthenticated') && ApplicationSettings.getBoolean('isAuthenticated')
+
 // Application Lifecycle Events
 application.on(application.resumeEvent, args => {
   BackgroundServiceControl.stopBackgroundService()
 
-  if (store.getters['auth/isAuthenticated'] && store.getters['userSettings/get'].enableNotifications) {
+  if (isAuthenticated && store.getters['userSettings/get'].enableNotifications) {
     BackgroundServiceControl.startBackgroundService()
   }
 })
@@ -48,7 +50,7 @@ application.on(application.resumeEvent, args => {
 new Vue({
   template: `
     <Frame>
-      ${store.getters['auth/isAuthenticated']? '<Map />' : '<Welcome />'}
+      ${isAuthenticated? '<Map />' : '<Welcome />'}
     </Frame>`,
 
   components: {

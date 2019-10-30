@@ -1,5 +1,5 @@
 <template>
-  <Page class="auth-page" actionBarHidden="true" androidStatusBarBackground="#2196f3">
+  <Page class="auth-page" actionBarHidden="true" androidStatusBarBackground="#2196f3" @loaded="loaded">
     <GridLayout rows="auto, *, auto" columns="*" class="layout">
       
       <StackLayout row="0">
@@ -55,6 +55,7 @@ import LoadingIndicator from '~/utils/loading_indicator'
 import LoginPage from './Auth/Login'
 import RegisterPage from './Auth/Register'
 import MapPage from './Map'
+import * as ApplicationSettings from 'application-settings'
 
 export default {
   data () {
@@ -66,6 +67,16 @@ export default {
   },
 
   methods: {
+    loaded () {
+      LoadingIndicator.show()
+
+      if (ApplicationSettings.hasKey('isAuthenticated') && ApplicationSettings.getBoolean('isAuthenticated')) {
+        this.$navigateTo(this.MapPage, { clearHistory: true })
+      }
+
+      LoadingIndicator.hide()
+    },
+
     async confirmViewOnly () {
       confirm({
         title: this.$t('common.alert'),

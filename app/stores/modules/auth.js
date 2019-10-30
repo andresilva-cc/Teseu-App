@@ -65,6 +65,8 @@ export default {
       state.authenticated = false
       state.token = ''
       state.requestId = ''
+
+      ApplicationSettings.setBoolean('isAuthenticated', false)
     }
   },
 
@@ -109,6 +111,8 @@ export default {
         commit('setToken', res.data.token)
         commit('setUser', res.data.user)
         commit('setRequestId', '')
+
+        ApplicationSettings.setBoolean('isAuthenticated', true)
 
         return true
 
