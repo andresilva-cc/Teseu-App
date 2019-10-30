@@ -455,11 +455,13 @@ export default {
 
       const { latitude, longitude } = this.mapView
 
-      Timer.setTimeout(() => {
-        if (latitude === this.mapView.latitude && longitude === this.mapView.longitude) {
-          this.updateMap()
-        }
-      }, 1000)
+      if (latitude !== 0 && longitude !== 0) {
+        Timer.setTimeout(() => {
+          if (latitude === this.mapView.latitude && longitude === this.mapView.longitude) {
+            this.updateMap()
+          }
+        }, 1000)
+      }
     },
 
     markerSelect (args) {
