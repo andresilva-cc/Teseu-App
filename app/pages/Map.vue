@@ -37,9 +37,8 @@
           :latitude="map.latitude"
           :longitude="map.longitude"
           :zoom="map.zoom"
-          :minZoom="map.minZoom"
-          :maxZoom="map.maxZoom"
           @mapReady="mapReady"
+          @cameraChanged="cameraChanged"
           @markerSelect="markerSelect"
         />
 
@@ -229,6 +228,7 @@ import { ImageSource } from 'tns-core-modules/image-source'
 export default {
   data () {
     return {
+      // UI related data
       pages: [
         RegisterOccurrencePage,
         MyContactsPage,
@@ -244,23 +244,22 @@ export default {
 
       placesListOpen: false,
 
+      // Tracking data
       watchId: 0,
       timerId: null,
       tracking: false,
 
-      showingUserLocation: true,
       currentLocation: {
         latitude: 0,
         longitude: 0
       },
 
+      // Map related data
       mapView: null,
       map: {
         latitude: 0,
         longitude: 0,
-        zoom: 15,
-        minZoom: 0,
-        maxZoom: 22
+        zoom: 17,
       },
       nearbyOccurrencesMarkers: [],
     }
@@ -284,7 +283,7 @@ export default {
     },
 
     places () {
-      let places = this.userPlaces.slice()
+      let places = this.$store.getters['userPlace/get'].slice()
       places.splice(0, 0, {
         name: 'Localização atual'
       })
@@ -301,10 +300,10 @@ export default {
     },
 
     lastUpdateAt () {
-      if (this.$store.getters['occurrence/getLastUpdateAt'])
-        return `${this.$t('common.lastSuccessfulUpdate')} ${this.$store.getters['occurrence/getLastUpdateAt'].fromNow()}`
-
-      return 'Sincronizando...'
+      if (this.$store.getters['occurrence/isSyncing'])
+        return 'Sincronizando...'
+      
+      return `${this.$t('common.lastSuccessfulUpdate')} ${this.$store.getters['occurrence/getLastUpdateAt'].fromNow()}`
     },
 
     updateInterval () {
@@ -375,38 +374,12 @@ export default {
         if (this.isAuthenticated)
           await this.$store.dispatch('userSettings/get')
         
-        // Ask for location permission
-        await geolocation.enableLocationRequest(true, true)
-  
-        // Check if location is enabled
-        const isEnabled = await geolocation.isEnabled()
 
-        // If location is enabled
-        if (isEnabled) {
-          // Get location
-          const { latitude, longitude } = await geolocation.getCurrentLocation({
-            desiredAccuracy: Accuracy.HIGH
-          })
-          this.map.latitude = latitude
-          this.map.longitude = longitude
-  
-          // Fetch nearby occurrences
-          await this.$store.dispatch('occurrence/nearby', {
-            coordinates: [
-              this.map.latitude,
-              this.map.longitude
-            ]
-          })
-  
-          // Update markers
-          this.updateNearbyOccurrencesMarkers()
-  
-          // Start location watch
-          this.watchLocation()
-          
-          // Set timer
-          this.setTimer()
-        }
+        // Start location watch
+        this.watchLocation()
+        
+        // Set timer
+        this.setTimer()
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
@@ -418,39 +391,33 @@ export default {
     },
 
     menuTap (event) {
-      if (this.isAuthenticated) {
+      if (this.isAuthenticated)
         this.$navigateTo(this.pages[event.item.to])
-      } else {
+      else
         this.askForAuthentication()
-      }
     },
 
     async placesTap (event) {
-      // Update map coordinates
-      if (event.index === 0) {
-        this.map.latitude = this.currentLocation.latitude
-        this.map.longitude = this.currentLocation.longitude
-        this.showingUserLocation = true
-      } else {
-        this.map.latitude = event.item.location.coordinates[0]
-        this.map.longitude = event.item.location.coordinates[1]
-        this.showingUserLocation = false
+      try {
+        // Update map coordinates
+        if (event.index === 0) {
+          this.mapView.latitude = this.currentLocation.latitude
+          this.mapView.longitude = this.currentLocation.longitude
+        } else {
+          this.mapView.latitude = event.item.location.coordinates[0]
+          this.mapView.longitude = event.item.location.coordinates[1]
+        }
+
+        this.mapView.zoom = 17
+
+        this.mapView.updateCamera()
+  
+        // Close places list
+        this.placesListOpen = false
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
       }
-
-      // Close places list
-      this.placesListOpen = false
-
-      // Fetch nearby occurrences
-      await this.$store.dispatch('occurrence/nearby', {
-        coordinates: [
-          this.map.latitude,
-          this.map.longitude
-        ]
-      })
-      
-      // Update map
-      if (this.mapView)
-        this.updateNearbyOccurrencesMarkers()
     },
 
     iconFromCode (code) {
@@ -464,9 +431,8 @@ export default {
 
         // Set map settings
         this.mapView.settings.rotateGesturesEnabled = false
-        this.mapView.settings.scrollGesturesEnabled = false
         this.mapView.settings.tiltGesturesEnabled = false
-        this.mapView.settings.zoomGesturesEnabled = false
+        this.mapView.settings.compassEnabled = false
         this.mapView.settings.mapToolbarEnabled = false
         this.mapView.setStyle([
           {
@@ -484,42 +450,65 @@ export default {
       }
     },
 
+    async cameraChanged (args) {
+      this.$store.commit('occurrence/setSyncing', true)
+      
+      const { latitude, longitude } = this.mapView
+
+      Timer.setTimeout(() => {
+        if (latitude === this.mapView.latitude && longitude === this.mapView.longitude) {
+          this.updateMap()
+        }
+      }, 1000)
+    },
+
     markerSelect (args) {
       try {
-        this.$navigateTo(ViewOccurrencePage, {
-          props: {
-            occurrence: args.marker.userData
-          }
-        })
+        if (args.marker.userData)
+          this.$navigateTo(ViewOccurrencePage, {
+            props: {
+              occurrence: args.marker.userData
+            }
+          })
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
       }
     },
 
+    async updateMap () {
+      try {
+        this.$store.commit('occurrence/setSyncing', true)
+  
+        // Fetch nearby occurrences
+        await this.$store.dispatch('occurrence/nearby', {
+          coordinates: [
+            this.mapView.latitude,
+            this.mapView.longitude
+          ]
+        })
+        
+        // Update map
+        if (this.mapView)
+          this.updateNearbyOccurrencesMarkers()
+          
+      } catch (ex) {
+        alert(ErrorFormatter(ex))   
+             
+      } finally {
+        this.$store.commit('occurrence/setSyncing', false)
+      }
+    },
+
     setTimer () {
       this.timerId = Timer.setInterval(async () => {
-        try {
-          // Fetch nearby occurrences
-          await this.$store.dispatch('occurrence/nearby', {
-            coordinates: [
-              this.map.latitude,
-              this.map.longitude
-            ]
-          })
-          
-          // Update map
-          if (this.mapView)
-            this.updateNearbyOccurrencesMarkers()
-
-        } catch (ex) {
-          alert(ErrorFormatter(ex))
-        }
-
+        this.updateMap()
       }, this.updateInterval)
     },
 
-    watchLocation () {
+    async watchLocation () {
+      await geolocation.enableLocationRequest(true, true)
+
       try {
         this.watchId = geolocation.watchLocation(
           loc => {
@@ -527,7 +516,7 @@ export default {
               this.currentLocation.latitude = loc.latitude
               this.currentLocation.longitude = loc.longitude
 
-              if (this.showingUserLocation) {
+              if (this.map.latitude === 0 && this.map.longitude === 0) {
                 this.map.latitude = this.currentLocation.latitude
                 this.map.longitude = this.currentLocation.longitude
               }

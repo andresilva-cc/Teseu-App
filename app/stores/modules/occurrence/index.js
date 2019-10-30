@@ -6,6 +6,7 @@ export default {
 
   state: {
     nearbyOccurrences: [],
+    syncing: true,
     lastUpdateAt: null
   },
 
@@ -16,6 +17,10 @@ export default {
 
     getLastUpdateAt: state => {
       return state.lastUpdateAt
+    },
+
+    isSyncing: state => {
+      return state.syncing
     }
   },
 
@@ -24,6 +29,10 @@ export default {
       state.nearbyOccurrences = occurrences
       state.lastUpdateAt = moment()
     },
+
+    setSyncing (state, value) {
+      state.syncing = value
+    }
   },
 
   actions: {
