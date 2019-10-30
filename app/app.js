@@ -26,8 +26,10 @@ store.commit('auth/load')
 store.commit('userSettings/load')
 
 // If development and bypass auth, set token provided in config
-if (config.ENVIRONMENT === 'development' && config.DEV_BYPASS_AUTH)
+if (config.ENVIRONMENT === 'development' && config.DEV_BYPASS_AUTH) {
   store.commit('auth/setToken', config.DEV_ACCESSKEY)
+  ApplicationSettings.setBoolean('isAuthenticated', true)
+}
 
 // Subscribe store to application settings
 store.subscribe((mutation, state) => {
