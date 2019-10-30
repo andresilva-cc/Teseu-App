@@ -5,7 +5,7 @@
       <NavigationButton :text="$t('common.back')" android.systemIcon="ic_menu_back" @tap="$navigateBack"></NavigationButton>
       <ActionItem @tap="reportOccurrence">
         <template>
-          <Label class="fas report">&#xf06a;</Label>
+          <Label class="report">{{ $t('sections.viewOccurrenceReport') }}</Label>
         </template>
       </ActionItem>
     </ActionBar>
@@ -90,7 +90,7 @@
 <style lang="scss" scoped>
 .report {
   padding: 5 15;
-  font-size: 22;
+  font-size: 14;
   color: #f44336;
 }
 

@@ -7,7 +7,7 @@ export default {
   addPlace: 'Adicionar Local',
   alerts: 'Alertas',
   registerOccurrence: 'Registrar Ocorrência',
-  viewOccurrence: 'Visualizar Ocorrência',
+  viewOccurrence: 'Ocorrência',
   reportOccurrence: 'Denunciar Ocorrência',
   pickLocation: 'Escolher Localização',
   
@@ -31,8 +31,9 @@ export default {
   detailOccurrenceWhenNow: 'Agora',
   detailOccurrenceWhenHalfHourAgo: '30 minutos atrás',
   detailOccurrenceWhenMoreThanAHourAgo: 'Mais de 1 hora atrás',
-
+  
   // View Occurrence
+  viewOccurrenceReport: 'Denunciar',
   viewOccurrenceVictim: 'Com ele(a) mesmo(a)',
   viewOccurrenceNotVictim: 'Com outra pessoa',
   viewOccurrenceReactions: 'Reações',
