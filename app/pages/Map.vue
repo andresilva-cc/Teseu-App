@@ -452,7 +452,7 @@ export default {
 
     async cameraChanged (args) {
       this.$store.commit('occurrence/setSyncing', true)
-      
+
       const { latitude, longitude } = this.mapView
 
       Timer.setTimeout(() => {
@@ -578,6 +578,10 @@ export default {
         this.nearbyOccurrencesMarkers.forEach(marker => {
           this.mapView.addMarker(marker)
         })
+
+        if (this.nearbyOccurrencesMarkers.length === 0) {
+          Toast.makeText(this.$t('sections.noOccurrences')).show()
+        }
 
       } catch (ex) {
         alert(ErrorFormatter(ex))

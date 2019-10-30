@@ -13,6 +13,9 @@ export default {
   
 
   /** SECTION MESSAGES */
+  // Map
+  noOccurrences: 'Ufa, nenhuma ocorrência aqui',
+
   // Emergency Mode
   emergencyMode: 'Modo de Emergência',
   emergencyModeDisable: 'Clique aqui para desativar',
