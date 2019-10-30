@@ -80,7 +80,7 @@
         </StackLayout>
 
         <StackLayout v-else class="field">
-          <Label horizontalAlignment="center">{{ $t('sections.viewOccurrenceNoComments') }}</Label>
+          <Label horizontalAlignment="center" textWrap="true" class="no-comments">{{ $t('sections.viewOccurrenceNoComments') }}</Label>
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -202,6 +202,10 @@ GridLayout.comment {
     margin-top: 5;
     font-size: 16;
   }
+}
+
+.no-comments {
+  margin-bottom: 15;
 }
 </style>
 
