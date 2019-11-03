@@ -3,14 +3,41 @@ import api from '~/services/api'
 export default {
   namespaced: true,
 
+  state: {
+    report: null
+  },
+
+  getters: {
+    getReport: state => {
+      return state.report
+    }
+  },
+
+  mutations: {
+    setReport (state, report) {
+      state.report = report
+    }
+  },
+
   actions: {
-    create: async (ctx, payload) => {
+    create: async ({ commit }, payload) => {
       try {
-        await api.post(`/occurrences/${payload.occurrenceId}/reports`, {
+        const report = await api.post(`/occurrences/${payload.occurrenceId}/reports`, {
           description: payload.description
         })
 
-        return true
+        commit('setReport', report)
+
+      } catch (ex) {
+        throw ex.response? ex.response.data : ex
+      }
+    },
+
+    fetch: async ({ commit }, occurrenceId) => {
+      try {
+        const res = await api.get(`/occurrences/${occurrenceId}/myReport`)
+
+        commit('setReport', res.data)
 
       } catch (ex) {
         throw ex.response? ex.response.data : ex

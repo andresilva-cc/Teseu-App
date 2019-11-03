@@ -37,6 +37,7 @@ export default {
   
   // View Occurrence
   viewOccurrenceReport: 'Denunciar',
+  viewOccurrenceAlreadyReported: 'Esta ocorrência já foi denunciada',
   viewOccurrenceVictim: 'Com ele(a) mesmo(a)',
   viewOccurrenceNotVictim: 'Com outra pessoa',
   viewOccurrenceReactions: 'Reações',

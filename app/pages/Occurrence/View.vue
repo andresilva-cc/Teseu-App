@@ -241,6 +241,10 @@ export default {
       return this.$options.filters.capitalizeFirstLetter(moment(this.occurrence.when).fromNow())
     },
 
+    report () {
+      return this.$store.getters['occurrenceReport/getReport']
+    },
+
     reactions () {
       return this.$store.getters['occurrenceReaction/getReactions']
     },
@@ -266,8 +270,10 @@ export default {
         await this.$store.dispatch('occurrenceReaction/fetch', this.occurrence.id)
         await this.$store.dispatch('occurrenceComment/fetch', this.occurrence.id)
         
-        if (this.isAuthenticated)
+        if (this.isAuthenticated) {
+          await this.$store.dispatch('occurrenceReport/fetch', this.occurrence.id)
           await this.$store.dispatch('occurrenceReaction/myReactions', this.occurrence.id)
+        }
 
         LoadingIndicator.hide()
 
@@ -393,6 +399,11 @@ export default {
       try {
         if (!this.isAuthenticated) {
           this.askForAuthentication()
+          return
+        }
+
+        if (this.report) {
+          Toast.makeText(this.$t('sections.viewOccurrenceAlreadyReported')).show()
           return
         }
   
