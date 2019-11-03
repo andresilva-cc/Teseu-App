@@ -262,6 +262,8 @@ export default {
         longitude: 0,
         zoom: 17,
       },
+      currentLocationMarker: null,
+      placesMarkers: [],
       nearbyOccurrencesMarkers: [],
     }
   },
@@ -330,12 +332,18 @@ export default {
 
           await this.$store.dispatch('auth/updateLevel')
 
-          LoadingIndicator.hide()
+          this.updatePlacesMarkers()
 
-          if (!ApplicationSettings.hasKey('disableTutorial'))
-            this.showTutorial()
+          LoadingIndicator.hide()
         }
+
+        this.addCurrentLocationMarker()
+
+        // Show tutorial
+        if (!ApplicationSettings.hasKey('disableTutorial'))
+          this.showTutorial()
   
+        // Start tracking
         if (!this.tracking)
           await this.startTracking()
 
@@ -522,6 +530,13 @@ export default {
               this.currentLocation.latitude = loc.latitude
               this.currentLocation.longitude = loc.longitude
 
+              if (this.currentLocationMarker) {
+                this.currentLocationMarker.position = Position.positionFromLatLng(
+                  this.currentLocation.latitude,
+                  this.currentLocation.longitude
+                )
+              }
+
               if (this.map.latitude === 0 && this.map.longitude === 0) {
                 this.map.latitude = this.currentLocation.latitude
                 this.map.longitude = this.currentLocation.longitude
@@ -540,6 +555,73 @@ export default {
             minimumUpdateTime: 100
           }
         )
+
+      } catch (ex) {
+        alert(ErrorFormatter(ex))
+      }
+    },
+
+    addCurrentLocationMarker () {
+      try {
+        const marker = new Marker()
+  
+        marker.position = Position.positionFromLatLng(
+          this.currentLocation.latitude,
+          this.currentLocation.longitude
+        )
+  
+        const source = new ImageSource()
+        source.fromResource('currentlocation')
+        const icon = new Image()
+        icon.imageSource = source
+  
+        marker.icon = icon
+  
+        if (this.currentLocationMarker)
+          this.mapView.removeMarker(this.currentLocationMarker)
+  
+        this.currentLocationMarker = marker
+  
+        this.mapView.addMarker(this.currentLocationMarker)
+
+      } catch (ex) {
+        throw ex
+      }
+    },
+
+    updatePlacesMarkers () {
+      try {
+        // Remove all places markers
+        this.placesMarkers.forEach(marker => {
+          this.mapView.removeMarker(marker)
+        })
+  
+        // Empty places markers array
+        this.placesMarkers = []
+
+        // Create a marker for each place
+        this.userPlaces.forEach(place => {
+          const marker = new Marker()
+
+          marker.position = Position.positionFromLatLng(
+            place.location.coordinates[0],
+            place.location.coordinates[1]
+          )
+
+          const source = new ImageSource()
+          source.fromResource('place')
+          const icon = new Image()
+          icon.imageSource = source
+
+          marker.icon = icon
+
+          this.placesMarkers.push(marker)
+        })
+  
+        // Add new nearby occurrences markers
+        this.placesMarkers.forEach(marker => {
+          this.mapView.addMarker(marker)
+        })
 
       } catch (ex) {
         alert(ErrorFormatter(ex))
