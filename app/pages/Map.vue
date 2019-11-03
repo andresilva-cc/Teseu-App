@@ -450,6 +450,10 @@ export default {
           {
             featureType: 'poi',
             stylers: [{ visibility: 'off' }]
+          },
+          {
+            featureType: 'landscape.man_made',
+            stylers: [{ visibility: 'off' }]
           }
         ])
 
