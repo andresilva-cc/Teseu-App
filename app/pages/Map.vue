@@ -531,19 +531,23 @@ export default {
         this.watchId = geolocation.watchLocation(
           loc => {
             if (loc) {
+              // Center map
+              if (this.mapView.latitude.toFixed(6) === this.currentLocation.latitude.toFixed(6) &&
+                  this.mapView.longitude.toFixed(6) === this.currentLocation.longitude.toFixed(6)) {
+                this.map.latitude = loc.latitude
+                this.map.longitude = loc.longitude
+              }
+
+              // Update current location
               this.currentLocation.latitude = loc.latitude
               this.currentLocation.longitude = loc.longitude
 
+              // Update current location marker
               if (this.currentLocationMarker) {
                 this.currentLocationMarker.position = Position.positionFromLatLng(
                   this.currentLocation.latitude,
                   this.currentLocation.longitude
                 )
-              }
-
-              if (this.map.latitude === 0 && this.map.longitude === 0) {
-                this.map.latitude = this.currentLocation.latitude
-                this.map.longitude = this.currentLocation.longitude
               }
             }
           },
