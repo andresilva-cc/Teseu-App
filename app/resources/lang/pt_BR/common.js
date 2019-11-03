@@ -17,7 +17,7 @@ export default {
   yes: 'Sim',
   
   // Welcome page
-  welcomeMessage: 'Entre ou registre-se para obter notificações de crimes ocorrendo próximos à sua localização',
+  welcomeMessage: 'Entre ou para obter notificações de crimes ocorrendo próximos à sua localização',
 
   // Map page
   searchPlacesPlaceholder: 'Selecionar local',

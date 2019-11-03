@@ -6,15 +6,15 @@
     </ActionBar>
 
     <StackLayout class="layout">
+      <Label textWrap="true" class="message">{{ $t('auth.registerMessage') }}</Label>
+
       <GridLayout rows="auto, auto" columns="*, auto">
         <TextField row="0" column="0" columnSpan="2" :hint="$t('fields.username')" v-model="username" />
         <Label row="0" column="1" class="fas" verticalAlignment="bottom" @tap="generateUsername">&#xf01e;</Label>
         <Label row="1" column="0" columnSpan="2" textWrap="true">{{ $t('auth.usernameMessage') }}</Label>
       </GridLayout>
 
-      <MaskedTextField ref="phone" :hint="$t('fields.phone')" keyboardType="phone" mask="(99) 99999-9999" />
-
-      <Button :text="$t('auth.sendSMSCode')" @tap="register" />
+      <Button :text="$t('auth.register')" @tap="register" />
 
       <Label class="agreement" textWrap="true" @tap="openTermsOfUse">{{ $t('auth.agreement') }}</Label>
     </StackLayout>
@@ -22,6 +22,11 @@
 </template>
 
 <style lang="scss" scoped>
+.message {
+  margin-top: 10;
+  text-align: center;
+}
+
 TextField, MaskedTextField {
   margin-top: 25;
 }
@@ -58,6 +63,8 @@ export default {
     }
   },
 
+  props: ['phone'],
+
   data () {
     return {
       username: '',
@@ -92,12 +99,9 @@ export default {
       try {
         LoadingIndicator.show()
 
-        // Format phone
-        this.phone = this.$refs.phone.nativeView.text.replace(/[+()-\s]/g, '')
-
         await this.$store.dispatch('auth/register', {
           username: this.username,
-          phone: this.plainPhone
+          phone: this.phone
         })
 
         LoadingIndicator.hide()

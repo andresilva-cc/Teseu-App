@@ -15,7 +15,7 @@
 
 <style lang="scss" scoped>
 Label {
-  margin-top: 30;
+  margin-top: 10;
   text-align: center;
 }
 

@@ -9,7 +9,6 @@
         <Label class="message" textWrap="true">{{ $t('common.welcomeMessage') }}</Label>
 
         <Button class="login-button" :text="$t('auth.login')" @tap="$navigateTo(LoginPage)" />
-        <Button :text="$t('auth.register')" @tap="$navigateTo(RegisterPage)" />
       </StackLayout>
 
       <Label row="2" class="view-only" @tap="confirmViewOnly">{{ $t('auth.viewOnly') }}</Label> 
@@ -53,7 +52,6 @@
 import ErrorFormatter from '~/utils/error_formatter'
 import LoadingIndicator from '~/utils/loading_indicator'
 import LoginPage from './Auth/Login'
-import RegisterPage from './Auth/Register'
 import MapPage from './Map'
 import * as ApplicationSettings from 'application-settings'
 
@@ -61,7 +59,6 @@ export default {
   data () {
     return {
       LoginPage,
-      RegisterPage,
       MapPage
     }
   },

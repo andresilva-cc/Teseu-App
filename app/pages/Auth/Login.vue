@@ -7,7 +7,7 @@
 
     <StackLayout class="layout">
       <MaskedTextField ref="phone" :hint="$t('fields.phone')" keyboardType="phone" mask="(99) 99999-9999" />
-      <Button :text="$t('auth.sendSMSCode')" @tap="login" />
+      <Button :text="$t('auth.login')" @tap="login" />
     </StackLayout>
   </Page>
 </template>
@@ -26,6 +26,7 @@ Button {
 <script>
 import LoadingIndicator from '~/utils/loading_indicator'
 import ErrorFormatter from '~/utils/error_formatter'
+import RegisterPage from './Register.vue'
 import ConfirmPage from './Confirm.vue'
 
 export default {
@@ -58,7 +59,17 @@ export default {
 
       } catch (ex) {
         LoadingIndicator.hide()
-        alert(ErrorFormatter(ex))
+
+        if (ex.name === 'UserNotFoundError') {
+          this.$navigateTo(RegisterPage, {
+            props: {
+              phone: this.plainPhone
+            }
+          })
+
+        } else {
+          alert(ErrorFormatter(ex))
+        }
       }
     }
   }
